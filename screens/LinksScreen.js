@@ -1,26 +1,60 @@
 import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { PanResponder, Animated, Text, View } from 'react-native';
+import * as firebase from 'firebase';
 //console.disableYellowBox = true;
 
 import { View as GraphicsView } from 'expo-graphics';
 
 export default class LinkScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pan: new Animated.ValueXY(),
+    };
+  }
   static url = 'screens/LinkScreen.js';
+  componentWillMount() {
+    this._val = { x: 0, y: 0 };
+    this.state.pan.addListener(value => (this._val = value));
+
+    this.panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gesture) => true,
+      onPanResponderGrant: (e, gesture) => {
+        this.state.pan.setOffset({
+          x: this._val.x,
+          y: this._val.y,
+        });
+        this.state.pan.setValue({ x: 0, y: 0 });
+      },
+      onPanResponderMove: Animated.event([
+        null,
+        { dx: this.state.pan.x, dy: this.state.pan.y },
+      ]),
+    });
+  }
   render() {
+    const panStyle = {
+      transform: this.state.pan.getTranslateTransform(),
+    };
     return (
       <View style={{ flex: 1 }}>
-        <GraphicsView
-          style={{ flex: 2 }}
-          onContextCreate={this.onContextCreate}
-          onRender={this.onRender}
-          onResize={this.onResize}
-          isArEnabled
-          isArRunningStateEnabled
-          isArCameraStateEnabled
-          arTrackingConfiguration={AR.TrackingConfigurations.World}
-        />
+        <Animated.View
+          {...this.panResponder.panHandlers}
+          style={[panStyle, { width: '100%', height: '100%' }]}
+        >
+          <GraphicsView
+            style={{ flex: 2 }}
+            onContextCreate={this.onContextCreate}
+            onRender={this.onRender}
+            onResize={this.onResize}
+            isArEnabled
+            isArRunningStateEnabled
+            isArCameraStateEnabled
+            arTrackingConfiguration={AR.TrackingConfigurations.World}
+          />
+        </Animated.View>
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
@@ -61,16 +95,39 @@ export default class LinkScreen extends React.Component {
     //     'https://icon2.kisspng.com/20180206/que/kisspng-pokxe9mon-pikachu-ash-ketchum-pokxe9mon-i-choose-pikachu-png-transparent-image-5a797c2eb062f1.6659726115179110867225.jpg'
     //   ),
     // });
+    // const material = new THREE.MeshPhongMaterial({
+    //   map: await ExpoTHREE.loadAsync(require('../assets/images/robot-dev.png')),
+    // });
+    // const material = new THREE.MeshPhongMaterial({
+    //   map: await ExpoTHREE.loadAsync(image),
+    // });
+    // const material = new THREE.SpriteMaterial({
+    //   map: await ExpoTHREE.loadAsync(image),
+    // });
+    function getImage() {
+      let newImage;
+      firebase
+        .database()
+        .ref('/')
+        .on('value', function(snapshot) {
+          newImage = snapshot.val();
+        });
+      return newImage.image.uri;
+    }
+    const image = getImage();
+
     const material = new THREE.MeshPhongMaterial({
-      map: await ExpoTHREE.loadAsync(require('../assets/images/robot-dev.png')),
+      map: await ExpoTHREE.loadAsync(image),
     });
+    material.transparent = true;
 
     // Combine our geometry and material
-    this.cube = new THREE.Mesh(geometry, material);
+    this.sprite = new THREE.Mesh(geometry, material);
     // Place the box 0.4 meters in front of us.
-    this.cube.position.z = -0.4;
+    this.sprite.position.z = -5;
+    console.log('in the commonSetup', this.sprite.position);
     // Add the cube to the scene
-    this.scene.add(this.cube);
+    this.scene.add(this.sprite);
     this.scene.add(new THREE.AmbientLight(0xffffff));
   };
 
@@ -82,6 +139,10 @@ export default class LinkScreen extends React.Component {
   };
 
   onRender = () => {
+    if (this.sprite) {
+      // console.log('camera position', this.camera.position);
+      this.sprite.position.z = this.sprite.position.z + this.camera.position.z;
+    }
     this.renderer.render(this.scene, this.camera);
   };
 }
