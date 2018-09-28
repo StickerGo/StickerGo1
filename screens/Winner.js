@@ -10,41 +10,29 @@ import {
   TextInput,
 } from 'react-native';
 
-export default class Room extends React.Component {
+export default class Winner extends Component {
   _onPressButton() {}
   constructor() {
     super();
     this.state = {
-      pickval: 2,
-      typedText: 'Enter name',
+      name: 'name',
     };
   }
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.textEnter}
-          placeholder="Enter name"
-          onChangeText={text => {
-            this.setState(previousState => {
-              return { typedText: text };
-            });
-          }}
-        />
         <Text />
-        <TextInput
-          style={styles.textEnter}
-          placeholder="Enter code"
-          onChangeText={text => {
-            this.setState(previousState => {
-              return { typedText: text };
-            });
-          }}
-        />
+        <Text style={styles.welcome}>Winner is: </Text>
+        <Text />
+        <Text style={styles.welcome}>{this.state.name}</Text>
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('Waiting')}
-            title="Start"
+            title="Play Again"
+          />
+          <Button
+            onPress={() => this.props.navigation.navigate('Start')}
+            title="Exit"
           />
         </View>
       </View>

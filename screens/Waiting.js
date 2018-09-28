@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
 
-export default class Waiting extends React.Component {
+let counter = 1;
+
+export default class Waiting extends Component {
   _onPressButton() {}
   constructor() {
     super();
@@ -10,12 +12,24 @@ export default class Waiting extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.buttonContainer}>
-          <Button onPress={this._onPressButton} title="Start" />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button onPress={this._onPressButton} title="Vote" color="#841584" />
-        </View>
+        {counter === 0 ? (
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => this.props.navigation.navigate('Home')}
+              title="Start"
+            />
+            {counter++}
+          </View>
+        ) : (
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => this.props.navigation.navigate('Contest')}
+              title="Go to Vote"
+              color="#841584"
+            />
+            {counter--}
+          </View>
+        )}
       </View>
     );
   }

@@ -46,7 +46,10 @@ export default class Room extends React.Component {
           <Picker.Item label="4" value="4" />
         </Picker>
         <View style={styles.buttonContainer}>
-          <Button onPress={this._onPressButton} title="Get Code" />
+          <Button
+            onPress={() => this.props.navigation.navigate('RoomCode')}
+            title="Get Code"
+          />
         </View>
       </View>
     );
