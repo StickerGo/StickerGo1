@@ -30,7 +30,7 @@ export default class SettingsScreen extends React.Component {
 
     return (
 
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'stretch' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'stretch', backgroundColor: '#000' }}>
         <Text>Naaaaaaame</Text>
         {
           getImage()
