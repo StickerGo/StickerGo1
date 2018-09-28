@@ -2,16 +2,32 @@ import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
 
 export default class Start extends React.Component {
-  _onPressButton() {}
+  constructor(props) {
+    super(props);
+    this._onPressButton = this._onPressButton.bind(this);
+  }
+
+  _onPressButton() {
+    this.props.navigation.navigate('Room');
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <Button onPress={this._onPressButton} title="Create" />
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate('Room');
+            }}
+            title="Create"
+          />
         </View>
         <View style={styles.buttonContainer}>
-          <Button onPress={this._onPressButton} title="Join" color="#841584" />
+          <Button
+            onPress={() => this.props.navigation.navigate('Join')}
+            title="Join"
+            color="#841584"
+          />
         </View>
       </View>
     );
