@@ -245,13 +245,34 @@ import {
   View,
 } from 'react-native';
 
+import * as firebase from 'firebase'
+
+console.desableYellowBox = true
+
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_KEY,
+  authDomain: "stickergo1.firebaseapp.com",
+  databaseURL: "https://stickergo1.firebaseio.com",
+  projectId: "stickergo1",
+  storageBucket: "stickergo1.appspot.com",
+  messagingSenderId: "565608715540"
+};
+
+firebase.initializeApp(firebaseConfig);
+
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
+  });
+}
+
+function storeImage(image) {
+  firebase.database().ref('/').set({
+    image
   });
 }
 
@@ -275,6 +296,10 @@ export default class App extends Component {
     ],
     appState: AppState.currentState,
   };
+
+  saveImage() {
+    storeImage(this.state.image)
+  }
 
   handleAppStateChangeAsync = nextAppState => {
     if (
@@ -310,7 +335,7 @@ export default class App extends Component {
   //     strokeColor: Math.random() * 0xffffff,
   //   });
   // };
-   onChangeAsync = async ({ width, height }) => {
+  onChangeAsync = async ({ width, height }) => {
     const options = {
       format: 'png', /// PNG because the view has a clear background
       quality: 0.1, /// Low quality works because it's just a line
@@ -321,10 +346,10 @@ export default class App extends Component {
     /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
     const uri = await Expo.takeSnapshotAsync(this.sketch, options);
     this.setState({
-          image: { uri },
-          strokeWidth: Math.random() * 30 + 10,
-          strokeColor: Math.random() * 0xffffff,
-        });
+      image: { uri },
+      strokeWidth: Math.random() * 30 + 10,
+      strokeColor: Math.random() * 0xffffff,
+    });
   };
 
   onReady = () => {
@@ -365,6 +390,10 @@ export default class App extends Component {
             this.sketch.undo();
           }}
         />
+        <Button title="save" style={styles.button} onPress={() => {
+          this.saveImage()
+          this.props.navigation.navigate('Settings')
+        }} />
       </View>
     );
   }

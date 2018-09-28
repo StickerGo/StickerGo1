@@ -18,6 +18,7 @@
     "expo-graphics": "^1.0.0-alpha.6",
     "expo-pixi": "^0.3.1",
     "expo-three": "^3.0.0-alpha.4",
+    "firebase": "^5.5.1",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-navigation": "^2.16.0"
