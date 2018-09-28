@@ -31,7 +31,7 @@ const HomeStack = createStackNavigator(
     Winner: Winner,
   },
   {
-    initialRouteName: 'Start',
+    initialRouteName: 'Home',
   }
 );
 
