@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 
 class Join extends React.Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -26,7 +26,7 @@ class Join extends React.Component {
   addPlayer(name) {
     this.props.player.name = name;
 
-    console.log('what is players name? ', this.props.player);
+    console.log('in the addPlayer function', this.props.player);
     this.props.FBAddPlayer(this.props.player);
   }
   render() {

@@ -1,14 +1,8 @@
 import * as firebase from 'firebase';
-const firebaseConfigPlayer = {
-  apiKey: process.env.FIREBASE_USESRKEY,
-  authDomain: 'promptsdatabase.firebaseapp.com',
-  databaseURL: 'https://promptsdatabase.firebaseio.com',
-  projectId: 'promptsdatabase',
-  storageBucket: 'promptsdatabase.appspot.com',
-  messagingSenderId: '399558208346',
-};
+import ApiKeys from '../constants/ApiKeys'
 
-firebase.initializeApp(firebaseConfigPlayer, 'Secondary');
+
+firebase.initializeApp(ApiKeys.FirebaseConfig, 'Secondary');
 
 //action types
 
@@ -49,20 +43,24 @@ const addPhoto = photo => {
 export const FBAddPlayer = player => {
   return async dispatch => {
     try {
-      console.log('hello what is player', player);
+      console.log('beginning FBAddPlayer', player);
       let counter = 1;
 
       const added = firebase
         .database()
-        .ref()
-        .child('player1')
-        .set({
+        .ref('stickergo-capstone')
+        // .child('player1')
+        .push({
           draw: '',
           name: player.name,
           photo: '',
-        });
+        })
+        .then(newPlayer => {
+          console.log('in the then statement', newPlayer)
+          dispatch(addPlayer(newPlayer))
+        })
       counter++;
-      console.log('what is added', added);
+      console.log('after player is added:', added);
       dispatch(addPlayer(added));
     } catch (err) {
       console.error('THUNK WRONG', err);
