@@ -10,21 +10,9 @@ import {
   Text,
   View,
 } from 'react-native';
-
-import * as firebase from 'firebase';
+import db from '../reducer/firebase'
 
 console.desableYellowBox = true;
-
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_KEY,
-  authDomain: 'stickergo1.firebaseapp.com',
-  databaseURL: 'https://stickergo1.firebaseio.com',
-  projectId: 'stickergo1',
-  storageBucket: 'stickergo1.appspot.com',
-  messagingSenderId: '565608715540',
-};
-
-firebase.initializeApp(firebaseConfig);
 
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
@@ -36,14 +24,7 @@ function uuidv4() {
   });
 }
 
-function storeImage(image) {
-  firebase
-    .database()
-    .ref('/')
-    .set({
-      image,
-    });
-}
+
 
 export default class App extends Component {
   state = {
@@ -67,7 +48,13 @@ export default class App extends Component {
   };
 
   saveImage() {
-    storeImage(this.state.image);
+    const draw = this.state.image
+    db
+      .database()
+      .ref('players')
+      .child(`/${this.props.navigation.getParam('userId')}/draw`)
+      .set(draw.uri);
+
   }
 
   handleAppStateChangeAsync = nextAppState => {
