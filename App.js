@@ -6,21 +6,17 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import playerReducer from './reducer/playerReducer';
-import ApiKeys from './constants/ApiKeys'
-import * as firebase from 'firebase';
+import ApiKeys from './constants/ApiKeys';
+import db from './reducer/firebase';
 
 const store = createStore(playerReducer, applyMiddleware(thunkMiddleware));
 
 export default class App extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      isLoadingComplete: false
-    }
-
-    //Initialize firebase...
-    if (!firebase.apps.length) { firebase.initializeApp(ApiKeys.FirebaseConfig) }
+      isLoadingComplete: false,
+    };
   }
 
   render() {

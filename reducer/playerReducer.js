@@ -1,11 +1,7 @@
-import * as firebase from 'firebase';
-import ApiKeys from '../constants/ApiKeys'
-
-
-firebase.initializeApp(ApiKeys.FirebaseConfig, 'Secondary');
+import db from './firebase';
 
 //action types
-
+let count = 0;
 const GET_ALL = 'GET_ALL';
 const ADD_PLAYER = 'ADD_PLAYER';
 const ADD_DRAW = 'ADD_DRAW';
@@ -14,7 +10,7 @@ const GET_ALL_DRAW = 'GET_ALL_DRAW';
 const GET_ALL_PHOTO = 'GET_ALL_PHOTO';
 
 //action creators
-const getAll = () => {
+const getAll = players => {
   return { type: GET_ALL, players };
 };
 
@@ -39,29 +35,42 @@ const addPhoto = photo => {
 };
 
 // thunk creators
+export const getAllPlayers = () => {
+  return dispatch => {
+    try {
+      console.log('beginning getAllPlayers');
+
+      db.database()
+        .ref('players')
+        .on('value', snapshot => {
+          const players = snapshot.val() || [];
+          dispatch(getAll(players));
+        });
+    } catch (err) {
+      console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
+    }
+  };
+};
 
 export const FBAddPlayer = player => {
   return async dispatch => {
     try {
       console.log('beginning FBAddPlayer', player);
-      let counter = 1;
+      const playerToAdd = {
+        name: player.name,
+        draw: '',
+        photo: '',
+      };
 
-      const added = firebase
+      const added = db
         .database()
-        .ref('stickergo-capstone')
-        // .child('player1')
-        .push({
-          draw: '',
-          name: player.name,
-          photo: '',
-        })
-        .then(newPlayer => {
-          console.log('in the then statement', newPlayer)
-          dispatch(addPlayer(newPlayer))
-        })
-      counter++;
+        .ref('players')
+        .push();
+
+      playerToAdd.id = added.key;
+      added.set(playerToAdd);
       console.log('after player is added:', added);
-      dispatch(addPlayer(added));
+      dispatch(addPlayer(playerToAdd));
     } catch (err) {
       console.error('THUNK WRONG', err);
     }

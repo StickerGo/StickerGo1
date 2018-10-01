@@ -11,21 +11,11 @@ import {
   View,
 } from 'react-native';
 
-import * as firebase from 'firebase';
+import db from '../reducer/firebase';
 
-console.desableYellowBox = true;
+console.disableYellowBox = true;
 
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_KEY,
-  authDomain: 'stickergo1.firebaseapp.com',
-  databaseURL: 'https://stickergo1.firebaseio.com',
-  projectId: 'stickergo1',
-  storageBucket: 'stickergo1.appspot.com',
-  messagingSenderId: '565608715540',
-};
-
-firebase.initializeApp(firebaseConfig);
-
+let count = 0;
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
@@ -37,12 +27,14 @@ function uuidv4() {
 }
 
 function storeImage(image) {
-  firebase
+  const img = db
     .database()
-    .ref('/')
-    .set({
-      image,
-    });
+    .ref('images')
+    .push();
+
+  img.set({
+    image,
+  });
 }
 
 export default class App extends Component {
@@ -163,7 +155,7 @@ export default class App extends Component {
           style={styles.button}
           onPress={() => {
             this.saveImage();
-            this.props.navigation.navigate('Settings');
+            //this.props.navigation.navigate('Settings');
           }}
         />
       </View>

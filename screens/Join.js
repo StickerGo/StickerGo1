@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 
 class Join extends React.Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -24,10 +24,8 @@ class Join extends React.Component {
     this.addPlayer = this.addPlayer.bind(this);
   }
   addPlayer(name) {
-    this.props.player.name = name;
-
-    console.log('in the addPlayer function', this.props.player);
-    this.props.FBAddPlayer(this.props.player);
+    console.log('in the addPlayer function', name);
+    this.props.addAPlayer({ name });
   }
   render() {
     return (
@@ -36,8 +34,8 @@ class Join extends React.Component {
           style={styles.textEnter}
           placeholder="Enter name"
           onChangeText={text => {
-            this.setState(previousState => {
-              return { name: text };
+            this.setState({
+              name: text,
             });
           }}
         />
@@ -46,8 +44,8 @@ class Join extends React.Component {
           style={styles.textEnter}
           placeholder="Enter code"
           onChangeText={text => {
-            this.setState(previousState => {
-              return { code: text };
+            this.setState({
+              code: text,
             });
           }}
         />
@@ -55,7 +53,7 @@ class Join extends React.Component {
           <Button
             onPress={() => {
               this.addPlayer(this.state.name);
-              this.props.navigation.navigate('Waiting');
+              //this.props.navigation.navigate('Waiting');
             }}
             title="Start"
           />
@@ -101,7 +99,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    FBAddPlayer: player => dispatch(FBAddPlayer(player)),
+    addAPlayer: player => dispatch(FBAddPlayer(player)),
   };
 };
 
