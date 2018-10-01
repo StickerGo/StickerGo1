@@ -1,7 +1,7 @@
 import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, PanResponder } from 'react-native';
 import * as firebase from 'firebase';
 //console.disableYellowBox = true;
 import TouchableView from './TouchableView';
@@ -9,25 +9,40 @@ import TouchableView from './TouchableView';
 import { View as GraphicsView } from 'expo-graphics';
 
 export default class LinkScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onPanResponderMove: (evt, gestureState) => {
+        if (this.sprite) {
+          const size = this.renderer.getSize()
+
+          this.sprite.position.x = this.sprite.position.x + (gestureState.dx / size.width)
+          this.sprite.position.y = this.sprite.position.y + (gestureState.dy / size.height)
+        }
+      }
+    })
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <TouchableView
+        {/* <TouchableView
           style={{ flex: 1 }}
           shouldCancelWhenOutside={false}
           onTouchesBegan={this.onTouchesBegan}
-        >
-          <GraphicsView
-            style={{ flex: 2 }}
-            onContextCreate={this.onContextCreate}
-            onRender={this.onRender}
-            onResize={this.onResize}
-            isArEnabled
-            isArRunningStateEnabled
-            isArCameraStateEnabled
-            arTrackingConfiguration={AR.TrackingConfigurations.World}
-          />
-        </TouchableView>
+        > */}
+        <GraphicsView
+          style={{ flex: 2 }}
+          onContextCreate={this.onContextCreate}
+          onRender={this.onRender}
+          onResize={this.onResize}
+          isArEnabled
+          isArRunningStateEnabled
+          isArCameraStateEnabled
+          arTrackingConfiguration={AR.TrackingConfigurations.World}
+        />
+        {/* </TouchableView> */}
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
@@ -82,7 +97,7 @@ export default class LinkScreen extends React.Component {
       firebase
         .database()
         .ref('/')
-        .on('value', function(snapshot) {
+        .on('value', function (snapshot) {
           newImage = snapshot.val();
         });
       return newImage.image.uri;
@@ -98,6 +113,7 @@ export default class LinkScreen extends React.Component {
     this.sprite = new THREE.Sprite(material);
     // Place the box 0.4 meters in front of us.
     this.sprite.position.z = -5;
+    // this.sprite.rotateOnWorldAxis()
     console.log('in the commonSetup', this.sprite.position);
     // Add the cube to the scene
     this.scene.add(this.sprite);
@@ -116,59 +132,79 @@ export default class LinkScreen extends React.Component {
   };
 
   // Called when `onPanResponderGrant` is invoked.
-  onTouchesBegan = async ({ locationX: x, locationY: y }) => {
-    if (!this.renderer) {
-      return;
-    }
+  // onTouchesBegan = async ({ locationX: x, locationY: y }) => {
+  //   if (!this.renderer) {
+  //     return;
+  //   }
 
-    // Get the size of the renderer
-    const size = this.renderer.getSize();
+  //   // Get the size of the renderer
+  //   const size = this.renderer.getSize();
 
-    // Invoke the native hit test method
-    const { hitTest } = await AR.performHitTest(
-      {
-        x: x / size.width,
-        y: y / size.height,
-      },
-      // Result type from intersecting a horizontal plane estimate, determined for the current frame.
-      AR.HitTestResultTypes.HorizontalPlane
-    );
+  //   // Invoke the native hit test method
+  //   const { hitTest } = await AR.performHitTest(
+  //     {
+  //       x: x / size.width,
+  //       y: y / size.height,
+  //     },
+  //     // Result type from intersecting a horizontal plane estimate, determined for the current frame.
+  //     AR.HitTestResultTypes.FeaturePoint
+  //   );
 
-    // Traverse the test results
-    for (let hit of hitTest) {
-      const { worldTransform } = hit;
-      // If we've already placed a cube, then remove it
-      if (this.cube) {
-        this.scene.remove(this.cube);
-      }
+  //   // Traverse the test results
+  //   for (let hit of hitTest) {
+  //     const { worldTransform } = hit;
+  //     // If we've already placed a cube, then remove it
+  //     if (this.sprite) {
+  //       this.scene.remove(this.sprite);
+  //     }
 
-      // Create a new cube
-      const geometry = new THREE.BoxGeometry(0.0254, 0.0254, 0.0254);
-      const material = new THREE.MeshPhongMaterial({
-        color: 0x00ff00,
-      });
-      this.cube = new THREE.Mesh(geometry, material);
-      // Add the cube to the scene
-      this.scene.add(this.cube);
+  //     // Create a new cube
+  //     const geometry = new THREE.BoxGeometry(0.0254, 0.0254, 0.0254);
+  //     let material = new THREE.MeshPhongMaterial({
+  //       color: 0x00ff00,
+  //     });
+  //     function getImage() {
+  //       let newImage;
+  //       firebase
+  //         .database()
+  //         .ref('/')
+  //         .on('value', function (snapshot) {
+  //           newImage = snapshot.val();
+  //         });
+  //       return newImage.image.uri;
+  //     }
+  //     const image = getImage();
 
-      // Disable the matrix auto updating system
-      this.cube.matrixAutoUpdate = false;
+  //     material = new THREE.SpriteMaterial({
+  //       map: await ExpoTHREE.loadAsync(image),
+  //     });
+  //     material.transparent = true;
 
-      /*
-      Parse the matrix array: ex:
-        [
-          1,0,0,0,
-          0,1,0,0,
-          0,0,1,0,
-          0,0,0,1
-        ]
-      */
-      const matrix = new THREE.Matrix4();
-      matrix.fromArray(worldTransform);
+  //     // Combine our geometry and material
+  //     this.sprite = new THREE.Sprite(material);
+  //     this.sprite.position.z = -5
+  //     // this.cube = new THREE.Mesh(geometry, material);
+  //     // Add the cube to the scene
+  //     this.scene.add(this.sprite);
 
-      // Manually update the matrix
-      this.cube.applyMatrix(matrix);
-      this.cube.updateMatrix();
-    }
-  };
+  //     // Disable the matrix auto updating system
+  //     this.sprite.matrixAutoUpdate = false;
+
+  //     /*
+  //     Parse the matrix array: ex:
+  //       [
+  //         1,0,0,0,
+  //         0,1,0,0,
+  //         0,0,1,0,
+  //         0,0,0,1
+  //       ]
+  //     */
+  //     const matrix = new THREE.Matrix4();
+  //     matrix.fromArray(worldTransform);
+
+  //     // Manually update the matrix
+  //     this.sprite.applyMatrix(matrix);
+  //     this.sprite.updateMatrix();
+  //   }
+  // };
 }
