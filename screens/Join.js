@@ -9,15 +9,25 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { FBAddPlayer } from '../reducer/playerReducer';
 
-export default class Room extends React.Component {
+class Join extends React.Component {
   _onPressButton() {}
   constructor() {
     super();
     this.state = {
       pickval: 2,
-      typedText: 'Enter name',
+      name: 'Enter name',
+      code: '',
     };
+    this.addPlayer = this.addPlayer.bind(this);
+  }
+  addPlayer(name) {
+    this.props.player.name = name;
+
+    console.log('what is players name? ', this.props.player);
+    this.props.FBAddPlayer(this.props.player);
   }
   render() {
     return (
@@ -27,7 +37,7 @@ export default class Room extends React.Component {
           placeholder="Enter name"
           onChangeText={text => {
             this.setState(previousState => {
-              return { typedText: text };
+              return { name: text };
             });
           }}
         />
@@ -37,13 +47,16 @@ export default class Room extends React.Component {
           placeholder="Enter code"
           onChangeText={text => {
             this.setState(previousState => {
-              return { typedText: text };
+              return { code: text };
             });
           }}
         />
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => this.props.navigation.navigate('Waiting')}
+            onPress={() => {
+              this.addPlayer(this.state.name);
+              this.props.navigation.navigate('Waiting');
+            }}
             title="Start"
           />
         </View>
@@ -79,3 +92,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    player: state.player,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    FBAddPlayer: player => dispatch(FBAddPlayer(player)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Join);
