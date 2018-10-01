@@ -2,7 +2,7 @@ import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
 import { Text, View, PanResponder } from 'react-native';
-import * as firebase from 'firebase';
+import db from '../reducer/firebase';
 //console.disableYellowBox = true;
 import TouchableView from './TouchableView';
 
@@ -10,18 +10,20 @@ import { View as GraphicsView } from 'expo-graphics';
 
 export default class LinkScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
         if (this.sprite) {
-          const size = this.renderer.getSize()
+          const size = this.renderer.getSize();
 
-          this.sprite.position.x = this.sprite.position.x + (gestureState.dx / size.width)
-          this.sprite.position.y = this.sprite.position.y + (gestureState.dy / size.height)
+          this.sprite.position.x =
+            this.sprite.position.x + gestureState.dx / size.width;
+          this.sprite.position.y =
+            this.sprite.position.y + gestureState.dy / size.height;
         }
-      }
-    })
+      },
+    });
   }
 
   render() {
@@ -94,10 +96,9 @@ export default class LinkScreen extends React.Component {
     // });
     function getImage() {
       let newImage;
-      firebase
-        .database()
+      db.database()
         .ref('/')
-        .on('value', function (snapshot) {
+        .on('value', function(snapshot) {
           newImage = snapshot.val();
         });
       return newImage.image.uri;

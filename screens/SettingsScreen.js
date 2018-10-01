@@ -1,15 +1,22 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
-import { View, Text, Image } from 'react-native'
-import * as firebase from 'firebase'
+import { View, Text, Image } from 'react-native';
+import db from '../reducer/firebase';
 
 function getImage() {
-  let newImage
-  firebase.database().ref('/').on('value', function (snapshot) {
-    newImage = snapshot.val()
-    console.log('retrieved from firebase', newImage.image.uri)
-  })
-  return <Image style={{ flex: 1, width: '100%', resizeMode: 'contain' }} source={{ isStatic: true, uri: newImage.image.uri }} />
+  let newImage;
+  db.database()
+    .ref('/images')
+    .on('value', function(snapshot) {
+      newImage = snapshot.val();
+      console.log('retrieved from firebase', newImage.image.uri);
+    });
+  return (
+    <Image
+      style={{ flex: 1, width: '100%', resizeMode: 'contain' }}
+      source={{ isStatic: true, uri: newImage.image.uri }}
+    />
+  );
 }
 
 export default class SettingsScreen extends React.Component {
@@ -17,10 +24,10 @@ export default class SettingsScreen extends React.Component {
     title: 'app.json',
   };
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      image: ''
-    }
+      image: '',
+    };
   }
 
   render() {
@@ -29,14 +36,17 @@ export default class SettingsScreen extends React.Component {
     // return <ExpoConfigView />;
 
     return (
-
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'stretch', backgroundColor: '#000' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'stretch',
+          backgroundColor: '#000',
+        }}
+      >
         <Text>Naaaaaaame</Text>
-        {
-          getImage()
-        }
-
+        {getImage()}
       </View>
-    )
+    );
   }
 }

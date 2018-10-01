@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { getAllPlayers } from '../reducer/playerReducer';
 
 let counter = 1;
 
-export default class Waiting extends Component {
+class Waiting extends Component {
   _onPressButton() {}
-  constructor() {
-    super();
-    this.state = {};
+  componentDidMount() {
+    this.props.getAll();
   }
   render() {
     return (
@@ -22,6 +23,9 @@ export default class Waiting extends Component {
           </View>
         ) : (
           <View style={styles.buttonContainer}>
+            {this.state.players.map(player => (
+              <Text>{player.name}</Text>
+            ))}
             <Button
               onPress={() => this.props.navigation.navigate('Contest')}
               title="Go to Vote"
@@ -49,3 +53,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    players: state.players,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAll: () => dispatch(getAllPlayers()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Waiting);
