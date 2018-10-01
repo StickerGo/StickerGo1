@@ -13,19 +13,29 @@ import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 
 class Join extends React.Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
       pickval: 2,
       name: 'Enter name',
       code: '',
+      id: ''
     };
     this.addPlayer = this.addPlayer.bind(this);
   }
+
+  componentDidMount() {
+    const randomNum = Math.floor((Math.random() * 1000) + 1)
+    //once we connect with the room generator, add to id
+    const id = randomNum
+    this.setState({ id: id })
+  }
+
   addPlayer(name) {
+    console.log('setting the state!', this.state)
     console.log('in the addPlayer function', name);
-    this.props.addAPlayer({ name });
+    this.props.addAPlayer({ name, id: this.state.id, draw: "", photo: "" });
   }
   render() {
     return (
@@ -53,7 +63,9 @@ class Join extends React.Component {
           <Button
             onPress={() => {
               this.addPlayer(this.state.name);
-              //this.props.navigation.navigate('Waiting');
+              // this.props.navigation.navigate('Waiting', { userID:});
+              console.log('here is our state', this.state)
+              this.props.navigation.navigate('Home', { userId: this.state.id })
             }}
             title="Start"
           />
@@ -93,7 +105,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    player: state.player,
+    players: state.players
   };
 };
 
