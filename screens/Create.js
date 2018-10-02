@@ -45,19 +45,24 @@ const styles = StyleSheet.create({
     margin: 80,
     backgroundColor: '#00BFFF',
     height: 50,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderRadius: 10,
+    overflow: 'hidden'
 
   },
   createButtonContainer: {
     margin: 80,
     backgroundColor: '#40E0D0',
     height: 50,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderRadius: 10,
+    overflow: 'hidden'
   },
   text: {
     alignSelf: 'center',
     fontWeight: 'bold',
-    fontSize: 30
+    fontSize: 30,
+    color: 'grey'
   },
   alternativeLayoutButtonContainer: {
     margin: 20,
