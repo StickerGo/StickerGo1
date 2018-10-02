@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
+import { Alert, AppRegistry, Button, StyleSheet, View, Text } from 'react-native';
 
 export default class Start extends React.Component {
   constructor(props) {
@@ -14,19 +14,21 @@ export default class Start extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.buttonContainer}>
+        <View style={styles.createButtonContainer}>
           <Button
             onPress={() => {
               this.props.navigation.navigate('Room');
             }}
-            title="Create"
+            title="Create a Room"
+            color="#FFFFFF"
           />
         </View>
-        <View style={styles.buttonContainer}>
+        <Text style={styles.text}>OR</Text>
+        <View style={styles.joinButtonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('Join')}
-            title="Join"
-            color="#841584"
+            title="Join a Room"
+            color="#FFFFFF"
           />
         </View>
       </View>
@@ -39,8 +41,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  buttonContainer: {
-    margin: 20,
+  joinButtonContainer: {
+    margin: 80,
+    backgroundColor: '#00BFFF',
+    height: 50,
+    justifyContent: 'center'
+
+  },
+  createButtonContainer: {
+    margin: 80,
+    backgroundColor: '#40E0D0',
+    height: 50,
+    justifyContent: 'center'
+  },
+  text: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize: 30
   },
   alternativeLayoutButtonContainer: {
     margin: 20,

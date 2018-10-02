@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 
 class Join extends React.Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
