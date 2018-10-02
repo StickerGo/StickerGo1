@@ -2,7 +2,7 @@ import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
 import { Text, View, PanResponder } from 'react-native';
-import * as firebase from 'firebase';
+import db from '../reducer/firebase';
 
 //console.disableYellowBox = true;
 import TouchableView from './TouchableView';
@@ -12,6 +12,9 @@ import { View as GraphicsView } from 'expo-graphics';
 export default class LinkScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      image: this.props.navigation.getParam('userId'),
+    };
   }
 
   render() {
@@ -60,31 +63,31 @@ export default class LinkScreen extends React.Component {
     this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
-    function getImage() {
-      let newImage;
-      db.database()
-        .ref('/')
-        .on('value', function(snapshot) {
-          newImage = snapshot.val();
+    let newImage;
+
+    db.database()
+      .ref('players')
+      .child(`${this.props.navigation.getParam('userId')}`)
+      .on('value', function(snapshot) {
+        newImage = snapshot.val();
+        console.log(newImage);
+        const image = newImage.draw;
+
+        const material = new THREE.SpriteMaterial({
+          map: ExpoTHREE.loadAsync(image),
         });
-      return newImage.image.uri;
-    }
-    const image = getImage();
+        material.transparent = true;
 
-    const material = new THREE.SpriteMaterial({
-      map: await ExpoTHREE.loadAsync(image),
-    });
-    material.transparent = true;
-
-    // Combine our geometry and material
-    this.sprite = new THREE.Sprite(material);
-    // Place the box 0.4 meters in front of us.
-    this.sprite.position.z = -5;
-    // this.sprite.rotateOnWorldAxis()
-    console.log('in the commonSetup', this.sprite.position);
-    // Add the cube to the scene
-    this.scene.add(this.sprite);
-    this.scene.add(new THREE.AmbientLight(0xffffff));
+        // Combine our geometry and material
+        this.sprite = new THREE.Sprite(material);
+        // Place the box 0.4 meters in front of us.
+        this.sprite.position.z = -5;
+        // this.sprite.rotateOnWorldAxis()
+        console.log('in the commonSetup', this.sprite.position);
+        // Add the cube to the scene
+        this.scene.add(this.sprite);
+        this.scene.add(new THREE.AmbientLight(0xffffff));
+      });
   };
 
   onResize = ({ x, y, scale, width, height }) => {
