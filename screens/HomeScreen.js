@@ -29,8 +29,10 @@ function uuidv4() {
 class App extends Component {
   state = {
     image: null,
-    strokeColor: Math.random() * 0xffffff,
-    strokeWidth: Math.random() * 30 + 10,
+    // strokeColor: Math.random() * 0xffffff,
+    // strokeWidth: Math.random() * 30 + 10,
+    strokeColor: 0x00bfff,
+    strokeWidth: 20,
     lines: [
       {
         points: [
@@ -104,8 +106,8 @@ class App extends Component {
     const uri = await Expo.takeSnapshotAsync(this.sketch, options);
     this.setState({
       image: { uri },
-      strokeWidth: 1 * 30,
-      strokeColor: 'black',
+      // strokeWidth: Math.random() * 30 + 10,
+      // strokeColor: Math.random() * 0xffffff,
     });
   };
 
@@ -119,6 +121,10 @@ class App extends Component {
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
             <Text> Challenge: {this.props.prompts.prompt} </Text>
+            <View style={styles.label}>
+              <Text style={styles.text}>Draw Below</Text>
+              {/* <Text>{this.props.navigation.getParam('userId')}</Text> */}
+            </View>
             <ExpoPixi.Sketch
               ref={ref => (this.sketch = ref)}
               style={styles.sketch}
@@ -128,41 +134,37 @@ class App extends Component {
               onChange={this.onChangeAsync}
               onReady={this.onReady}
             />
-            <View style={styles.label}>
-              <Text>Canvas - draw here</Text>
-              <Text>{this.props.navigation.getParam('userId')}</Text>
-            </View>
-          </View>
-          <View style={styles.imageContainer}>
-            <View style={styles.label}>
-              <Text>Snapshot</Text>
-            </View>
-            <Image style={styles.image} source={this.state.image} />
           </View>
         </View>
-        <Button
-          color={'blue'}
-          title="undo"
-          style={styles.button}
-          onPress={() => {
-            this.sketch.undo();
-          }}
-        />
-        <Button
-          title="save"
-          style={styles.button}
-          onPress={() => {
-            this.saveImage();
-            const id = this.props.navigation.getParam('userId');
-            console.log(
-              'in the homescreen, id is ',
-              this.props.navigation.getParam('userId')
-            );
-            this.props.navigation.navigate('Links', {
-              userId: id,
-            });
-          }}
-        />
+        <View style={styles.buttonContainer}>
+          <View style={styles.undoButton}>
+            <Button
+              color={'white'}
+              title="undo"
+              onPress={() => {
+                this.sketch.undo();
+              }}
+            />
+          </View>
+          <View style={styles.saveButton}>
+            <Button
+              color="white"
+              title="save"
+              style={styles.button}
+              onPress={() => {
+                this.saveImage();
+                const id = this.props.navigation.getParam('userId');
+                console.log(
+                  'in the homescreen, id is ',
+                  this.props.navigation.getParam('userId')
+                );
+                this.props.navigation.navigate('Links', {
+                  userId: id,
+                });
+              }}
+            />
+          </View>
+        </View>
       </View>
     );
   }
@@ -170,35 +172,59 @@ class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 4,
   },
   sketch: {
     flex: 1,
+    borderColor: '#40E0D0',
+    borderWidth: 3,
+    backgroundColor: 'white',
   },
   sketchContainer: {
-    height: '60%',
+    padding: 20,
+    height: '100%',
+    width: '100%',
   },
   image: {
     flex: 1,
-  },
-  imageContainer: {
-    height: '50%',
-    borderTopWidth: 4,
-    borderTopColor: '#E44262',
   },
   label: {
     width: '100%',
     padding: 5,
     alignItems: 'center',
   },
-  button: {
-    // position: 'absolute',
-    // bottom: 8,
-    // left: 8,
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: 0,
+  },
+  undoButton: {
     zIndex: 1,
-    padding: 12,
-    minWidth: 56,
-    minHeight: 48,
+    width: 70,
+    height: 40,
+    marginBottom: 10,
+    alignSelf: 'center',
+    backgroundColor: '#CD5C5C',
+    justifyContent: 'center',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  saveButton: {
+    zIndex: 1,
+    width: 70,
+    height: 40,
+    marginBottom: 10,
+    alignSelf: 'center',
+    backgroundColor: '#40E0D0',
+    justifyContent: 'center',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  text: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
 
