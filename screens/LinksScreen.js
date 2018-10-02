@@ -1,7 +1,7 @@
 import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
-import { Text, View, PanResponder } from 'react-native';
+import { Text, View, PanResponder, Button } from 'react-native';
 import db from '../reducer/firebase';
 
 //console.disableYellowBox = true;
@@ -14,15 +14,43 @@ export default class LinkScreen extends React.Component {
     super(props);
     this.state = {
       userId: this.props.navigation.getParam('userId'),
-      image: ''
+      image: '',
+      photo: '',
     };
   }
+  saveImage() {
+    const photo = this.state.photo;
 
+    db.database()
+      .ref('players')
+      .child(`/${this.props.navigation.getParam('userId')}/photo`)
+      .set(photo.photo);
+  }
+
+  screenShot = async () => {
+    const options = {
+      format: 'jpg', /// PNG because the view has a clear background
+      quality: 0.1, /// Low quality works because it's just a line
+      result: 'file',
+    };
+    /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
+    const photo = await Expo.takeSnapshotAsync(this._container, options);
+
+    this.setState({
+      photo: { photo },
+      // strokeWidth: Math.random() * 30 + 10,
+      // strokeColor: Math.random() * 0xffffff,
+    });
+    this.saveImage();
+  };
   render() {
-    console.log('HELLO WORLD WTF')
-    console.log('in render', this.state)
     return (
-      <View style={{ flex: 1 }}>
+      <View
+        style={{ flex: 1 }}
+        ref={view => {
+          this._container = view;
+        }}
+      >
         <TouchableView
           style={{ flex: 1 }}
           shouldCancelWhenOutside={false}
@@ -39,24 +67,24 @@ export default class LinkScreen extends React.Component {
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
         </TouchableView>
+        <Button color={'white'} title="Capture" onPress={this.screenShot} />
       </View>
     );
   }
 
   getImage() {
-    console.log('WE ARE IN GET IMAGE')
-    let userId = this.state.userId
-    console.log('USER ID IN getIMAGE', userId)
+    let userId = this.state.userId;
+
     let newImage;
     db.database()
       .ref('players')
       .child(userId)
       .child('draw')
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         newImage = snapshot.val();
       });
-    console.log('getting the image', newImage)
-    return newImage
+
+    return newImage;
   }
 
   componentDidMount() {
@@ -64,7 +92,7 @@ export default class LinkScreen extends React.Component {
     THREE.suppressExpoWarnings(true);
     // ThreeAR.suppressWarnings();
     const image = this.getImage();
-    this.setState({ image })
+    this.setState({ image });
   }
 
   onContextCreate = props => {
@@ -94,7 +122,7 @@ export default class LinkScreen extends React.Component {
     // Place the box 0.4 meters in front of us.
     this.sprite.position.z = -5;
     // this.sprite.rotateOnWorldAxis()
-    console.log('in the commonSetup', this.sprite.position);
+
     // Add the cube to the scene
     this.scene.add(this.sprite);
     this.scene.add(new THREE.AmbientLight(0xffffff));
@@ -112,7 +140,6 @@ export default class LinkScreen extends React.Component {
   };
 
   onTouchesBegan = async ({ locationX: x, locationY: y }) => {
-    console.log('our camera', this.camera)
     if (!this.renderer) {
       return;
     }
@@ -131,7 +158,7 @@ export default class LinkScreen extends React.Component {
       const { worldTransform } = hit;
       this.scene.remove(this.sprite);
 
-      const image = this.state.image
+      const image = this.state.image;
 
       const material = new THREE.SpriteMaterial({
         map: await ExpoTHREE.loadAsync(image),
@@ -143,7 +170,7 @@ export default class LinkScreen extends React.Component {
       // Place the box 0.4 meters in front of us.
       this.sprite.position.z = -5;
       // this.sprite.rotateOnWorldAxis()
-      console.log('in the commonSetup', this.sprite.position);
+
       // Add the cube to the scene
       this.scene.add(this.sprite);
       this.scene.add(new THREE.AmbientLight(0xffffff));
