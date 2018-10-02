@@ -44,6 +44,7 @@ export const getAllPlayers = () => {
         .ref('players')
         .on('value', snapshot => {
           const players = snapshot.val() || [];
+          console.log(players);
           dispatch(getAll(players));
         });
     } catch (err) {

@@ -11,25 +11,27 @@ import {
   View,
 } from 'react-native';
 import db from '../reducer/firebase';
+import { getAllPrompts, getOnePrompt } from '../reducer/promptReducer';
+import { connect } from 'react-redux';
 
 console.disableYellowBox = true;
 
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
 
-export default class App extends Component {
+class App extends Component {
   state = {
     image: null,
     // strokeColor: Math.random() * 0xffffff,
     // strokeWidth: Math.random() * 30 + 10,
-    strokeColor: 0x00BFFF,
+    strokeColor: 0x00bfff,
     strokeWidth: 20,
     lines: [
       {
@@ -74,6 +76,8 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    this.props.getOnePrompt();
+
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
 
@@ -116,6 +120,7 @@ export default class App extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
+            <Text> Challenge: {this.props.prompts.prompt} </Text>
             <View style={styles.label}>
               <Text style={styles.text}>Draw Below</Text>
               {/* <Text>{this.props.navigation.getParam('userId')}</Text> */}
@@ -129,7 +134,6 @@ export default class App extends Component {
               onChange={this.onChangeAsync}
               onReady={this.onReady}
             />
-
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -144,7 +148,7 @@ export default class App extends Component {
           </View>
           <View style={styles.saveButton}>
             <Button
-              color='white'
+              color="white"
               title="save"
               style={styles.button}
               onPress={() => {
@@ -156,12 +160,19 @@ export default class App extends Component {
                 );
                 this.props.navigation.navigate('Links', {
                   userId: id,
+<<<<<<< HEAD
                 })
+=======
+                });
+>>>>>>> 93fcd11f27b6bd885b6f90824a450fa2d4a775db
               }}
             />
           </View>
         </View>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 93fcd11f27b6bd885b6f90824a450fa2d4a775db
       </View>
     );
   }
@@ -175,7 +186,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: '#40E0D0',
     borderWidth: 3,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   sketchContainer: {
     padding: 20,
@@ -194,7 +205,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    margin: 0
+    margin: 0,
   },
   undoButton: {
     zIndex: 1,
@@ -205,7 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#CD5C5C',
     justifyContent: 'center',
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   saveButton: {
     zIndex: 1,
@@ -216,7 +227,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#40E0D0',
     justifyContent: 'center',
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   text: {
     alignSelf: 'center',
@@ -224,3 +235,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    prompts: state.prompts,
+    prompt: state.prompt,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllPrompts: () => dispatch(getAllPrompts()),
+    getOnePrompt: () => dispatch(getOnePrompt()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
