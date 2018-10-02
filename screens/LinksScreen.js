@@ -1,8 +1,9 @@
 import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
-import { Text, View, PanResponder, Animated, StyleSheet } from 'react-native';
+import { Text, View, PanResponder } from 'react-native';
 import * as firebase from 'firebase';
+
 //console.disableYellowBox = true;
 import TouchableView from './TouchableView';
 
@@ -61,8 +62,7 @@ export default class LinkScreen extends React.Component {
 
     function getImage() {
       let newImage;
-      firebase
-        .database()
+      db.database()
         .ref('/')
         .on('value', function(snapshot) {
           newImage = snapshot.val();
