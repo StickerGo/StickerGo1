@@ -10,21 +10,9 @@ import {
   Text,
   View,
 } from 'react-native';
+import db from '../reducer/firebase';
 
-import * as firebase from 'firebase';
-
-console.desableYellowBox = true;
-
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_KEY,
-  authDomain: 'stickergo1.firebaseapp.com',
-  databaseURL: 'https://stickergo1.firebaseio.com',
-  projectId: 'stickergo1',
-  storageBucket: 'stickergo1.appspot.com',
-  messagingSenderId: '565608715540',
-};
-
-firebase.initializeApp(firebaseConfig);
+console.disableYellowBox = true;
 
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
@@ -34,15 +22,6 @@ function uuidv4() {
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
-}
-
-function storeImage(image) {
-  firebase
-    .database()
-    .ref('/')
-    .set({
-      image,
-    });
 }
 
 export default class App extends Component {
@@ -67,7 +46,11 @@ export default class App extends Component {
   };
 
   saveImage() {
-    storeImage(this.state.image);
+    const draw = this.state.image;
+    db.database()
+      .ref('players')
+      .child(`/${this.props.navigation.getParam('userId')}/draw`)
+      .set(draw.uri);
   }
 
   handleAppStateChangeAsync = nextAppState => {
@@ -141,14 +124,15 @@ export default class App extends Component {
             />
             <View style={styles.label}>
               <Text>Canvas - draw here</Text>
+              <Text>{this.props.navigation.getParam('userId')}</Text>
             </View>
           </View>
-          <View style={styles.imageContainer}>
+          {/* <View style={styles.imageContainer}>
             <View style={styles.label}>
               <Text>Snapshot</Text>
             </View>
             <Image style={styles.image} source={this.state.image} />
-          </View>
+          </View> */}
         </View>
         <Button
           color={'blue'}
@@ -163,7 +147,7 @@ export default class App extends Component {
           style={styles.button}
           onPress={() => {
             this.saveImage();
-            this.props.navigation.navigate('Settings');
+            // this.props.navigation.navigate('Settings');
           }}
         />
       </View>

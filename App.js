@@ -4,16 +4,20 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import * as firebase from 'firebase';
 import { Provider } from 'react-redux';
 import playerReducer from './reducer/playerReducer';
+import ApiKeys from './constants/ApiKeys';
+import db from './reducer/firebase';
 
 const store = createStore(playerReducer, applyMiddleware(thunkMiddleware));
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoadingComplete: false,
+    };
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

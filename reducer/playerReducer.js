@@ -1,17 +1,7 @@
-import * as firebase from 'firebase';
-const firebaseConfigPlayer = {
-  apiKey: process.env.FIREBASE_USESRKEY,
-  authDomain: 'promptsdatabase.firebaseapp.com',
-  databaseURL: 'https://promptsdatabase.firebaseio.com',
-  projectId: 'promptsdatabase',
-  storageBucket: 'promptsdatabase.appspot.com',
-  messagingSenderId: '399558208346',
-};
-
-firebase.initializeApp(firebaseConfigPlayer, 'Secondary');
+import db from './firebase';
 
 //action types
-
+let count = 0;
 const GET_ALL = 'GET_ALL';
 const ADD_PLAYER = 'ADD_PLAYER';
 const ADD_DRAW = 'ADD_DRAW';
@@ -20,7 +10,7 @@ const GET_ALL_DRAW = 'GET_ALL_DRAW';
 const GET_ALL_PHOTO = 'GET_ALL_PHOTO';
 
 //action creators
-const getAll = () => {
+const getAll = players => {
   return { type: GET_ALL, players };
 };
 
@@ -45,25 +35,43 @@ const addPhoto = photo => {
 };
 
 // thunk creators
+export const getAllPlayers = () => {
+  return dispatch => {
+    try {
+      console.log('beginning getAllPlayers');
+
+      db.database()
+        .ref('players')
+        .on('value', snapshot => {
+          const players = snapshot.val() || [];
+          dispatch(getAll(players));
+        });
+    } catch (err) {
+      console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
+    }
+  };
+};
 
 export const FBAddPlayer = player => {
   return async dispatch => {
     try {
-      console.log('hello what is player', player);
-      let counter = 1;
+      console.log('beginning FBAddPlayer', player);
+      // const playerToAdd = {
+      //   name: player.name,
+      //   draw: '',
+      //   photo: '',
+      // };
 
-      const added = firebase
+      const added = db
         .database()
-        .ref()
-        .child('player1')
-        .set({
-          draw: '',
-          name: player.name,
-          photo: '',
-        });
-      counter++;
-      console.log('what is added', added);
-      dispatch(addPlayer(added));
+        .ref('players')
+        .child(player.id)
+        .set(player);
+
+      // playerToAdd.id = player.id
+      // added.set(playerToAdd);
+      console.log('after player is added:', added);
+      dispatch(addPlayer(player));
     } catch (err) {
       console.error('THUNK WRONG', err);
     }
@@ -73,11 +81,6 @@ export const FBAddPlayer = player => {
 //reducer
 const initialStatePlayer = {
   players: [],
-  player: {
-    name: '',
-    draw: '',
-    photo: '',
-  },
 };
 
 const playerReducer = (state = initialStatePlayer, action) => {

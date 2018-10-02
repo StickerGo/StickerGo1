@@ -20,14 +20,28 @@ class Join extends React.Component {
       pickval: 2,
       name: 'Enter name',
       code: '',
+      id: '',
     };
     this.addPlayer = this.addPlayer.bind(this);
   }
-  addPlayer(name) {
-    this.props.player.name = name;
 
-    console.log('what is players name? ', this.props.player);
-    this.props.FBAddPlayer(this.props.player);
+  componentDidMount() {
+    const randomNum = Math.floor(Math.random() * 1000 + 1);
+    //once we connect with the room generator, add to id
+    const id = randomNum;
+    this.setState({ id: id });
+  }
+
+  addPlayer(name) {
+    console.log('setting the state!', this.state);
+    console.log('in the addPlayer function', name);
+    this.props.addAPlayer({
+      name,
+      id: name + this.state.id,
+      draw: '',
+      photo: '',
+      roomId: this.state.code,
+    });
   }
   render() {
     return (
@@ -36,8 +50,8 @@ class Join extends React.Component {
           style={styles.textEnter}
           placeholder="Enter name"
           onChangeText={text => {
-            this.setState(previousState => {
-              return { name: text };
+            this.setState({
+              name: text,
             });
           }}
         />
@@ -46,8 +60,8 @@ class Join extends React.Component {
           style={styles.textEnter}
           placeholder="Enter code"
           onChangeText={text => {
-            this.setState(previousState => {
-              return { code: text };
+            this.setState({
+              code: text,
             });
           }}
         />
@@ -55,7 +69,12 @@ class Join extends React.Component {
           <Button
             onPress={() => {
               this.addPlayer(this.state.name);
-              this.props.navigation.navigate('Waiting');
+              // this.props.navigation.navigate('Waiting', { userID:});
+              console.log('here is our state', this.state);
+              this.props.navigation.navigate('Home', {
+                userId: this.state.name + this.state.id,
+                roomId: this.state.code,
+              });
             }}
             title="Start"
           />
@@ -95,13 +114,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    player: state.player,
+    players: state.players,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    FBAddPlayer: player => dispatch(FBAddPlayer(player)),
+    addAPlayer: player => dispatch(FBAddPlayer(player)),
   };
 };
 
