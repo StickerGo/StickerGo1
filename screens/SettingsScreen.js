@@ -6,7 +6,7 @@ import db from '../reducer/firebase';
 function getImage() {
   let newImage;
   db.database()
-    .ref('/images')
+    .ref('players')
     .on('value', function(snapshot) {
       newImage = snapshot.val();
       console.log('retrieved from firebase', newImage.image.uri);
