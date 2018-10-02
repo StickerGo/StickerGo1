@@ -78,7 +78,7 @@ export default class LinkScreen extends React.Component {
       let newImage;
       db.database()
         .ref('/')
-        .on('value', function(snapshot) {
+        .on('value', function (snapshot) {
           newImage = snapshot.val();
         });
       return newImage.image.uri;
@@ -114,6 +114,7 @@ export default class LinkScreen extends React.Component {
   };
 
   onTouchesBegan = async ({ locationX: x, locationY: y }) => {
+    console.log('our camera', this.camera)
     if (!this.renderer) {
       return;
     }
@@ -131,7 +132,7 @@ export default class LinkScreen extends React.Component {
       let newImage;
       db.database()
         .ref('/')
-        .on('value', function(snapshot) {
+        .on('value', function (snapshot) {
           newImage = snapshot.val();
         });
       return newImage.image.uri;
