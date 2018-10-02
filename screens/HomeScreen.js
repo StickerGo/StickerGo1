@@ -11,6 +11,8 @@ import {
   View,
 } from 'react-native';
 import db from '../reducer/firebase';
+import { getAllPrompts, getOnePrompt } from '../reducer/promptReducer';
+import { connect } from 'react-redux';
 
 console.disableYellowBox = true;
 
@@ -24,7 +26,7 @@ function uuidv4() {
   });
 }
 
-export default class App extends Component {
+class App extends Component {
   state = {
     image: null,
     strokeColor: Math.random() * 0xffffff,
@@ -71,6 +73,8 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    this.props.getOnePrompt();
+
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
 
@@ -99,8 +103,8 @@ export default class App extends Component {
     const uri = await Expo.takeSnapshotAsync(this.sketch, options);
     this.setState({
       image: { uri },
-      strokeWidth: Math.random() * 30 + 10,
-      strokeColor: Math.random() * 0xffffff,
+      strokeWidth: 1 * 30,
+      strokeColor: 'black',
     });
   };
 
@@ -113,6 +117,7 @@ export default class App extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
+            <Text> Challenge: {this.props.prompts.prompt} </Text>
             <ExpoPixi.Sketch
               ref={ref => (this.sketch = ref)}
               style={styles.sketch}
@@ -127,12 +132,12 @@ export default class App extends Component {
               <Text>{this.props.navigation.getParam('userId')}</Text>
             </View>
           </View>
-          {/* <View style={styles.imageContainer}>
+          <View style={styles.imageContainer}>
             <View style={styles.label}>
               <Text>Snapshot</Text>
             </View>
             <Image style={styles.image} source={this.state.image} />
-          </View> */}
+          </View>
         </View>
         <Button
           color={'blue'}
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sketchContainer: {
-    height: '50%',
+    height: '60%',
   },
   image: {
     flex: 1,
@@ -188,3 +193,22 @@ const styles = StyleSheet.create({
     minHeight: 48,
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    prompts: state.prompts,
+    prompt: state.prompt,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllPrompts: () => dispatch(getAllPrompts()),
+    getOnePrompt: () => dispatch(getOnePrompt()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

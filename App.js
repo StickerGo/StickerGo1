@@ -5,11 +5,11 @@ import AppNavigator from './navigation/AppNavigator';
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
-import playerReducer from './reducer/playerReducer';
 import ApiKeys from './constants/ApiKeys';
 import db from './reducer/firebase';
+import rootReducer from './reducer/root';
 
-const store = createStore(playerReducer, applyMiddleware(thunkMiddleware));
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export default class App extends React.Component {
   constructor(props) {
