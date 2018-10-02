@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 
 class Join extends React.Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -48,7 +48,7 @@ class Join extends React.Component {
       <View style={styles.container}>
         <TextInput
           style={styles.textEnter}
-          placeholder="Enter name"
+          placeholder="Enter your name"
           onChangeText={text => {
             this.setState({
               name: text,
@@ -58,7 +58,7 @@ class Join extends React.Component {
         <Text />
         <TextInput
           style={styles.textEnter}
-          placeholder="Enter code"
+          placeholder="Enter room code"
           onChangeText={text => {
             this.setState({
               code: text,
@@ -69,14 +69,13 @@ class Join extends React.Component {
           <Button
             onPress={() => {
               this.addPlayer(this.state.name);
-              // this.props.navigation.navigate('Waiting', { userID:});
-              console.log('here is our state', this.state);
               this.props.navigation.navigate('Home', {
                 userId: this.state.name + this.state.id,
                 roomId: this.state.code,
               });
             }}
             title="Start"
+            color="white"
           />
         </View>
       </View>
@@ -91,7 +90,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    margin: 20,
+    margin: 80,
+    backgroundColor: '#00BFFF',
+    height: 40,
+    justifyContent: 'center',
+    width: 75,
+    borderRadius: 10,
+    overflow: 'hidden'
   },
   welcome: {
     fontSize: 20,
@@ -104,11 +109,12 @@ const styles = StyleSheet.create({
   },
   textEnter: {
     height: 40,
-    width: 100,
+    width: '70%',
     margin: 20,
     padding: 10,
-    borderColor: 'gray',
+    borderColor: '#40E0D0',
     borderWidth: 1,
+    backgroundColor: 'white'
   },
 });
 

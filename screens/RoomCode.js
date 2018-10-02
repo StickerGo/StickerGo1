@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 export default class RoomCode extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -28,7 +28,8 @@ export default class RoomCode extends Component {
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('Waiting')}
-            title="Next"
+            title="Start Game"
+            color="white"
           />
         </View>
       </View>
@@ -43,7 +44,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    margin: 20,
+    margin: 80,
+    backgroundColor: '#00BFFF',
+    height: 40,
+    justifyContent: 'center',
+    width: 120,
+    borderRadius: 10,
+    overflow: 'hidden',
+    alignItems: 'stretch'
   },
   welcome: {
     fontSize: 20,

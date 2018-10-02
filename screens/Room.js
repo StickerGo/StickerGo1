@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 export default class Room extends React.Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -24,7 +24,7 @@ export default class Room extends React.Component {
       <View style={styles.container}>
         <TextInput
           style={styles.textEnter}
-          placeholder="Enter name"
+          placeholder="Enter your name"
           onChangeText={text => {
             this.setState(previousState => {
               return { typedText: text };
@@ -32,23 +32,29 @@ export default class Room extends React.Component {
           }}
         />
         <Text />
-        <Text style={styles.welcome}>Select number of players</Text>
-        <Picker
-          selectedValue={this.state.pickval}
-          style={{ height: 50, width: '80%' }}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({ pickval: itemValue })
-          }
-        >
-          <Picker.Item label="Select number of players" value="" />
-          <Picker.Item label="2" value="2" />
-          <Picker.Item label="3" value="3" />
-          <Picker.Item label="4" value="4" />
-        </Picker>
+        <View style={styles.pickerContainer}>
+          <View>
+            <Text style={styles.text}>How many players?</Text>
+          </View>
+          <Picker
+            selectedValue={this.state.pickval}
+            style={styles.twoPickers}
+            itemStyle={styles.twoPickerItems}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({ pickval: itemValue })
+            }
+          >
+            <Picker.Item label="#" value="" style={{ backgroundColor: 'white' }} />
+            <Picker.Item label="2" value="2" />
+            <Picker.Item label="3" value="3" />
+            <Picker.Item label="4" value="4" />
+          </Picker>
+        </View>
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('RoomCode')}
             title="Get Code"
+            color="white"
           />
         </View>
       </View>
@@ -63,11 +69,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    margin: 20,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
+    margin: 80,
+    backgroundColor: '#00BFFF',
+    height: 40,
+    justifyContent: 'center',
+    width: 100,
+    borderRadius: 10,
+    overflow: 'hidden',
+    alignItems: 'stretch'
   },
   alternativeLayoutButtonContainer: {
     margin: 20,
@@ -76,10 +85,39 @@ const styles = StyleSheet.create({
   },
   textEnter: {
     height: 40,
-    width: 100,
+    width: '70%',
     margin: 20,
+    marginTop: 80,
     padding: 10,
-    borderColor: 'gray',
+    borderColor: '#40E0D0',
     borderWidth: 1,
+    backgroundColor: 'white'
+  },
+  pickerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  twoPickers: {
+    width: 30,
+    height: 80,
+    marginLeft: 20,
+    borderColor: '#40E0D0',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  twoPickerItems: {
+    height: '95%',
+    width: '90%',
+    color: 'black',
+    backgroundColor: 'white',
+    borderColor: '#40E0D0',
+    fontSize: 16
+  },
+  text: {
+    // alignSelf: 'center',
+    // fontWeight: 'bold',
+    fontSize: 16,
   },
 });
