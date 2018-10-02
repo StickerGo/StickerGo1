@@ -47,6 +47,7 @@ export default class App extends Component {
 
   saveImage() {
     const draw = this.state.image;
+
     db.database()
       .ref('players')
       .child(`/${this.props.navigation.getParam('userId')}/draw`)
@@ -147,7 +148,14 @@ export default class App extends Component {
           style={styles.button}
           onPress={() => {
             this.saveImage();
-            // this.props.navigation.navigate('Settings');
+            const id = this.props.navigation.getParam('userId');
+            console.log(
+              'in the homescreen, id is ',
+              this.props.navigation.getParam('userId')
+            );
+            this.props.navigation.navigate('Links', {
+              userId: id,
+            });
           }}
         />
       </View>

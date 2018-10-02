@@ -2,7 +2,7 @@ import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
 import { Text, View, PanResponder } from 'react-native';
-import * as firebase from 'firebase';
+import db from '../reducer/firebase';
 
 //console.disableYellowBox = true;
 import TouchableView from './TouchableView';
@@ -12,6 +12,9 @@ import { View as GraphicsView } from 'expo-graphics';
 export default class LinkScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      image: this.props.navigation.getParam('userId'),
+    };
   }
 
   render() {
@@ -60,6 +63,17 @@ export default class LinkScreen extends React.Component {
     this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
+    // let newImage;
+    // function getImage(userId) {
+    //   db.database()
+    //     .ref('players')
+    //     .child(userId)
+    //     .on('value', function(snapshot) {
+    //       newImage = snapshot.val();
+    //       console.log('image file ', newImage.draw);
+    //     });
+    //   return newImage.draw;
+    // }
     function getImage() {
       let newImage;
       db.database()
@@ -69,8 +83,9 @@ export default class LinkScreen extends React.Component {
         });
       return newImage.image.uri;
     }
-    const image = getImage();
 
+    const image = getImage();
+    // const image = getImage(this.props.navigation.getParam('userId'));
     const material = new THREE.SpriteMaterial({
       map: await ExpoTHREE.loadAsync(image),
     });
@@ -114,8 +129,7 @@ export default class LinkScreen extends React.Component {
     );
     function getImage() {
       let newImage;
-      firebase
-        .database()
+      db.database()
         .ref('/')
         .on('value', function(snapshot) {
           newImage = snapshot.val();
