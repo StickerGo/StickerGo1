@@ -63,31 +63,43 @@ export default class LinkScreen extends React.Component {
     this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
-    let newImage;
-
-    db.database()
-      .ref('players')
-      .child(`${this.props.navigation.getParam('userId')}`)
-      .on('value', function(snapshot) {
-        newImage = snapshot.val();
-        console.log(newImage);
-        const image = newImage.draw;
-
-        const material = new THREE.SpriteMaterial({
-          map: ExpoTHREE.loadAsync(image),
+    // let newImage;
+    // function getImage(userId) {
+    //   db.database()
+    //     .ref('players')
+    //     .child(userId)
+    //     .on('value', function(snapshot) {
+    //       newImage = snapshot.val();
+    //       console.log('image file ', newImage.draw);
+    //     });
+    //   return newImage.draw;
+    // }
+    function getImage() {
+      let newImage;
+      db.database()
+        .ref('/')
+        .on('value', function(snapshot) {
+          newImage = snapshot.val();
         });
-        material.transparent = true;
+      return newImage.image.uri;
+    }
 
-        // Combine our geometry and material
-        this.sprite = new THREE.Sprite(material);
-        // Place the box 0.4 meters in front of us.
-        this.sprite.position.z = -5;
-        // this.sprite.rotateOnWorldAxis()
-        console.log('in the commonSetup', this.sprite.position);
-        // Add the cube to the scene
-        this.scene.add(this.sprite);
-        this.scene.add(new THREE.AmbientLight(0xffffff));
-      });
+    const image = getImage();
+    // const image = getImage(this.props.navigation.getParam('userId'));
+    const material = new THREE.SpriteMaterial({
+      map: await ExpoTHREE.loadAsync(image),
+    });
+    material.transparent = true;
+
+    // Combine our geometry and material
+    this.sprite = new THREE.Sprite(material);
+    // Place the box 0.4 meters in front of us.
+    this.sprite.position.z = -5;
+    // this.sprite.rotateOnWorldAxis()
+    console.log('in the commonSetup', this.sprite.position);
+    // Add the cube to the scene
+    this.scene.add(this.sprite);
+    this.scene.add(new THREE.AmbientLight(0xffffff));
   };
 
   onResize = ({ x, y, scale, width, height }) => {
@@ -117,8 +129,7 @@ export default class LinkScreen extends React.Component {
     );
     function getImage() {
       let newImage;
-      firebase
-        .database()
+      db.database()
         .ref('/')
         .on('value', function(snapshot) {
           newImage = snapshot.val();
