@@ -14,13 +14,13 @@ export default class LinkScreen extends React.Component {
     super(props);
     this.state = {
       userId: this.props.navigation.getParam('userId'),
-      image: ''
+      image: '',
     };
   }
 
   render() {
-    console.log('HELLO WORLD WTF')
-    console.log('in render', this.state)
+    console.log('HELLO WORLD WTF');
+    console.log('in render', this.state);
     return (
       <View style={{ flex: 1 }}>
         <TouchableView
@@ -44,19 +44,19 @@ export default class LinkScreen extends React.Component {
   }
 
   getImage() {
-    console.log('WE ARE IN GET IMAGE')
-    let userId = this.state.userId
-    console.log('USER ID IN getIMAGE', userId)
+    console.log('WE ARE IN GET IMAGE');
+    let userId = this.state.userId;
+    console.log('USER ID IN getIMAGE', userId);
     let newImage;
     db.database()
       .ref('players')
       .child(userId)
       .child('draw')
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         newImage = snapshot.val();
       });
-    console.log('getting the image', newImage)
-    return newImage
+    console.log('getting the image', newImage);
+    return newImage;
   }
 
   componentDidMount() {
@@ -64,7 +64,7 @@ export default class LinkScreen extends React.Component {
     THREE.suppressExpoWarnings(true);
     // ThreeAR.suppressWarnings();
     const image = this.getImage();
-    this.setState({ image })
+    this.setState({ image });
   }
 
   onContextCreate = props => {
@@ -112,7 +112,7 @@ export default class LinkScreen extends React.Component {
   };
 
   onTouchesBegan = async ({ locationX: x, locationY: y }) => {
-    console.log('our camera', this.camera)
+    console.log('our camera', this.camera);
     if (!this.renderer) {
       return;
     }
@@ -131,7 +131,7 @@ export default class LinkScreen extends React.Component {
       const { worldTransform } = hit;
       this.scene.remove(this.sprite);
 
-      const image = this.state.image
+      const image = this.state.image;
 
       const material = new THREE.SpriteMaterial({
         map: await ExpoTHREE.loadAsync(image),

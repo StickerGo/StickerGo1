@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, StyleSheet, View, Text } from 'react-native';
+import {
+  Alert,
+  AppRegistry,
+  Button,
+  StyleSheet,
+  View,
+  Text,
+} from 'react-native';
+import { stylesCreate } from '../styles/componentStyles';
 
 export default class Start extends React.Component {
   constructor(props) {
@@ -36,40 +44,7 @@ export default class Start extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  joinButtonContainer: {
-    margin: 80,
-    backgroundColor: '#00BFFF',
-    height: 50,
-    justifyContent: 'center',
-    borderRadius: 10,
-    overflow: 'hidden'
-
-  },
-  createButtonContainer: {
-    margin: 80,
-    backgroundColor: '#40E0D0',
-    height: 50,
-    justifyContent: 'center',
-    borderRadius: 10,
-    overflow: 'hidden'
-  },
-  text: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    fontSize: 30,
-    color: 'grey'
-  },
-  alternativeLayoutButtonContainer: {
-    margin: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});
+const styles = stylesCreate;
 
 // skip this line if using Create React Native App
 // AppRegistry.registerComponent('AwesomeProject', () => ButtonBasics);

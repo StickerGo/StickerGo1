@@ -9,9 +9,10 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import { stylesRoomCode } from '../styles/componentStyles';
 
 export default class RoomCode extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -36,38 +37,4 @@ export default class RoomCode extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    margin: 80,
-    backgroundColor: '#00BFFF',
-    height: 40,
-    justifyContent: 'center',
-    width: 120,
-    borderRadius: 10,
-    overflow: 'hidden',
-    alignItems: 'stretch'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  alternativeLayoutButtonContainer: {
-    margin: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  textEnter: {
-    height: 40,
-    width: 100,
-    margin: 20,
-    padding: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
-  },
-});
+const styles = stylesRoomCode;

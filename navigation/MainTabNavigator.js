@@ -24,7 +24,7 @@ const HomeStack = createStackNavigator(
     Start: Start,
     Room: Room,
     Join: Join,
-    Settings: SettingsScreen,
+    // Settings: SettingsScreen,
     RoomCode: RoomCode,
     Waiting: Waiting,
     Contest: Contest,

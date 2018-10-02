@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
+import {
+  Alert,
+  AppRegistry,
+  Button,
+  StyleSheet,
+  View,
+  Text,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
+import { stylesWaiting } from '../styles/componentStyles';
 
 let counter = 1;
 
@@ -9,27 +17,30 @@ class Waiting extends Component {
   _onPressButton() {}
   componentDidMount() {
     this.props.getAll();
+    //
+    //
   }
   render() {
     return (
       <View style={styles.container}>
-        {counter === 0 ? (
+        {counter === 1 ? (
           <View style={styles.buttonContainer}>
             <Button
               onPress={() => this.props.navigation.navigate('Home')}
-              title="Start"
+              title="Start Game"
+              color="white"
             />
             {counter++}
           </View>
         ) : (
           <View style={styles.buttonContainer}>
-            {this.state.players.map(player => (
-              <Text>{player.name}</Text>
-            ))}
+            {/* {this.state.players.map(player => ( */}
+            {/* <Text>"Player name"</Text> */}
+            {/* ))} */}
             <Button
               onPress={() => this.props.navigation.navigate('Contest')}
               title="Go to Vote"
-              color="#841584"
+              color="white"
             />
             {counter--}
           </View>
@@ -39,20 +50,7 @@ class Waiting extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    margin: 20,
-  },
-  alternativeLayoutButtonContainer: {
-    margin: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});
+const styles = stylesWaiting;
 
 const mapStateToProps = state => {
   return {
