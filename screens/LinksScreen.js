@@ -13,11 +13,14 @@ export default class LinkScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: this.props.navigation.getParam('userId'),
+      userId: this.props.navigation.getParam('userId'),
+      image: ''
     };
   }
 
   render() {
+    console.log('HELLO WORLD WTF')
+    console.log('in render', this.state)
     return (
       <View style={{ flex: 1 }}>
         <TouchableView
@@ -40,10 +43,28 @@ export default class LinkScreen extends React.Component {
     );
   }
 
+  getImage() {
+    console.log('WE ARE IN GET IMAGE')
+    let userId = this.state.userId
+    console.log('USER ID IN getIMAGE', userId)
+    let newImage;
+    db.database()
+      .ref('players')
+      .child(userId)
+      .child('draw')
+      .on('value', function (snapshot) {
+        newImage = snapshot.val();
+      });
+    console.log('getting the image', newImage)
+    return newImage
+  }
+
   componentDidMount() {
     // Turn off extra warnings
     THREE.suppressExpoWarnings(true);
     // ThreeAR.suppressWarnings();
+    const image = this.getImage();
+    this.setState({ image })
   }
 
   onContextCreate = props => {
@@ -63,31 +84,8 @@ export default class LinkScreen extends React.Component {
     this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
-    // let newImage;
-    // function getImage(userId) {
-    //   db.database()
-    //     .ref('players')
-    //     .child(userId)
-    //     .on('value', function(snapshot) {
-    //       newImage = snapshot.val();
-    //       console.log('image file ', newImage.draw);
-    //     });
-    //   return newImage.draw;
-    // }
-    function getImage() {
-      let newImage;
-      db.database()
-        .ref('/')
-        .on('value', function (snapshot) {
-          newImage = snapshot.val();
-        });
-      return newImage.image.uri;
-    }
-
-    const image = getImage();
-    // const image = getImage(this.props.navigation.getParam('userId'));
     const material = new THREE.SpriteMaterial({
-      map: await ExpoTHREE.loadAsync(image),
+      map: await ExpoTHREE.loadAsync(this.state.image),
     });
     material.transparent = true;
 
@@ -128,20 +126,12 @@ export default class LinkScreen extends React.Component {
 
       AR.HitTestResultTypes.existingPlane
     );
-    function getImage() {
-      let newImage;
-      db.database()
-        .ref('/')
-        .on('value', function (snapshot) {
-          newImage = snapshot.val();
-        });
-      return newImage.image.uri;
-    }
+
     for (let hit of hitTest) {
       const { worldTransform } = hit;
       this.scene.remove(this.sprite);
 
-      const image = getImage();
+      const image = this.state.image
 
       const material = new THREE.SpriteMaterial({
         map: await ExpoTHREE.loadAsync(image),
