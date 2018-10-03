@@ -6,29 +6,29 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import Start from '../screens/Create';
-import Room from '../screens/Room';
-import Join from '../screens/Join';
+import DrawCanvas from '../screens/DrawCanvas';
+import CameraView from '../screens/CameraView';
+import Settings from '../screens/Settings';
+import Home from '../screens/Home';
+import CreateRoom from '../screens/CreateRoom';
+import JoinRoom from '../screens/JoinRoom';
 import RoomCode from '../screens/RoomCode';
 import Waiting from '../screens/Waiting';
-import Contest from '../screens/Contest';
+import Vote from '../screens/Vote';
 import Winner from '../screens/Winner';
 
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen,
-    Links: LinksScreen,
-    Start: Start,
-    Room: Room,
-    Join: Join,
-    Settings: SettingsScreen,
+    Home: Home,
+    CreateRoom: CreateRoom,
     RoomCode: RoomCode,
+    JoinRoom: JoinRoom,
+    Draw: DrawCanvas,
+    CameraView: CameraView,
+    VoteScreen: Vote,
     Waiting: Waiting,
-    Contest: Contest,
     Winner: Winner,
+    Settings: Settings,
   },
   {
     initialRouteName: 'Home',
@@ -36,42 +36,91 @@ const HomeStack = createStackNavigator(
 );
 
 HomeStack.navigationOptions = {
+  header: null,
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? `ios-home${focused ? '' : '-outline'}`
+          : 'ios-home'
       }
     />
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
+const GameStack = createStackNavigator(
+  {
+    Home: Home,
+    CreateRoom: CreateRoom,
+    RoomCode: RoomCode,
+    JoinRoom: JoinRoom,
+    Draw: DrawCanvas,
+    CameraView: CameraView,
+    VoteScreen: Vote,
+    Waiting: Waiting,
+    Winner: Winner,
+    Settings: Settings,
+  },
+  {
+    initialRouteName: 'Draw',
+  }
+);
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+GameStack.navigationOptions = {
+  header: null,
+  tabBarLabel: 'Game',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-link${focused ? '' : '-outline'}`
-          : 'md-link'
+          ? `ios-play${focused ? '' : '-outline'}`
+          : 'ios-play'
       }
     />
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
+// const LinksStack = createStackNavigator({
+//   Links: LinksScreen,
+// });
+//
+// LinksStack.navigationOptions = {
+//   tabBarLabel: 'Links',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={
+//         Platform.OS === 'ios'
+//           ? `ios-link${focused ? '' : '-outline'}`
+//           : 'md-link'
+//       }
+//     />
+//   ),
+// };
+
+const SettingsStack = createStackNavigator(
+  {
+    Home: Home,
+    CreateRoom: CreateRoom,
+    RoomCode: RoomCode,
+    JoinRoom: JoinRoom,
+    Draw: DrawCanvas,
+    CameraView: CameraView,
+    VoteScreen: Vote,
+    Waiting: Waiting,
+    Winner: Winner,
+    Settings: Settings,
+  },
+  {
+    initialRouteName: 'Settings',
+  }
+);
 
 SettingsStack.navigationOptions = {
+  header: null,
   tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -87,7 +136,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  // LinksStack,
+  GameStack,
   SettingsStack,
-  Start,
 });

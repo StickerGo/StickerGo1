@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  Button,
-  StyleSheet,
-  View,
-  Picker,
-  Text,
-  TextInput,
-} from 'react-native';
+import { Button, View, Text, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
+import { stylesDefault } from '../styles/componentStyles';
 
 class Join extends React.Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -33,8 +25,6 @@ class Join extends React.Component {
   }
 
   addPlayer(name) {
-    console.log('setting the state!', this.state);
-    console.log('in the addPlayer function', name);
     this.props.addAPlayer({
       name,
       id: name + this.state.id,
@@ -69,7 +59,8 @@ class Join extends React.Component {
           <Button
             onPress={() => {
               this.addPlayer(this.state.name);
-              this.props.navigation.navigate('Home', {
+              //need to send to "Waiting" room later
+              this.props.navigation.navigate('DrawCanvas', {
                 userId: this.state.name + this.state.id,
                 roomId: this.state.code,
               });
@@ -83,40 +74,41 @@ class Join extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    margin: 80,
-    backgroundColor: '#00BFFF',
-    height: 40,
-    justifyContent: 'center',
-    width: 75,
-    borderRadius: 10,
-    overflow: 'hidden'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  alternativeLayoutButtonContainer: {
-    margin: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  textEnter: {
-    height: 40,
-    width: '70%',
-    margin: 20,
-    padding: 10,
-    borderColor: '#40E0D0',
-    borderWidth: 1,
-    backgroundColor: 'white'
-  },
-});
+const styles = stylesDefault;
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   buttonContainer: {
+//     margin: 80,
+//     backgroundColor: '#00BFFF',
+//     height: 40,
+//     justifyContent: 'center',
+//     width: 75,
+//     borderRadius: 10,
+//     overflow: 'hidden',
+//   },
+//   welcome: {
+//     fontSize: 20,
+//     textAlign: 'center',
+//   },
+//   alternativeLayoutButtonContainer: {
+//     margin: 20,
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//   },
+//   textEnter: {
+//     height: 40,
+//     width: '70%',
+//     margin: 20,
+//     padding: 10,
+//     borderColor: '#40E0D0',
+//     borderWidth: 1,
+//     backgroundColor: 'white',
+//   },
+// });
 
 const mapStateToProps = state => {
   return {

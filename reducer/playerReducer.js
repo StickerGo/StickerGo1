@@ -56,22 +56,12 @@ export const getAllPlayers = () => {
 export const FBAddPlayer = player => {
   return async dispatch => {
     try {
-      console.log('beginning FBAddPlayer', player);
-      // const playerToAdd = {
-      //   name: player.name,
-      //   draw: '',
-      //   photo: '',
-      // };
-
       const added = db
         .database()
         .ref('players')
         .child(player.id)
         .set(player);
 
-      // playerToAdd.id = player.id
-      // added.set(playerToAdd);
-      console.log('after player is added:', added);
       dispatch(addPlayer(player));
     } catch (err) {
       console.error('THUNK WRONG', err);
@@ -82,6 +72,7 @@ export const FBAddPlayer = player => {
 //reducer
 const initialStatePlayer = {
   players: [],
+  player: {},
 };
 
 const playerReducer = (state = initialStatePlayer, action) => {
@@ -95,6 +86,7 @@ const playerReducer = (state = initialStatePlayer, action) => {
       return {
         ...state,
         players: [...state.players, action.player],
+        player: action.player,
       };
     // case ADD_DRAW:
     // return {

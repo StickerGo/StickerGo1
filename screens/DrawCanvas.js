@@ -1,18 +1,12 @@
 import Expo from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import {
-  Image,
-  Button,
-  Platform,
-  AppState,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Button, Platform, AppState, Text, View } from 'react-native';
 import db from '../reducer/firebase';
-import { getAllPrompts, getOnePrompt } from '../reducer/promptReducer';
+import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
+// import { stylesHome } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 
 console.disableYellowBox = true;
 
@@ -26,7 +20,7 @@ function uuidv4() {
   });
 }
 
-class App extends Component {
+class Home extends Component {
   state = {
     image: null,
     // strokeColor: Math.random() * 0xffffff,
@@ -76,7 +70,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.props.getOnePrompt();
+    this.props.getOnePrompt(this.props.player.roomId);
 
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
@@ -120,10 +114,9 @@ class App extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
-            <Text> Challenge: {this.props.prompts.prompt} </Text>
+            <Text style={styles.text}> Challenge: {this.props.prompt} </Text>
             <View style={styles.label}>
               <Text style={styles.text}>Draw Below</Text>
-              {/* <Text>{this.props.navigation.getParam('userId')}</Text> */}
             </View>
             <ExpoPixi.Sketch
               ref={ref => (this.sketch = ref)}
@@ -154,12 +147,7 @@ class App extends Component {
               onPress={() => {
                 this.saveImage();
                 const id = this.props.navigation.getParam('userId');
-                console.log('id in home screen', id);
-                console.log(
-                  'in the homescreen, id is ',
-                  this.props.navigation.getParam('userId')
-                );
-                this.props.navigation.navigate('Links', {
+                this.props.navigation.navigate('CameraView', {
                   userId: id,
                 });
               }}
@@ -170,80 +158,23 @@ class App extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 4,
-  },
-  sketch: {
-    flex: 1,
-    // borderColor: '#40E0D0',
-    // borderWidth: 3,
-    // backgroundColor: 'white',
-  },
-  sketchContainer: {
-    padding: 20,
-    height: '100%',
-    width: '100%',
-  },
-  image: {
-    flex: 1,
-  },
-  label: {
-    width: '100%',
-    padding: 5,
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 0,
-  },
-  undoButton: {
-    zIndex: 1,
-    width: 70,
-    height: 40,
-    marginBottom: 10,
-    alignSelf: 'center',
-    backgroundColor: '#CD5C5C',
-    justifyContent: 'center',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  saveButton: {
-    zIndex: 1,
-    width: 70,
-    height: 40,
-    marginBottom: 10,
-    alignSelf: 'center',
-    backgroundColor: '#40E0D0',
-    justifyContent: 'center',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  text: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
-});
+// const styles = stylesHome;
+const styles = stylesDefault;
 
 const mapStateToProps = state => {
   return {
-    prompts: state.prompts,
-    prompt: state.prompt,
+    player: state.players.player,
+    prompt: state.prompts.prompt,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAllPrompts: () => dispatch(getAllPrompts()),
-    getOnePrompt: () => dispatch(getOnePrompt()),
+    getOnePrompt: roomId => dispatch(getOnePrompt(roomId)),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(Home);
