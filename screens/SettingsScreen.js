@@ -3,22 +3,6 @@ import { ExpoConfigView } from '@expo/samples';
 import { View, Text, Image } from 'react-native';
 import db from '../reducer/firebase';
 
-function getImage() {
-  let newImage;
-  db.database()
-    .ref('players')
-    .on('value', function(snapshot) {
-      newImage = snapshot.val();
-      console.log('retrieved from firebase', newImage.image.uri);
-    });
-  return (
-    <Image
-      style={{ flex: 1, width: '100%', resizeMode: 'contain' }}
-      source={{ isStatic: true, uri: newImage.image.uri }}
-    />
-  );
-}
-
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'app.json',
@@ -28,6 +12,25 @@ export default class SettingsScreen extends React.Component {
     this.state = {
       image: '',
     };
+  }
+
+  getImage() {
+    let newImage;
+    db.database()
+      .ref('players')
+      .child(this.props.navigation.getParam('userId'))
+      .child('photo')
+      .on('value', function (snapshot) {
+        newImage = snapshot.val();
+        // console.log('retrieved from firebase', newImage.image.uri);
+      });
+    console.log('GOT THE IMAGE', newImage)
+    return (
+      <Image
+        style={{ flex: 1, width: '100%', resizeMode: 'contain' }}
+        source={{ isStatic: true, uri: newImage }}
+      />
+    );
   }
 
   render() {
@@ -40,12 +43,11 @@ export default class SettingsScreen extends React.Component {
         style={{
           flex: 1,
           justifyContent: 'center',
-          alignItems: 'stretch',
-          backgroundColor: '#000',
+          alignItems: 'stretch'
         }}
       >
         <Text>Naaaaaaame</Text>
-        {getImage()}
+        {this.getImage()}
       </View>
     );
   }
