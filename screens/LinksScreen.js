@@ -42,6 +42,7 @@ export default class LinkScreen extends React.Component {
       // strokeColor: Math.random() * 0xffffff,
     });
     this.saveImage();
+    this.props.navigation.navigate('Settings', { userId: this.state.userId })
   };
   render() {
     return (
@@ -80,7 +81,7 @@ export default class LinkScreen extends React.Component {
       .ref('players')
       .child(userId)
       .child('draw')
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         newImage = snapshot.val();
       });
 
