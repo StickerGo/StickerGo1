@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {
   Alert,
   AppRegistry,
-  Button,
+  TouchableOpacity,
   StyleSheet,
   View,
   Text,
 } from 'react-native';
-import { stylesCreate } from '../styles/componentStyles';
+//import { stylesCreate } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 
 export default class Start extends React.Component {
   constructor(props) {
@@ -22,29 +23,33 @@ export default class Start extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.createButtonContainer}>
-          <Button
+        <View>
+          <Text style={styles.heading}>StickerGo</Text>
+          <Text style={styles.text}>go STICK it!</Text>
+        </View>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => {
               this.props.navigation.navigate('Room');
             }}
-            title="Create a Room"
-            color="#FFFFFF"
-          />
-        </View>
-        <Text style={styles.text}>OR</Text>
-        <View style={styles.joinButtonContainer}>
-          <Button
+          >
+            <Text style={styles.buttonText}>Create a Room</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => this.props.navigation.navigate('Join')}
-            title="Join a Room"
-            color="#FFFFFF"
-          />
+          >
+            <Text style={styles.buttonText}>Join a Room</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
   }
 }
 
-const styles = stylesCreate;
+// const styles = stylesCreate;
+const styles = stylesDefault;
 
 // skip this line if using Create React Native App
 // AppRegistry.registerComponent('AwesomeProject', () => ButtonBasics);

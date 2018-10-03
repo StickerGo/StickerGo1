@@ -3,8 +3,8 @@ import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
 import { Text, View, PanResponder, Button } from 'react-native';
 import db from '../reducer/firebase';
-
-//console.disableYellowBox = true;
+import { stylesDefault } from '../styles/componentStyles';
+console.disableYellowBox = true;
 import TouchableView from './TouchableView';
 
 import { View as GraphicsView } from 'expo-graphics';
@@ -182,3 +182,5 @@ export default class LinkScreen extends React.Component {
     }
   };
 }
+
+const styles = stylesDefault;

@@ -9,7 +9,8 @@ import {
   Text,
   TextInput,
 } from 'react-native';
-import { stylesWinner } from '../styles/componentStyles';
+// import { stylesWinner } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 
 export default class Winner extends Component {
   _onPressButton() {}
@@ -45,4 +46,5 @@ export default class Winner extends Component {
   }
 }
 
-const styles = stylesWinner;
+// const styles = stylesWinner;
+const styles = stylesDefault;

@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
-import { stylesWaiting } from '../styles/componentStyles';
+// import { stylesWaiting } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 
 let counter = 1;
 
@@ -50,7 +51,8 @@ class Waiting extends Component {
   }
 }
 
-const styles = stylesWaiting;
+// const styles = stylesWaiting;
+const styles = stylesDefault;
 
 const mapStateToProps = state => {
   return {
