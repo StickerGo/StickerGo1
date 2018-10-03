@@ -9,16 +9,39 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import db from '../reducer/firebase';
+import { getAllPrompts } from '../reducer/promptReducer';
+import { createRoom } from '../reducer/roomReducer';
+import { connect } from 'react-redux';
 import { stylesRoom } from '../styles/componentStyles';
+console.disableYellowBox = true;
 
-export default class Room extends React.Component {
+class Room extends React.Component {
+
   _onPressButton() {}
   constructor() {
     super();
     this.state = {
       pickval: 2,
       typedText: 'Enter name',
+      playerId: '',
     };
+    this.getRoom = this.getRoom.bind(this);
+  }
+  componentDidMount() {
+    this.props.getAllPrompts();
+  }
+  getRoom() {
+    const prompt = this.props.prompts[
+      Math.floor(Math.random() * this.props.prompts.length)
+    ];
+    const roomInfo = {
+      numPlayers: this.state.pickval,
+      status: 'open',
+      winnerId: '',
+      promptForRoom: prompt,
+    };
+    this.props.generateRoom(roomInfo);
   }
   render() {
     return (
@@ -57,7 +80,12 @@ export default class Room extends React.Component {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => this.props.navigation.navigate('RoomCode')}
+            onPress={() => {
+              this.getRoom();
+              this.props.navigation.navigate('RoomCode', {
+                name: this.state.typedText,
+              });
+            }}
             title="Get Code"
             color="white"
           />
@@ -67,4 +95,25 @@ export default class Room extends React.Component {
   }
 }
 
+
+
+const mapStateToProps = state => {
+  return {
+    prompts: state.prompts.prompts,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllPrompts: () => dispatch(getAllPrompts()),
+    generateRoom: roomInfo => dispatch(createRoom(roomInfo)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Room);
+
 const styles = stylesRoom;
+

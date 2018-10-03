@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import db from '../reducer/firebase';
-import { getAllPrompts, getOnePrompt } from '../reducer/promptReducer';
+import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
 import { stylesHome } from '../styles/componentStyles';
 
@@ -27,7 +27,7 @@ function uuidv4() {
   });
 }
 
-class App extends Component {
+class Home extends Component {
   state = {
     image: null,
     // strokeColor: Math.random() * 0xffffff,
@@ -77,7 +77,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.props.getOnePrompt();
+    this.props.getOnePrompt(this.props.player.roomId);
 
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
@@ -121,12 +121,10 @@ class App extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
-            <Text style={styles.text}>
-              Challenge: {this.props.prompts.prompt}
-            </Text>
+           
+            <Text style={styles.text} Challenge: {this.props.prompt} </Text>
             <View style={styles.label}>
               <Text style={styles.text}>Draw Below</Text>
-              {/* <Text>{this.props.navigation.getParam('userId')}</Text> */}
             </View>
             <ExpoPixi.Sketch
               ref={ref => (this.sketch = ref)}
@@ -177,19 +175,18 @@ const styles = stylesHome;
 
 const mapStateToProps = state => {
   return {
-    prompts: state.prompts,
-    prompt: state.prompt,
+    player: state.players.player,
+    prompt: state.prompts.prompt,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAllPrompts: () => dispatch(getAllPrompts()),
-    getOnePrompt: () => dispatch(getOnePrompt()),
+    getOnePrompt: roomId => dispatch(getOnePrompt(roomId)),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(Home);

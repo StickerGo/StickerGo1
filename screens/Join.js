@@ -33,8 +33,6 @@ class Join extends React.Component {
   }
 
   addPlayer(name) {
-    console.log('setting the state!', this.state);
-    console.log('in the addPlayer function', name);
     this.props.addAPlayer({
       name,
       id: name + this.state.id,
