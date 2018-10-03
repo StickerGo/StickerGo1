@@ -9,22 +9,35 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import { FBAddPlayer } from '../reducer/playerReducer';
+import { connect } from 'react-redux';
 
-export default class RoomCode extends Component {
-  _onPressButton() { }
+class RoomCode extends Component {
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
       code: '01',
     };
+    this.playerId = Math.floor(Math.random() * 1000 + 1);
+  }
+  componentDidMount() {
+    const id = this.props.navigation.getParam('name') + this.playerId;
+    this.props.addPlayer({
+      name: this.props.navigation.getParam('name'),
+      id,
+      draw: '',
+      photo: '',
+      roomId: this.props.roomId,
+    });
   }
   render() {
     return (
       <View style={styles.container}>
         <Text />
-        <Text style={styles.welcome}>Here's your code:</Text>
+        <Text style={styles.welcome}>Here is your code:</Text>
         <Text />
-        <Text style={styles.welcome}>{this.state.code}</Text>
+        <Text style={styles.welcome}>{this.props.roomId}</Text>
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('Waiting')}
@@ -51,7 +64,7 @@ const styles = StyleSheet.create({
     width: 120,
     borderRadius: 10,
     overflow: 'hidden',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
   },
   welcome: {
     fontSize: 20,
@@ -71,3 +84,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    roomId: state.rooms.room.id,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addPlayer: player => dispatch(FBAddPlayer(player)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RoomCode);

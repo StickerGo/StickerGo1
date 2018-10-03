@@ -9,15 +9,38 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import db from '../reducer/firebase';
+import { getAllPrompts } from '../reducer/promptReducer';
+import { createRoom } from '../reducer/roomReducer';
+import { connect } from 'react-redux';
 
-export default class Room extends React.Component {
-  _onPressButton() { }
+console.disableYellowBox = true;
+
+class Room extends React.Component {
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
       pickval: 2,
       typedText: 'Enter name',
+      playerId: '',
     };
+    this.getRoom = this.getRoom.bind(this);
+  }
+  componentDidMount() {
+    this.props.getAllPrompts();
+  }
+  getRoom() {
+    const prompt = this.props.prompts[
+      Math.floor(Math.random() * this.props.prompts.length)
+    ];
+    const roomInfo = {
+      numPlayers: this.state.pickval,
+      status: 'open',
+      winnerId: '',
+      promptForRoom: prompt,
+    };
+    this.props.generateRoom(roomInfo);
   }
   render() {
     return (
@@ -44,7 +67,11 @@ export default class Room extends React.Component {
               this.setState({ pickval: itemValue })
             }
           >
-            <Picker.Item label="#" value="" style={{ backgroundColor: 'white' }} />
+            <Picker.Item
+              label="#"
+              value=""
+              style={{ backgroundColor: 'white' }}
+            />
             <Picker.Item label="2" value="2" />
             <Picker.Item label="3" value="3" />
             <Picker.Item label="4" value="4" />
@@ -52,7 +79,12 @@ export default class Room extends React.Component {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => this.props.navigation.navigate('RoomCode')}
+            onPress={() => {
+              this.getRoom();
+              this.props.navigation.navigate('RoomCode', {
+                name: this.state.typedText,
+              });
+            }}
             title="Get Code"
             color="white"
           />
@@ -76,7 +108,7 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 10,
     overflow: 'hidden',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
   },
   alternativeLayoutButtonContainer: {
     margin: 20,
@@ -91,7 +123,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: '#40E0D0',
     borderWidth: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   pickerContainer: {
     flex: 1,
@@ -113,7 +145,7 @@ const styles = StyleSheet.create({
     color: 'black',
     backgroundColor: 'white',
     borderColor: '#40E0D0',
-    fontSize: 16
+    fontSize: 16,
   },
   text: {
     // alignSelf: 'center',
@@ -121,3 +153,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    prompts: state.prompts.prompts,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllPrompts: () => dispatch(getAllPrompts()),
+    generateRoom: roomInfo => dispatch(createRoom(roomInfo)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Room);

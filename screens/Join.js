@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 
 class Join extends React.Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -33,8 +33,6 @@ class Join extends React.Component {
   }
 
   addPlayer(name) {
-    console.log('setting the state!', this.state);
-    console.log('in the addPlayer function', name);
     this.props.addAPlayer({
       name,
       id: name + this.state.id,
@@ -96,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 75,
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   welcome: {
     fontSize: 20,
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: '#40E0D0',
     borderWidth: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
 });
 
