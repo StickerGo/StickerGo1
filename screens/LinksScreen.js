@@ -33,13 +33,10 @@ export default class LinkScreen extends React.Component {
       quality: 0.1, /// Low quality works because it's just a line
       result: 'file',
     };
-    /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
     const photo = await Expo.takeSnapshotAsync(this._container, options);
 
     this.setState({
       photo: { photo },
-      // strokeWidth: Math.random() * 30 + 10,
-      // strokeColor: Math.random() * 0xffffff,
     });
     this.saveImage();
     this.props.navigation.navigate('Settings', { userId: this.state.userId })
@@ -48,14 +45,17 @@ export default class LinkScreen extends React.Component {
     return (
       <View
         style={{ flex: 1 }}
-        ref={view => {
-          this._container = view;
-        }}
+      // ref={view => {
+      //   this._container = view;
+      // }}
       >
         <TouchableView
           style={{ flex: 1 }}
           shouldCancelWhenOutside={false}
           onTouchesBegan={this.onTouchesBegan}
+          ref={view => {
+            this._container = view;
+          }}
         >
           <GraphicsView
             style={{ flex: 2 }}
@@ -63,7 +63,7 @@ export default class LinkScreen extends React.Component {
             onRender={this.onRender}
             onResize={this.onResize}
             isArEnabled
-            isArRunningStateEnabled
+            // isArRunningStateEnabled <---- this was displaying that play and pause button
             isArCameraStateEnabled
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />

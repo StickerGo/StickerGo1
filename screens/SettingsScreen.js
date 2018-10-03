@@ -43,8 +43,7 @@ export default class SettingsScreen extends React.Component {
         style={{
           flex: 1,
           justifyContent: 'center',
-          alignItems: 'stretch',
-          backgroundColor: '#000',
+          alignItems: 'stretch'
         }}
       >
         <Text>Naaaaaaame</Text>
