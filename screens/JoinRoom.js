@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, Text, TextInput } from 'react-native';
+import { TouchableOpacity, View, Text, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
@@ -36,27 +36,31 @@ class Join extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.textEnter}
-          placeholder="Enter your name"
-          onChangeText={text => {
-            this.setState({
-              name: text,
-            });
-          }}
-        />
-        <Text />
-        <TextInput
-          style={styles.textEnter}
-          placeholder="Enter room code"
-          onChangeText={text => {
-            this.setState({
-              code: text,
-            });
-          }}
-        />
-        <View style={styles.buttonContainer}>
-          <Button
+        <View style={styles.nonButtonContainer}>
+          <Text style={styles.text}>Enter your name</Text>
+          <TextInput
+            style={styles.textEnter}
+            placeholder="your name here"
+            onChangeText={text => {
+              this.setState({
+                name: text,
+              });
+            }}
+          />
+          <Text style={styles.text}>Enter room code</Text>
+          <TextInput
+            style={styles.textEnter}
+            placeholder="room code here"
+            onChangeText={text => {
+              this.setState({
+                code: text,
+              });
+            }}
+          />
+        </View>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => {
               this.addPlayer(this.state.name);
               //need to send to "Waiting" room later
@@ -65,9 +69,9 @@ class Join extends React.Component {
                 roomId: this.state.code,
               });
             }}
-            title="Start"
-            color="white"
-          />
+          >
+            <Text style={styles.buttonText}>Start</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

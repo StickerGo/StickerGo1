@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, Image, View, Text } from 'react-native';
 //import { stylesCreate } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 
@@ -16,9 +16,15 @@ export default class Start extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View>
+        <View style={styles.nonButtonContainer}>
           <Text style={styles.heading}>StickerGo</Text>
           <Text style={styles.text}>go STICK it!</Text>
+          <Image
+            style={styles.image}
+            source={{
+              uri: 'https://media.giphy.com/media/26tPgy93ssTeTTSqA/giphy.gif',
+            }}
+          />
         </View>
         <View style={styles.buttonGroup}>
           <TouchableOpacity
