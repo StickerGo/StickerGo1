@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  Button,
-  StyleSheet,
-  View,
-  Picker,
-  Text,
-  TextInput,
-} from 'react-native';
-import db from '../reducer/firebase';
+import { Button, View, Picker, Text, TextInput } from 'react-native';
 import { getAllPrompts } from '../reducer/promptReducer';
 import { createRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
-import { stylesRoom } from '../styles/componentStyles';
+// import { stylesRoom } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 console.disableYellowBox = true;
 
 class Room extends React.Component {
-
   _onPressButton() {}
   constructor() {
     super();
@@ -95,8 +85,6 @@ class Room extends React.Component {
   }
 }
 
-
-
 const mapStateToProps = state => {
   return {
     prompts: state.prompts.prompts,
@@ -115,5 +103,5 @@ export default connect(
   mapDispatchToProps
 )(Room);
 
-const styles = stylesRoom;
-
+// const styles = stylesRoom;
+const styles = stylesDefault;

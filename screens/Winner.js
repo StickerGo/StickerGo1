@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  Button,
-  StyleSheet,
-  View,
-  Picker,
-  Text,
-  TextInput,
-} from 'react-native';
-import { stylesWinner } from '../styles/componentStyles';
+import { Alert, AppRegistry, Button, View, Text } from 'react-native';
+// import { stylesWinner } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 
 export default class Winner extends Component {
   _onPressButton() {}
@@ -35,7 +27,7 @@ export default class Winner extends Component {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => this.props.navigation.navigate('Start')}
+            onPress={() => this.props.navigation.navigate('Home')}
             title="Exit"
             color="white"
           />
@@ -45,4 +37,5 @@ export default class Winner extends Component {
   }
 }
 
-const styles = stylesWinner;
+// const styles = stylesWinner;
+const styles = stylesDefault;

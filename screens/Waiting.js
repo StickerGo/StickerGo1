@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  Button,
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
+import { Button, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
-import { stylesWaiting } from '../styles/componentStyles';
 import { getOneRoom } from '../reducer/roomReducer';
+// import { stylesWaiting } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 
 let counter = 1;
 
@@ -41,7 +35,7 @@ class Waiting extends Component {
         {counter === 0 ? (
           <View style={styles.buttonContainer}>
             <Button
-              onPress={() => this.props.navigation.navigate('Home')}
+              onPress={() => this.props.navigation.navigate('DrawCanvas')}
               title="Start Game"
               color="white"
             />
@@ -53,7 +47,7 @@ class Waiting extends Component {
             <Text>{roomId}</Text>
             {/* ))} */}
             <Button
-              onPress={() => this.props.navigation.navigate('Contest')}
+              onPress={() => this.props.navigation.navigate('Vote')}
               title="Go to Vote"
               color="white"
             />
@@ -65,7 +59,8 @@ class Waiting extends Component {
   }
 }
 
-const styles = stylesWaiting;
+// const styles = stylesWaiting;
+const styles = stylesDefault;
 
 const mapStateToProps = state => {
   return {

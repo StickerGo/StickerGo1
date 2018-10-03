@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
-import { stylesContest } from '../styles/componentStyles';
+import { Button, View } from 'react-native';
+//import { stylesContest } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 
 export default class Contest extends Component {
   _onPressButton() {}
@@ -24,7 +25,8 @@ export default class Contest extends Component {
   }
 }
 
-const styles = stylesContest;
+//const styles = stylesContest;
+const styles = stylesDefault;
 
 // const styles = StyleSheet.create({
 //   container: {
