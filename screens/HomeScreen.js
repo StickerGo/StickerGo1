@@ -13,6 +13,7 @@ import {
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
+import { stylesHome } from '../styles/componentStyles';
 
 console.disableYellowBox = true;
 
@@ -120,7 +121,8 @@ class Home extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
-            <Text> Challenge: {this.props.prompt} </Text>
+           
+            <Text style={styles.text} Challenge: {this.props.prompt} </Text>
             <View style={styles.label}>
               <Text style={styles.text}>Draw Below</Text>
             </View>
@@ -153,6 +155,7 @@ class Home extends Component {
               onPress={() => {
                 this.saveImage();
                 const id = this.props.navigation.getParam('userId');
+                console.log('id in home screen', id);
                 console.log(
                   'in the homescreen, id is ',
                   this.props.navigation.getParam('userId')
@@ -168,64 +171,7 @@ class Home extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 4,
-  },
-  sketch: {
-    flex: 1,
-    borderColor: '#40E0D0',
-    borderWidth: 3,
-    backgroundColor: 'white',
-  },
-  sketchContainer: {
-    padding: 20,
-    height: '100%',
-    width: '100%',
-  },
-  image: {
-    flex: 1,
-  },
-  label: {
-    width: '100%',
-    padding: 5,
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 0,
-  },
-  undoButton: {
-    zIndex: 1,
-    width: 70,
-    height: 40,
-    marginBottom: 10,
-    alignSelf: 'center',
-    backgroundColor: '#CD5C5C',
-    justifyContent: 'center',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  saveButton: {
-    zIndex: 1,
-    width: 70,
-    height: 40,
-    marginBottom: 10,
-    alignSelf: 'center',
-    backgroundColor: '#40E0D0',
-    justifyContent: 'center',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  text: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
-});
+const styles = stylesHome;
 
 const mapStateToProps = state => {
   return {

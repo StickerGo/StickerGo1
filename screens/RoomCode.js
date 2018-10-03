@@ -9,10 +9,12 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import { stylesRoomCode } from '../styles/componentStyles';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
+
   _onPressButton() {}
   constructor() {
     super();
@@ -35,9 +37,10 @@ class RoomCode extends Component {
     return (
       <View style={styles.container}>
         <Text />
-        <Text style={styles.welcome}>Here is your code:</Text>
+        <Text style={styles.text}>Here is your code:</Text>
         <Text />
-        <Text style={styles.welcome}>{this.props.roomId}</Text>
+        <Text style={styles.text}>{this.props.roomId}</Text>
+
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('Waiting')}
@@ -49,41 +52,6 @@ class RoomCode extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    margin: 80,
-    backgroundColor: '#00BFFF',
-    height: 40,
-    justifyContent: 'center',
-    width: 120,
-    borderRadius: 10,
-    overflow: 'hidden',
-    alignItems: 'stretch',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  alternativeLayoutButtonContainer: {
-    margin: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  textEnter: {
-    height: 40,
-    width: 100,
-    margin: 20,
-    padding: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
-  },
-});
 
 const mapStateToProps = state => {
   return {
@@ -101,3 +69,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(RoomCode);
+
+const styles = stylesRoomCode;
+
