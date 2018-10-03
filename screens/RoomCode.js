@@ -14,7 +14,6 @@ import { FBAddPlayer } from '../reducer/playerReducer';
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
-
   _onPressButton() {}
   constructor() {
     super();
@@ -43,7 +42,11 @@ class RoomCode extends Component {
 
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => this.props.navigation.navigate('Waiting')}
+            onPress={() =>
+              this.props.navigation.navigate('Waiting', {
+                roomId: this.props.roomId,
+              })
+            }
             title="Start Game"
             color="white"
           />
@@ -71,4 +74,3 @@ export default connect(
 )(RoomCode);
 
 const styles = stylesRoomCode;
-

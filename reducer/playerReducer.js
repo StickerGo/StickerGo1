@@ -34,17 +34,44 @@ const addPhoto = photo => {
   };
 };
 
+//////
+const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
+
+const getPlayersbyRoom = players => {
+  return {
+    type: GET_PLAYERSBYROOM,
+    players,
+  };
+};
+export const getPlayersInRoom = () => {
+  return dispatch => {
+    try {
+      console.log('beginning getPlayersbyRoomID');
+      db.database()
+        .ref('/players')
+        .on('value', snapshot => {
+          const players = snapshot.val() || [];
+          console.log(players);
+          dispatch(getAll(players));
+        });
+    } catch (err) {
+      console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
+    }
+  };
+};
+
+//////
+
 // thunk creators
 export const getAllPlayers = () => {
   return dispatch => {
     try {
       console.log('beginning getAllPlayers');
-
       db.database()
-        .ref('players')
+        .ref('/players')
         .on('value', snapshot => {
           const players = snapshot.val() || [];
-          console.log(players);
+          // console.log(players);
           dispatch(getAll(players));
         });
     } catch (err) {

@@ -121,8 +121,7 @@ class Home extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
-           
-            <Text style={styles.text} Challenge: {this.props.prompt} </Text>
+            <Text style={styles.text}> Challenge: {this.props.prompt} </Text>
             <View style={styles.label}>
               <Text style={styles.text}>Draw Below</Text>
             </View>
