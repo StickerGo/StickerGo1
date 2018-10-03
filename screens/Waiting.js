@@ -3,9 +3,10 @@ import { Button, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 import { getOneRoom } from '../reducer/roomReducer';
+import { getPlayersInRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
-
+import db from '../reducer/firebase';
 let counter = 1;
 
 class Waiting extends Component {
@@ -13,25 +14,40 @@ class Waiting extends Component {
   constructor() {
     super();
     this.state = {
-      room: '',
+      count: 1,
     };
-    // const roomId = this.props.navigation.getParam('roomId');
+  }
+
+  getPlayers() {
+    db.database()
+      .ref('players')
+      .orderByChild('roomId')
+      .equalTo(this.props.navigation.getParam('roomId'))
+      .once('value')
+      .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          var key = childSnapshot.key;
+          let player = childSnapshot.val();
+          return player;
+        });
+      });
   }
   componentDidMount() {
-    this.props.getAll();
-    this.props.getOneRoom(this.roomId);
+    // this.props.getAll();
+    // this.props.getPlayers(this.props.navigation.getParam('roomId'));
     //
     //
   }
   render() {
-    const roomId = this.props.navigation.getParam('roomId');
+    // const roomId = this.props.navigation.getParam('roomId');
+    const players = this.getPlayers();
 
     return (
       <View style={styles.container}>
-        <Text>{roomId}</Text>
-        <Text>
-          {/* {this.props.players.filter(name => players.roomId === roomId)} */}
-        </Text>
+        <Text>{this.props.room}</Text>
+        {/* {players.map(player => (
+          <Text key={player.name}>{player.name}</Text>
+        ))} */}
         {counter === 0 ? (
           <View style={styles.buttonContainer}>
             <Button
@@ -44,7 +60,7 @@ class Waiting extends Component {
         ) : (
           <View style={styles.buttonContainer}>
             {/* {this.props.players.map(player => ( */}
-            <Text>{roomId}</Text>
+            <Text>{this.player}</Text>
             {/* ))} */}
             <Button
               onPress={() => this.props.navigation.navigate('Vote')}
@@ -71,8 +87,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAll: () => dispatch(getAllPlayers()),
-    getRoom: room => dispatch(getOneRoom(room)),
+    // getAll: () => dispatch(getAllPlayers()),
+    getPlayers: room => dispatch(getPlayersInRoom(room)),
   };
 };
 

@@ -34,7 +34,8 @@ const addPhoto = photo => {
   };
 };
 
-//////
+/////
+
 const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
 
 const getPlayersbyRoom = players => {
@@ -43,16 +44,21 @@ const getPlayersbyRoom = players => {
     players,
   };
 };
-export const getPlayersInRoom = () => {
+
+export const getPlayersInRoom = roomid => {
   return dispatch => {
     try {
       console.log('beginning getPlayersbyRoomID');
       db.database()
         .ref('/players')
         .on('value', snapshot => {
-          const players = snapshot.val() || [];
+          let players;
+          console.log('In dispatch');
+          if (players.roomId === roomid) {
+            players = snapshot.val() || [];
+          }
           console.log(players);
-          dispatch(getAll(players));
+          dispatch(getPlayersbyRoom(players));
         });
     } catch (err) {
       console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
@@ -60,25 +66,44 @@ export const getPlayersInRoom = () => {
   };
 };
 
-//////
-
-// thunk creators
-export const getAllPlayers = () => {
+export const getAllPlayers = roomid => {
   return dispatch => {
     try {
       console.log('beginning getAllPlayers');
       db.database()
         .ref('/players')
         .on('value', snapshot => {
+          let playersinroom;
+          console.log('indispatch');
           const players = snapshot.val() || [];
-          // console.log(players);
-          dispatch(getAll(players));
+
+          console.log(players);
+          dispatch(getPlayersbyRoom(players));
         });
     } catch (err) {
       console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
     }
   };
 };
+/////////
+
+// thunk creators
+// export const getAllPlayers = () => {
+//   return dispatch => {
+//     try {
+//       console.log('beginning getAllPlayers');
+//       db.database()
+//         .ref('/players')
+//         .on('value', snapshot => {
+//           const players = snapshot.val() || [];
+//           // console.log(players);
+//           dispatch(getAll(players));
+//         });
+//     } catch (err) {
+//       console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
+//     }
+//   };
+// };
 
 export const FBAddPlayer = player => {
   return async dispatch => {
@@ -100,6 +125,7 @@ export const FBAddPlayer = player => {
 const initialStatePlayer = {
   players: [],
   player: {},
+  playersInRoom: [],
 };
 
 const playerReducer = (state = initialStatePlayer, action) => {
@@ -120,7 +146,11 @@ const playerReducer = (state = initialStatePlayer, action) => {
     //   ...state,
     //   draws: [...state.draws, action.draw],
     // };
-
+    case GET_PLAYERSBYROOM:
+      return {
+        ...state,
+        playersInRoom: action.players,
+      };
     default:
       return state;
   }

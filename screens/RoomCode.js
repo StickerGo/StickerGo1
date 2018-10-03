@@ -65,9 +65,5 @@ export default connect(
   mapDispatchToProps
 )(RoomCode);
 
-<<<<<<< HEAD
-const styles = stylesRoomCode;
-=======
 // const styles = stylesRoomCode;
 const styles = stylesDefault;
->>>>>>> master
