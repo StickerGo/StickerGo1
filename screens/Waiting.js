@@ -23,7 +23,7 @@ class Waiting extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {counter === 1 ? (
+        {counter === 0 ? (
           <View style={styles.buttonContainer}>
             <Button
               onPress={() => this.props.navigation.navigate('Home')}

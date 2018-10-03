@@ -4,7 +4,6 @@ export const stylesCreate = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#B0C4DE',
   },
   joinButtonContainer: {
     margin: 80,
@@ -128,6 +127,12 @@ export const stylesRoomCode = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
   },
+  text: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize: 30,
+    color: 'grey',
+  },
 });
 export const stylesHome = StyleSheet.create({
   container: {
@@ -191,6 +196,8 @@ export const stylesWaiting = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#D8BFD8',
   },
   alternativeLayoutButtonContainer: {
     margin: 20,
@@ -206,5 +213,63 @@ export const stylesWaiting = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     alignItems: 'stretch',
+  },
+});
+
+export const stylesContest = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    margin: 80,
+    backgroundColor: '#00BFFF',
+    height: 40,
+    justifyContent: 'center',
+    width: 120,
+    borderRadius: 10,
+    overflow: 'hidden',
+    alignItems: 'stretch',
+  },
+  alternativeLayoutButtonContainer: {
+    margin: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+});
+
+export const stylesWinner = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    margin: 80,
+    backgroundColor: '#00BFFF',
+    height: 40,
+    justifyContent: 'center',
+    width: 120,
+    borderRadius: 10,
+    overflow: 'hidden',
+    alignItems: 'stretch',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  alternativeLayoutButtonContainer: {
+    margin: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  textEnter: {
+    height: 40,
+    width: 100,
+    margin: 20,
+    padding: 10,
+    borderColor: 'gray',
+    borderWidth: 1,
   },
 });

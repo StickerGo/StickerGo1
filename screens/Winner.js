@@ -9,6 +9,7 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import { stylesWinner } from '../styles/componentStyles';
 
 export default class Winner extends Component {
   _onPressButton() {}
@@ -29,10 +30,14 @@ export default class Winner extends Component {
           <Button
             onPress={() => this.props.navigation.navigate('Waiting')}
             title="Play Again"
+            color="white"
           />
+        </View>
+        <View style={styles.buttonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('Start')}
             title="Exit"
+            color="white"
           />
         </View>
       </View>
@@ -40,30 +45,4 @@ export default class Winner extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    margin: 20,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  alternativeLayoutButtonContainer: {
-    margin: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  textEnter: {
-    height: 40,
-    width: 100,
-    margin: 20,
-    padding: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
-  },
-});
+const styles = stylesWinner;

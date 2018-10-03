@@ -23,9 +23,9 @@ export default class RoomCode extends Component {
     return (
       <View style={styles.container}>
         <Text />
-        <Text style={styles.welcome}>Here's your code:</Text>
+        <Text style={styles.text}>Here's your code:</Text>
         <Text />
-        <Text style={styles.welcome}>{this.state.code}</Text>
+        <Text style={styles.text}>{this.state.code}</Text>
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => this.props.navigation.navigate('Waiting')}
