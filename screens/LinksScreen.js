@@ -83,7 +83,6 @@ export default class LinkScreen extends React.Component {
       .on('value', function(snapshot) {
         newImage = snapshot.val();
       });
-
     return newImage;
   }
 
