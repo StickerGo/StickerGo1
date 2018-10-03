@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  Button,
-  StyleSheet,
-  View,
-  Picker,
-  Text,
-  TextInput,
-} from 'react-native';
-import { stylesRoomCode } from '../styles/componentStyles';
+import { Button, View, Text } from 'react-native';
+// import { stylesRoomCode } from '../styles/componentStyles';
+import { stylesDefault } from '../styles/componentStyles';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
-
   _onPressButton() {}
   constructor() {
     super();
@@ -70,5 +61,5 @@ export default connect(
   mapDispatchToProps
 )(RoomCode);
 
-const styles = stylesRoomCode;
-
+// const styles = stylesRoomCode;
+const styles = stylesDefault;
