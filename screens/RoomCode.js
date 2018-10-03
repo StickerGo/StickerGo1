@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  Button,
-  StyleSheet,
-  View,
-  Picker,
-  Text,
-  TextInput,
-} from 'react-native';
+import { Button, View, Text } from 'react-native';
 // import { stylesRoomCode } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { FBAddPlayer } from '../reducer/playerReducer';

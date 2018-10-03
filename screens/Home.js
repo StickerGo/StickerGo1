@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 //import { stylesCreate } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 
@@ -31,14 +24,14 @@ export default class Start extends React.Component {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              this.props.navigation.navigate('Room');
+              this.props.navigation.navigate('CreateRoom');
             }}
           >
             <Text style={styles.buttonText}>Create a Room</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.navigation.navigate('Join')}
+            onPress={() => this.props.navigation.navigate('JoinRoom')}
           >
             <Text style={styles.buttonText}>Join a Room</Text>
           </TouchableOpacity>

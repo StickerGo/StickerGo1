@@ -284,21 +284,21 @@ export const stylesDefault = StyleSheet.create({
   heading: {
     alignSelf: 'center',
     fontWeight: 'bold',
-    fontFamily: 'Chalkboard SE',
+    fontFamily: 'Avenir',
     fontSize: 40,
     color: '#00BFFF',
   },
   text: {
     alignSelf: 'center',
     fontWeight: 'bold',
-    fontFamily: 'Chalkboard SE',
+    fontFamily: 'Avenir',
     fontSize: 15,
     color: 'cadetblue',
   },
   buttonText: {
     alignSelf: 'center',
     fontWeight: 'bold',
-    fontFamily: 'Chalkboard SE',
+    fontFamily: 'Avenir',
     color: 'white',
   },
   button: {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
+import { Button, View } from 'react-native';
 //import { stylesContest } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 

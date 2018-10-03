@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  AppRegistry,
-  Button,
-  StyleSheet,
-  View,
-  Picker,
-  Text,
-  TextInput,
-} from 'react-native';
-import db from '../reducer/firebase';
+import { Button, View, Picker, Text, TextInput } from 'react-native';
 import { getAllPrompts } from '../reducer/promptReducer';
 import { createRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';

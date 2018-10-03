@@ -1,15 +1,7 @@
 import Expo from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import {
-  Image,
-  Button,
-  Platform,
-  AppState,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Button, Platform, AppState, Text, View } from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
@@ -155,12 +147,7 @@ class Home extends Component {
               onPress={() => {
                 this.saveImage();
                 const id = this.props.navigation.getParam('userId');
-                console.log('id in home screen', id);
-                console.log(
-                  'in the homescreen, id is ',
-                  this.props.navigation.getParam('userId')
-                );
-                this.props.navigation.navigate('Links', {
+                this.props.navigation.navigate('CameraView', {
                   userId: id,
                 });
               }}
