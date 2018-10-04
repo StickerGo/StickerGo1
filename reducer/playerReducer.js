@@ -36,26 +36,26 @@ const addPhoto = photo => {
 
 /////
 
-const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
+// const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
 
-const getPlayersbyRoom = players => {
-  return {
-    type: GET_PLAYERSBYROOM,
-    players,
-  };
-};
+// const getPlayersbyRoom = players => {
+//   return {
+//     type: GET_PLAYERSBYROOM,
+//     players,
+//   };
+// };
 
-export const getPlayersinRoom = () => {
-  let temp = [];
-  const players = db
-    .database()
-    .ref('players')
-    .equalTo(this.props.navigation.getParam('roomId'))
-    .on('value', function(snapshot) {
-      temp.push(snapshot.val());
-    });
-  return temp;
-};
+// export const getPlayersinRoom = () => {
+//   let temp = [];
+//   const players = db
+//     .database()
+//     .ref('players')
+//     .equalTo(this.props.navigation.getParam('roomId'))
+//     .on('value', function(snapshot) {
+//       temp.push(snapshot.val());
+//     });
+//   return temp;
+// };
 /////////
 
 // thunk creators
@@ -67,7 +67,6 @@ export const getAllPlayers = () => {
         .ref('/players')
         .on('value', snapshot => {
           const players = snapshot.val() || [];
-          console.log(players);
           dispatch(getAll(players));
         });
     } catch (err) {
@@ -117,11 +116,11 @@ const playerReducer = (state = initialStatePlayer, action) => {
     //   ...state,
     //   draws: [...state.draws, action.draw],
     // };
-    case GET_PLAYERSBYROOM:
-      return {
-        ...state,
-        playersInRoom: action.players,
-      };
+    // case GET_PLAYERSBYROOM:
+    //   return {
+    //     ...state,
+    //     playersInRoom: action.players,
+    //   };
     default:
       return state;
   }

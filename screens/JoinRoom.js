@@ -26,25 +26,23 @@ class Join extends React.Component {
     this.setState({ id: id });
     // this.props.checkRoom(this.state.code);
   }
-  checkRooms(roomId) {
-    let value;
-    let roomcheck;
-    let check = db
-      .database()
-      .ref('rooms')
-      .child('id')
-      .once('value', function(snapshot) {
-        value = snapshot.val();
-        if (value === { roomId }) roomcheck = true;
-        else {
-          roomcheck = false;
-        }
-        console.log('Check room ', value);
-        // console.log('value is : ', value);
-        // console.log('Room id check', check);
-      });
-    return roomcheck;
-  }
+  // checkRooms(roomId) {
+  //   let value;
+  //   let roomcheck;
+  //   let check = db
+  //     .database()
+  //     .ref('rooms')
+  //     .child('id')
+  //     .once('value', function(snapshot) {
+  //       value = snapshot.val();
+  //       if (value === { roomId }) roomcheck = true;
+  //       else {
+  //         roomcheck = false;
+  //       }
+  //       console.log('Check room ', value);
+  //     });
+  //   return roomcheck;
+  // }
 
   addPlayer(name) {
     this.props.addAPlayer({
@@ -57,8 +55,6 @@ class Join extends React.Component {
   }
 
   render() {
-    let valu = this.checkRooms(this.state.code);
-    console.log('Checking for room', valu);
     return (
       <View style={styles.container}>
         <View style={styles.nonButtonContainer}>
@@ -89,10 +85,14 @@ class Join extends React.Component {
             onPress={() => {
               this.addPlayer(this.state.name);
               //need to send to "Waiting" room later
-              this.props.navigation.navigate('DrawCanvas', {
+              this.props.navigation.navigate('Waiting', {
                 userId: this.state.name + this.state.id,
                 roomId: this.state.code,
               });
+              // this.props.navigation.navigate('DrawCanvas', {
+              //   userId: this.state.name + this.state.id,
+              //   roomId: this.state.code,
+              // });
             }}
           >
             <Text style={styles.buttonText}>Start</Text>

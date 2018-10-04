@@ -52,7 +52,7 @@ export const createRoom = roomInfo => {
       .database()
       .ref('rooms')
       .push();
-    roomInfo.id = room.key.slice(-4);
+    roomInfo.id = room.key;
     room.set(roomInfo);
     dispatch(makeOne(roomInfo));
   };

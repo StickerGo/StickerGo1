@@ -18,7 +18,7 @@ class Waiting extends Component {
       players: '',
       allplayers: {},
     };
-    this.getPlayersinRoom = this.getPlayersinRoom.bind(this);
+    // this.getPlayersinRoom = this.getPlayersinRoom.bind(this);
   }
 
   getPlayersinRoom() {
@@ -26,6 +26,7 @@ class Waiting extends Component {
     const players = db
       .database()
       .ref('players')
+      .orderByChild('roomId')
       .equalTo(this.props.navigation.getParam('roomId'))
       .on('value', function(snapshot) {
         temp.push(snapshot.val());
@@ -33,45 +34,26 @@ class Waiting extends Component {
     return temp;
   }
 
-  // players in object
-  // getPlayersinRoom() {
-  //   let temp = [];
-  //   const players = db
-  //     .database()
-  //     .ref('players')
-  //     .equalTo(this.props.navigation.getParam('roomId'))
-  //     .orderByChild('roomId')
-  //     .on('value', function(snapshot) {
-  //       temp = snapshot.val();
-  //     });
-  //   console.log('CHECKING PLAYERS', temp);
-  //   return temp;
-  // }
-
   componentDidMount() {
     this.props.getAll();
-    // const players = this.getPlayersinRoom(
-    //   this.props.navigation.getParam('roomId')
-    // );
-    // this.setState(allplayers);
   }
 
   render() {
     const roomId = this.props.navigation.getParam('roomId');
-    // const playersname = this.getPlayersinRoom(
-    //   this.props.navigation.getParam('roomId')
-    // );
-
-    let objects = this.getPlayersinRoom()[objects].map(object =>
-      console.log(object.player)
-    );
+    let [objects] = this.getPlayersinRoom();
+    let array = [];
+    for (let player in objects) {
+      array.push(objects[player]);
+    }
+    console.log(array);
     return (
       <View style={styles.container}>
-        {/* {playersnames.map(player => (
-          <Text key={player.name}>{player.name}</Text>
+        {array.map(player => (
+          <Text style={styles.text} key={player.name}>
+            {player.name}
+          </Text>
         ))}
-        ) */}
-        <Text>{roomId}</Text>
+        )<Text>{roomId}</Text>
         {this.props && this.props.players.length ? (
           <View style={styles.buttonGroup}>
             <TouchableOpacity
@@ -84,8 +66,12 @@ class Waiting extends Component {
           </View>
         ) : (
           <View style={styles.buttonGroup}>
-            {/* {this.state.players.map(player => ( */}
-            <Text>{this.props.roomId}</Text>
+            {array.map(player => (
+              <Text style={styles.text} key={player.name}>
+                {player.name}
+              </Text>
+            ))}
+            <Text style={styles.test}>{this.props.roomId}</Text>
             {/* ))} */}
             <TouchableOpacity
               style={styles.button}
