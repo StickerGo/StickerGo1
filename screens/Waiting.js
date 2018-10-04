@@ -32,6 +32,7 @@ class Waiting extends Component {
         });
       });
   }
+
   componentDidMount() {
     // this.props.getAll();
     // this.props.getPlayers(this.props.navigation.getParam('roomId'));

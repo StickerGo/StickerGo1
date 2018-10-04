@@ -45,28 +45,7 @@ const getPlayersbyRoom = players => {
   };
 };
 
-export const getPlayersInRoom = roomid => {
-  return dispatch => {
-    try {
-      console.log('beginning getPlayersbyRoomID');
-      db.database()
-        .ref('/players')
-        .on('value', snapshot => {
-          let players;
-          console.log('In dispatch');
-          if (players.roomId === roomid) {
-            players = snapshot.val() || [];
-          }
-          console.log(players);
-          dispatch(getPlayersbyRoom(players));
-        });
-    } catch (err) {
-      console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
-    }
-  };
-};
-
-export const getAllPlayers = roomid => {
+export const getPlayersinRoom = roomid => {
   return dispatch => {
     try {
       console.log('beginning getAllPlayers');
@@ -76,7 +55,6 @@ export const getAllPlayers = roomid => {
           let playersinroom;
           console.log('indispatch');
           const players = snapshot.val() || [];
-
           console.log(players);
           dispatch(getPlayersbyRoom(players));
         });
@@ -88,22 +66,22 @@ export const getAllPlayers = roomid => {
 /////////
 
 // thunk creators
-// export const getAllPlayers = () => {
-//   return dispatch => {
-//     try {
-//       console.log('beginning getAllPlayers');
-//       db.database()
-//         .ref('/players')
-//         .on('value', snapshot => {
-//           const players = snapshot.val() || [];
-//           // console.log(players);
-//           dispatch(getAll(players));
-//         });
-//     } catch (err) {
-//       console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
-//     }
-//   };
-// };
+export const getAllPlayers = () => {
+  return dispatch => {
+    try {
+      console.log('beginning getAllPlayers');
+      db.database()
+        .ref('/players')
+        .on('value', snapshot => {
+          const players = snapshot.val() || [];
+          // console.log(players);
+          dispatch(getAll(players));
+        });
+    } catch (err) {
+      console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
+    }
+  };
+};
 
 export const FBAddPlayer = player => {
   return async dispatch => {
