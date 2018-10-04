@@ -373,15 +373,14 @@ export const stylesDefault = StyleSheet.create({
   sketch: {
     flex: 4,
     width: 275,
-    height: 275,
+    height: 400,
+  },
+  sketchContainer: {
+    flex: 4,
+    padding: 10,
     borderColor: '#40E0D0',
     borderWidth: 3,
     backgroundColor: 'white',
-  },
-  sketchContainer: {
-    padding: 10,
-    height: '100%',
-    width: '100%',
   },
   undoButton: {
     justifyContent: 'center',

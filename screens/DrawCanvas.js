@@ -48,7 +48,7 @@ class Home extends Component {
 
     db.database()
       .ref('players')
-      .child(`/${this.props.navigation.getParam('userId')}/draw`)
+      .child(`/${this.props.player.id}/draw`)
       .set(draw.uri);
   }
 
@@ -112,10 +112,10 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
+        <View style={styles.nonButtonContainer}>
+          <Text style={styles.heading2}>Challenge: {this.props.prompt}</Text>
+          <Text style={styles.text}>draw below</Text>
           <View style={styles.sketchContainer}>
-            <Text style={styles.heading2}>Challenge: {this.props.prompt}</Text>
-            <Text style={styles.text}>draw below</Text>
             <ExpoPixi.Sketch
               ref={ref => (this.sketch = ref)}
               style={styles.sketch}
