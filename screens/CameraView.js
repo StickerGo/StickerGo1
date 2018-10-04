@@ -12,10 +12,13 @@ import { View as GraphicsView } from 'expo-graphics';
 export default class LinkScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.position = new THREE.Vector3();
+    this.aim = new THREE.Vector3();
     this.state = {
       userId: this.props.navigation.getParam('userId'),
       image: '',
       photo: '',
+      sizeChanger: 5,
     };
   }
   saveImage() {
@@ -89,13 +92,13 @@ export default class LinkScreen extends React.Component {
   componentDidMount() {
     // Turn off extra warnings
     THREE.suppressExpoWarnings(true);
-    // ThreeAR.suppressWarnings();
+    ThreeAR.suppressWarnings();
     const image = this.getImage();
     this.setState({ image });
   }
 
   onContextCreate = props => {
-    AR.setPlaneDetection(AR.PlaneDetectionTypes.Vertical);
+    AR.setPlaneDetection(AR.PlaneDetectionTypes.Horizontal);
     this.commonSetup(props);
   };
 
@@ -120,7 +123,6 @@ export default class LinkScreen extends React.Component {
     this.sprite = new THREE.Sprite(material);
     // Place the box 0.4 meters in front of us.
     this.sprite.position.z = -5;
-    // this.sprite.rotateOnWorldAxis()
 
     // Add the cube to the scene
     this.scene.add(this.sprite);
@@ -128,6 +130,7 @@ export default class LinkScreen extends React.Component {
   };
 
   onResize = ({ x, y, scale, width, height }) => {
+    console.log('i am in the onResize');
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setPixelRatio(scale);
@@ -135,6 +138,17 @@ export default class LinkScreen extends React.Component {
   };
 
   onRender = () => {
+    this.camera.getWorldPosition(this.position);
+    this.camera.getWorldDirection(this.aim);
+    this.aim.normalize();
+    if (this.sprite) {
+      this.sprite.position.x =
+        this.position.x + this.aim.x * this.state.sizeChanger;
+      this.sprite.position.y =
+        this.position.y + this.aim.y * this.state.sizeChanger;
+      this.sprite.position.z =
+        this.position.z + this.aim.z * this.state.sizeChanger;
+    }
     this.renderer.render(this.scene, this.camera);
   };
 
@@ -142,43 +156,14 @@ export default class LinkScreen extends React.Component {
     if (!this.renderer) {
       return;
     }
-
-    const size = this.renderer.getSize();
-    const { hitTest } = await AR.performHitTest(
-      {
-        x: x / size.width,
-        y: y / size.height,
-      },
-
-      AR.HitTestResultTypes.existingPlane
-    );
-
-    for (let hit of hitTest) {
-      const { worldTransform } = hit;
-      this.scene.remove(this.sprite);
-
-      const image = this.state.image;
-
-      const material = new THREE.SpriteMaterial({
-        map: await ExpoTHREE.loadAsync(image),
-      });
-      material.transparent = true;
-
-      // Combine our geometry and material
-      this.sprite = new THREE.Sprite(material);
-      // Place the box 0.4 meters in front of us.
-      this.sprite.position.z = -5;
-      // this.sprite.rotateOnWorldAxis()
-
-      // Add the cube to the scene
-      this.scene.add(this.sprite);
-      this.scene.add(new THREE.AmbientLight(0xffffff));
-      const matrix = new THREE.Matrix4();
-      matrix.fromArray(worldTransform);
-
-      // Manually update the matrix
-      this.sprite.applyMatrix(matrix);
-      this.sprite.updateMatrix();
+    this.aim.normalize();
+    if (this.sprite) {
+      this.sprite.position.x =
+        this.position.x + this.aim.x * this.state.sizeChanger;
+      this.sprite.position.y =
+        this.position.y + this.aim.y * this.state.sizeChanger;
+      this.sprite.position.z =
+        this.position.z + this.aim.z * this.state.sizeChanger;
     }
   };
 }
