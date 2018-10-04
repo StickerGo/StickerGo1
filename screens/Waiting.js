@@ -45,7 +45,7 @@ class Waiting extends Component {
     for (let player in objects) {
       array.push(objects[player]);
     }
-    console.log(array);
+    // console.log(array);
     return (
       <View style={styles.container}>
         {array.map(player => (
@@ -75,7 +75,11 @@ class Waiting extends Component {
             {/* ))} */}
             <TouchableOpacity
               style={styles.button}
-              onPress={() => this.props.navigation.navigate('Vote')}
+              onPress={() =>
+                this.props.navigation.navigate('VoteScreen', {
+                  roomId: this.props.navigation.getParam('roomId'),
+                })
+              }
             >
               <Text style={styles.buttonText}>Go To Vote</Text>
             </TouchableOpacity>
