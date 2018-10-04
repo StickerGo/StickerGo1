@@ -1,4 +1,4 @@
-import Expo from 'expo';
+import Expo, { LinearGradient } from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
 import { TouchableOpacity, Platform, AppState, Text, View } from 'react-native';
@@ -111,44 +111,60 @@ class Home extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.nonButtonContainer}>
-          <Text style={styles.heading2}>Challenge: {this.props.prompt}</Text>
-          <Text style={styles.text}>draw below</Text>
-          <View style={styles.sketchContainer}>
-            <ExpoPixi.Sketch
-              ref={ref => (this.sketch = ref)}
-              style={styles.sketch}
-              strokeColor={this.state.strokeColor}
-              strokeWidth={this.state.strokeWidth}
-              strokeAlpha={1}
-              onChange={this.onChangeAsync}
-              onReady={this.onReady}
-            />
+      <View
+        style={{
+          flex: 1,
+
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'cadetblue',
+        }}
+      >
+        <LinearGradient
+          colors={['#192f6a', 'cadetblue']}
+          style={{
+            padding: 40,
+            alignItems: 'stretch',
+          }}
+        >
+          <View style={styles.nonButtonContainer}>
+            <Text style={styles.heading2}>Challenge: {this.props.prompt}</Text>
+
+            <View style={styles.sketchContainer}>
+              <ExpoPixi.Sketch
+                ref={ref => (this.sketch = ref)}
+                style={styles.sketch}
+                strokeColor={this.state.strokeColor}
+                strokeWidth={this.state.strokeWidth}
+                strokeAlpha={1}
+                onChange={this.onChangeAsync}
+                onReady={this.onReady}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={styles.undoButton}
-            onPress={() => {
-              this.sketch.undo();
-            }}
-          >
-            <Text style={styles.buttonText}>undo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={() => {
-              this.saveImage();
-              const id = this.props.player.id;
-              this.props.navigation.navigate('CameraView', {
-                userId: id,
-              });
-            }}
-          >
-            <Text style={styles.buttonText}>save</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={styles.undoButton}
+              onPress={() => {
+                this.sketch.undo();
+              }}
+            >
+              <Text style={styles.buttonText}>undo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => {
+                this.saveImage();
+                const id = this.props.player.id;
+                this.props.navigation.navigate('CameraView', {
+                  userId: id,
+                });
+              }}
+            >
+              <Text style={styles.buttonText}>save</Text>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
       </View>
     );
   }

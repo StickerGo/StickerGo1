@@ -35,12 +35,19 @@ class Join extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'lightpink',
+        }}
+      >
         <View style={styles.nonButtonContainer}>
           <Text style={styles.text}>Enter your name</Text>
           <TextInput
             style={styles.textEnter}
-            placeholder="your name here"
+            placeholder="Your Name Here"
             onChangeText={text => {
               this.setState({
                 name: text,
@@ -50,7 +57,7 @@ class Join extends React.Component {
           <Text style={styles.text}>Enter room code</Text>
           <TextInput
             style={styles.textEnter}
-            placeholder="room code here"
+            placeholder="Your Code Here"
             onChangeText={text => {
               this.setState({
                 code: text,
@@ -60,7 +67,7 @@ class Join extends React.Component {
         </View>
         <View style={styles.buttonGroup}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.startButton}
             onPress={() => {
               this.addPlayer(this.state.name);
               //need to send to "Waiting" room later
@@ -70,7 +77,7 @@ class Join extends React.Component {
               });
             }}
           >
-            <Text style={styles.buttonText}>Start</Text>
+            <Text style={styles.startButtonText}>Join</Text>
           </TouchableOpacity>
         </View>
       </View>
