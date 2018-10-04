@@ -23,6 +23,7 @@ class RoomCode extends Component {
       photo: '',
       roomId: this.props.roomId,
     });
+    console.log('player in roomcode is', this.props.player);
   }
   render() {
     return (
@@ -49,6 +50,7 @@ class RoomCode extends Component {
 const mapStateToProps = state => {
   return {
     roomId: state.rooms.room.id,
+    player: state.players.player,
   };
 };
 
