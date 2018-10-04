@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
@@ -11,31 +11,31 @@ class Waiting extends Component {
   _onPressButton() {}
   componentDidMount() {
     this.props.getAll();
-    //
-    //
   }
   render() {
     return (
       <View style={styles.container}>
-        {counter === 0 ? (
-          <View style={styles.buttonContainer}>
-            <Button
+        {this.props && this.props.players.length ? (
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={styles.button}
               onPress={() => this.props.navigation.navigate('DrawCanvas')}
-              title="Start Game"
-              color="white"
-            />
+            >
+              <Text style={styles.buttonText}>Start Game</Text>
+            </TouchableOpacity>
             {counter++}
           </View>
         ) : (
-          <View style={styles.buttonContainer}>
+          <View style={styles.buttonGroup}>
             {/* {this.state.players.map(player => ( */}
             {/* <Text>"Player name"</Text> */}
             {/* ))} */}
-            <Button
+            <TouchableOpacity
+              style={styles.button}
               onPress={() => this.props.navigation.navigate('Vote')}
-              title="Go to Vote"
-              color="white"
-            />
+            >
+              <Text style={styles.buttonText}>Go To Vote</Text>
+            </TouchableOpacity>
             {counter--}
           </View>
         )}
@@ -49,7 +49,8 @@ const styles = stylesDefault;
 
 const mapStateToProps = state => {
   return {
-    players: state.players,
+    players: state.players.players,
+    roomSize: state.rooms.room.numPlayers,
   };
 };
 

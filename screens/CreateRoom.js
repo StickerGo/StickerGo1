@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Button, View, Picker, Text, TextInput } from 'react-native';
+import {
+  Button,
+  TouchableOpacity,
+  View,
+  Picker,
+  Text,
+  TextInput,
+} from 'react-native';
 import { getAllPrompts } from '../reducer/promptReducer';
 import { createRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
@@ -36,49 +43,48 @@ class Room extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.textEnter}
-          placeholder="Enter your name"
-          onChangeText={text => {
-            this.setState(previousState => {
-              return { typedText: text };
-            });
-          }}
-        />
-        <Text />
-        <View style={styles.pickerContainer}>
-          <View>
-            <Text style={styles.text}>How many players?</Text>
-          </View>
-          <Picker
-            selectedValue={this.state.pickval}
-            style={styles.twoPickers}
-            itemStyle={styles.twoPickerItems}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({ pickval: itemValue })
-            }
-          >
-            <Picker.Item
-              label="#"
-              value=""
-              style={{ backgroundColor: 'white' }}
+        <View style={styles.nonButtonContainer}>
+          <View style={styles.container}>
+            <Text style={styles.text}>Enter your name</Text>
+            <TextInput
+              style={styles.textEnter}
+              placeholder="your name here"
+              onChangeText={text => {
+                this.setState(previousState => {
+                  return { typedText: text };
+                });
+              }}
             />
-            <Picker.Item label="2" value="2" />
-            <Picker.Item label="3" value="3" />
-            <Picker.Item label="4" value="4" />
-          </Picker>
+          </View>
+          <View style={styles.pickerContainer}>
+            <Text style={styles.text}>How many players?</Text>
+            <Picker
+              selectedValue={this.state.pickval}
+              style={styles.twoPickers}
+              itemStyle={styles.twoPickerItems}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({ pickval: itemValue })
+              }
+            >
+              <Picker.Item label="1" value="" />
+              <Picker.Item label="2" value="2" />
+              <Picker.Item label="3" value="3" />
+              <Picker.Item label="4" value="4" />
+            </Picker>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <Button
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => {
               this.getRoom();
               this.props.navigation.navigate('RoomCode', {
                 name: this.state.typedText,
               });
             }}
-            title="Get Code"
-            color="white"
-          />
+          >
+            <Text style={styles.buttonText}>Get Code</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
