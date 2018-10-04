@@ -1,7 +1,13 @@
 import Expo, { AR } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
-import { Text, View, PanResponder, Button } from 'react-native';
+import {
+  Text,
+  View,
+  PanResponder,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 import db from '../reducer/firebase';
 import { stylesDefault } from '../styles/componentStyles';
 console.disableYellowBox = true;
@@ -20,6 +26,8 @@ export default class LinkScreen extends React.Component {
       photo: '',
       sizeChanger: 5,
     };
+    this.increaseSize = this.increaseSize.bind(this);
+    this.decreaseSize = this.decreaseSize.bind(this);
   }
   saveImage() {
     const photo = this.state.photo;
@@ -29,7 +37,16 @@ export default class LinkScreen extends React.Component {
       .child(`/${this.props.navigation.getParam('userId')}/photo`)
       .set(photo.photo);
   }
-
+  increaseSize() {
+    this.setState({
+      sizeChanger: this.state.sizeChanger - 1,
+    });
+  }
+  decreaseSize() {
+    this.setState({
+      sizeChanger: this.state.sizeChanger + 1,
+    });
+  }
   screenShot = async () => {
     const options = {
       format: 'jpg', /// PNG because the view has a clear background
@@ -70,7 +87,17 @@ export default class LinkScreen extends React.Component {
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
         </TouchableView>
-        <Button color={'white'} title="Capture" onPress={this.screenShot} />
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity style={styles.button} onPress={this.decreaseSize}>
+            <Text style={styles.buttonText}>-size</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.screenShot}>
+            <Text style={styles.buttonText}>capture!</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.increaseSize}>
+            <Text style={styles.buttonText}>+size</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -130,7 +157,6 @@ export default class LinkScreen extends React.Component {
   };
 
   onResize = ({ x, y, scale, width, height }) => {
-    console.log('i am in the onResize');
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setPixelRatio(scale);
