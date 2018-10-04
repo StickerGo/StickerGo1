@@ -3,6 +3,8 @@ import { TouchableOpacity, View, Text, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
+import { getOneRoom } from '../reducer/roomReducer';
+import db from '../reducer/firebase';
 
 class Join extends React.Component {
   _onPressButton() {}
@@ -22,6 +24,26 @@ class Join extends React.Component {
     //once we connect with the room generator, add to id
     const id = randomNum;
     this.setState({ id: id });
+    // this.props.checkRoom(this.state.code);
+  }
+  checkRooms(roomId) {
+    let value;
+    let roomcheck;
+    let check = db
+      .database()
+      .ref('rooms')
+      .child('id')
+      .once('value', function(snapshot) {
+        value = snapshot.val();
+        if (value === { roomId }) roomcheck = true;
+        else {
+          roomcheck = false;
+        }
+        console.log('Check room ', value);
+        // console.log('value is : ', value);
+        // console.log('Room id check', check);
+      });
+    return roomcheck;
   }
 
   addPlayer(name) {
@@ -33,7 +55,10 @@ class Join extends React.Component {
       roomId: this.state.code,
     });
   }
+
   render() {
+    let valu = this.checkRooms(this.state.code);
+    console.log('Checking for room', valu);
     return (
       <View style={styles.container}>
         <View style={styles.nonButtonContainer}>
@@ -123,6 +148,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
+    // checkRoom: roomId => dispatch(getOneRoom(roomId)),
   };
 };
 

@@ -40,7 +40,7 @@ export const getOneRoom = roomId => {
       .child(roomId)
       .on('value', function(snapshot) {
         const room = snapshot.val() || [];
-        console.log('PASS ROOM', room.id);
+        console.log('PASS ROOM', room);
         dispatch(getOne(room));
       });
   };
@@ -52,7 +52,7 @@ export const createRoom = roomInfo => {
       .database()
       .ref('rooms')
       .push();
-    roomInfo.id = room.key;
+    roomInfo.id = room.key.slice(-4);
     room.set(roomInfo);
     dispatch(makeOne(roomInfo));
   };

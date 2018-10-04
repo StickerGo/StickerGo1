@@ -37,12 +37,11 @@ class RoomCode extends Component {
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
-            onPress={
-              (() => this.props.navigation.navigate('Waiting'),
-              {
+            onPress={() => {
+              this.props.navigation.navigate('Waiting', {
                 roomId: this.props.roomId,
-              })
-            }
+              });
+            }}
           >
             <Text style={styles.buttonText}>Start Game</Text>
           </TouchableOpacity>

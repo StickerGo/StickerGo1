@@ -16,34 +16,62 @@ class Waiting extends Component {
     this.state = {
       count: 1,
       players: '',
-      allplayers: [],
+      allplayers: {},
     };
+    this.getPlayersinRoom = this.getPlayersinRoom.bind(this);
   }
 
-  getPlayersinRoom(roomId) {
-    let playername;
-    db.database()
+  getPlayersinRoom() {
+    let temp = [];
+    const players = db
+      .database()
       .ref('players')
-      .child(roomId)
-      .child('name')
+      .equalTo(this.props.navigation.getParam('roomId'))
       .on('value', function(snapshot) {
-        playername = snapshot.val();
+        temp.push(snapshot.val());
       });
-    return playername;
+    return temp;
   }
+
+  // players in object
+  // getPlayersinRoom() {
+  //   let temp = [];
+  //   const players = db
+  //     .database()
+  //     .ref('players')
+  //     .equalTo(this.props.navigation.getParam('roomId'))
+  //     .orderByChild('roomId')
+  //     .on('value', function(snapshot) {
+  //       temp = snapshot.val();
+  //     });
+  //   console.log('CHECKING PLAYERS', temp);
+  //   return temp;
+  // }
 
   componentDidMount() {
-    // this.props.getAll();
-    const players = this.getPlayersinRoom(
-      this.props.navigation.getParam('roomId')
-    );
-    this.setState({ players });
     this.props.getAll();
+    // const players = this.getPlayersinRoom(
+    //   this.props.navigation.getParam('roomId')
+    // );
+    // this.setState(allplayers);
   }
+
   render() {
     const roomId = this.props.navigation.getParam('roomId');
+    // const playersname = this.getPlayersinRoom(
+    //   this.props.navigation.getParam('roomId')
+    // );
+
+    let objects = this.getPlayersinRoom()[objects].map(object =>
+      console.log(object.player)
+    );
     return (
       <View style={styles.container}>
+        {/* {playersnames.map(player => (
+          <Text key={player.name}>{player.name}</Text>
+        ))}
+        ) */}
+        <Text>{roomId}</Text>
         {this.props && this.props.players.length ? (
           <View style={styles.buttonGroup}>
             <TouchableOpacity
@@ -57,7 +85,7 @@ class Waiting extends Component {
         ) : (
           <View style={styles.buttonGroup}>
             {/* {this.state.players.map(player => ( */}
-            <Text>{this.state.players}</Text>
+            <Text>{this.props.roomId}</Text>
             {/* ))} */}
             <TouchableOpacity
               style={styles.button}
@@ -85,7 +113,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // getAll: () => dispatch(getAllPlayers()),
+    getAll: () => dispatch(getAllPlayers()),
     // fetchPlayers: room => dispatch(getPlayersinRoom(room)),
   };
 };

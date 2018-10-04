@@ -45,24 +45,16 @@ const getPlayersbyRoom = players => {
   };
 };
 
-export const getPlayersinRoom = roomid => {
-  return dispatch => {
-    try {
-      console.log('beginning getAllPlayers');
-      db.database()
-        .ref('/players')
-        .child(roomid)
-        .child('name')
-        .on('value', snapshot => {
-          console.log('indispatch');
-          const playersinroom = snapshot.val() || [];
-          console.log(playersinroom);
-          dispatch(getPlayersbyRoom(playersinroom));
-        });
-    } catch (err) {
-      console.error('THUNK WRONG WITH GET PLAYERS IN ROOM', err);
-    }
-  };
+export const getPlayersinRoom = () => {
+  let temp = [];
+  const players = db
+    .database()
+    .ref('players')
+    .equalTo(this.props.navigation.getParam('roomId'))
+    .on('value', function(snapshot) {
+      temp.push(snapshot.val());
+    });
+  return temp;
 };
 /////////
 
@@ -75,7 +67,7 @@ export const getAllPlayers = () => {
         .ref('/players')
         .on('value', snapshot => {
           const players = snapshot.val() || [];
-          // console.log(players);
+          console.log(players);
           dispatch(getAll(players));
         });
     } catch (err) {
