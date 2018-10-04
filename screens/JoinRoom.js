@@ -3,20 +3,33 @@ import { TouchableOpacity, View, Text, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
-import { getOneRoom } from '../reducer/roomReducer';
+import { getOneRoom, addToRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
 
+function checkRoomCodeCallback(code, exists) {
+  if (exists) {
+    console.log('THE ROOM EXISTS!')
+    return true
+  } else {
+    console.log('THE ROOM DOES NOT EXIST :(')
+    return false
+  }
+}
+
 class Join extends React.Component {
-  _onPressButton() {}
-  constructor() {
-    super();
+  _onPressButton() { }
+  constructor(props) {
+    super(props);
     this.state = {
       pickval: 2,
       name: 'Enter name',
       code: '',
       id: '',
+      playerId: ''
     };
     this.addPlayer = this.addPlayer.bind(this);
+    this.checkRoomCode = this.checkRoomCode.bind(this)
+    // this.checkRoomCodeCallback = this.checkRoomCodeCallback.bind(this)
   }
 
   componentDidMount() {
@@ -44,15 +57,37 @@ class Join extends React.Component {
   //   return roomcheck;
   // }
 
-  addPlayer(name) {
+  async addPlayer(name) {
+    const playerId = name + this.state.id
+    this.setState({ playerId })
     this.props.addAPlayer({
       name,
-      id: name + this.state.id,
+      id: playerId,
       draw: '',
       photo: '',
       roomId: this.state.code,
     });
+    const rooms = await this.checkRoomCode(this.state.code)
+    console.log('DID YA WORK?', rooms)
+    this.props.addPlayerToRoom(playerId, this.state.code)
   }
+
+
+
+  checkRoomCode(code) {
+    const roomRef = db
+      .database()
+      .ref('rooms')
+      .child(code)
+      .once('value', function (snapshot) {
+        let exists = (snapshot.val() !== null)
+        console.log('what is snapshot.val', snapshot.val())
+        console.log('what is exists', exists)
+        checkRoomCodeCallback(code, exists)
+      })
+  }
+
+  // addPlayerToRoom()
 
   render() {
     return (
@@ -84,15 +119,10 @@ class Join extends React.Component {
             style={styles.button}
             onPress={() => {
               this.addPlayer(this.state.name);
-              //need to send to "Waiting" room later
               this.props.navigation.navigate('Waiting', {
                 userId: this.state.name + this.state.id,
                 roomId: this.state.code,
               });
-              // this.props.navigation.navigate('DrawCanvas', {
-              //   userId: this.state.name + this.state.id,
-              //   roomId: this.state.code,
-              // });
             }}
           >
             <Text style={styles.buttonText}>Start</Text>
@@ -149,6 +179,7 @@ const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
     // checkRoom: roomId => dispatch(getOneRoom(roomId)),
+    addPlayerToRoom: (playerId, roomId) => dispatch(addToRoom(playerId, roomId)),
   };
 };
 
