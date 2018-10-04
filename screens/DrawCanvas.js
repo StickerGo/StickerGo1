@@ -1,7 +1,7 @@
 import Expo from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import { Button, Platform, AppState, Text, View } from 'react-native';
+import { TouchableOpacity, Platform, AppState, Text, View } from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
@@ -48,7 +48,7 @@ class Home extends Component {
 
     db.database()
       .ref('players')
-      .child(`/${this.props.navigation.getParam('userId')}/draw`)
+      .child(`/${this.props.player.id}/draw`)
       .set(draw.uri);
   }
 
@@ -112,12 +112,10 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
+        <View style={styles.nonButtonContainer}>
+          <Text style={styles.heading2}>Challenge: {this.props.prompt}</Text>
+          <Text style={styles.text}>draw below</Text>
           <View style={styles.sketchContainer}>
-            <Text style={styles.text}> Challenge: {this.props.prompt} </Text>
-            <View style={styles.label}>
-              <Text style={styles.text}>Draw Below</Text>
-            </View>
             <ExpoPixi.Sketch
               ref={ref => (this.sketch = ref)}
               style={styles.sketch}
@@ -129,30 +127,27 @@ class Home extends Component {
             />
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.undoButton}>
-            <Button
-              color={'white'}
-              title="undo"
-              onPress={() => {
-                this.sketch.undo();
-              }}
-            />
-          </View>
-          <View style={styles.saveButton}>
-            <Button
-              color="white"
-              title="save"
-              style={styles.button}
-              onPress={() => {
-                this.saveImage();
-                const id = this.props.navigation.getParam('userId');
-                this.props.navigation.navigate('CameraView', {
-                  userId: id,
-                });
-              }}
-            />
-          </View>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={styles.undoButton}
+            onPress={() => {
+              this.sketch.undo();
+            }}
+          >
+            <Text style={styles.buttonText}>undo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={() => {
+              this.saveImage();
+              const id = this.props.player.id;
+              this.props.navigation.navigate('CameraView', {
+                userId: id,
+              });
+            }}
+          >
+            <Text style={styles.buttonText}>save</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

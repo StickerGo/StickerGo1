@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, View, Text } from 'react-native';
+import { Alert, AppRegistry, TouchableOpacity, View, Text } from 'react-native';
 // import { stylesWinner } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 
@@ -18,19 +18,19 @@ export default class Winner extends Component {
         <Text style={styles.welcome}>Winner is: </Text>
         <Text />
         <Text style={styles.welcome}>{this.state.name}</Text>
-        <View style={styles.buttonContainer}>
-          <Button
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => this.props.navigation.navigate('Waiting')}
-            title="Play Again"
-            color="white"
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
+          >
+            <Text style={styles.buttonText}>Play Again</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => this.props.navigation.navigate('Home')}
-            title="Exit"
-            color="white"
-          />
+          >
+            <Text style={styles.buttonText}>Exit</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

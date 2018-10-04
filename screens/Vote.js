@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 //import { stylesContest } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
@@ -29,12 +29,13 @@ export default class Contest extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.buttonContainer}>
-          <Button
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => this.props.navigation.navigate('Winner')}
-            title="Submit Vote"
-            color="white"
-          />
+          >
+            <Text style={styles.buttonText}>Submit vote</Text>
+          </TouchableOpacity>
         </View>
         ) }
       </View>

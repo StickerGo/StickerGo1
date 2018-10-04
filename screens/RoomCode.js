@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, TouchableOpacity, View, Text } from 'react-native';
 // import { stylesRoomCode } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { FBAddPlayer } from '../reducer/playerReducer';
@@ -23,25 +23,29 @@ class RoomCode extends Component {
       photo: '',
       roomId: this.props.roomId,
     });
+    console.log('player in roomcode is', this.props.player);
   }
   render() {
     return (
       <View style={styles.container}>
-        <Text />
-        <Text style={styles.text}>Here is your code:</Text>
-        <Text />
-        <Text style={styles.text}>{this.props.roomId}</Text>
-
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={() =>
-              this.props.navigation.navigate('Waiting', {
+        <View style={styles.nonButtonContainer}>
+          <Text style={styles.heading}>Here is your code:</Text>
+          <View style={styles.textBkg}>
+            <Text style={styles.text}>{this.props.roomId}</Text>
+          </View>
+        </View>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={
+              (() => this.props.navigation.navigate('Waiting'),
+              {
                 roomId: this.props.roomId,
               })
             }
-            title="Start Game"
-            color="white"
-          />
+          >
+            <Text style={styles.buttonText}>Start Game</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -51,6 +55,7 @@ class RoomCode extends Component {
 const mapStateToProps = state => {
   return {
     roomId: state.rooms.room.id,
+    player: state.players.player,
   };
 };
 

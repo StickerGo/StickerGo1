@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 import { getOneRoom } from '../reducer/roomReducer';
@@ -38,35 +38,33 @@ class Waiting extends Component {
       this.props.navigation.getParam('roomId')
     );
     this.setState({ players });
+    this.props.getAll();
   }
   render() {
     const roomId = this.props.navigation.getParam('roomId');
     return (
       <View style={styles.container}>
-        <Text>{this.props.room}</Text>
-        <Text>{this.state.players}</Text>
-        {/* {players.map(player => (
-          <Text key={player.name}>{player.name}</Text>
-        ))} */}
-        {counter === 0 ? (
-          <View style={styles.buttonContainer}>
-            <Button
+        {this.props && this.props.players.length ? (
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={styles.button}
               onPress={() => this.props.navigation.navigate('DrawCanvas')}
-              title="Start Game"
-              color="white"
-            />
+            >
+              <Text style={styles.buttonText}>Start Game</Text>
+            </TouchableOpacity>
             {counter++}
           </View>
         ) : (
-          <View style={styles.buttonContainer}>
+          <View style={styles.buttonGroup}>
             {/* {this.state.players.map(player => ( */}
             <Text>{this.state.players}</Text>
             {/* ))} */}
-            <Button
+            <TouchableOpacity
+              style={styles.button}
               onPress={() => this.props.navigation.navigate('Vote')}
-              title="Go to Vote"
-              color="white"
-            />
+            >
+              <Text style={styles.buttonText}>Go To Vote</Text>
+            </TouchableOpacity>
             {counter--}
           </View>
         )}
@@ -80,8 +78,8 @@ const styles = stylesDefault;
 
 const mapStateToProps = state => {
   return {
-    players: state.players,
-    room: state.room,
+    players: state.players.players,
+    roomSize: state.rooms.room.numPlayers,
   };
 };
 
