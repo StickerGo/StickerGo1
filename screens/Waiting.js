@@ -15,34 +15,30 @@ class Waiting extends Component {
     super();
     this.state = {
       count: 1,
+      players: '',
+      allplayers: [],
     };
   }
 
-  getPlayers() {
+  getPlayers(roomId) {
+    let playername;
     db.database()
       .ref('players')
-      .orderByChild('roomId')
-      .equalTo(this.props.navigation.getParam('roomId'))
-      .once('value')
-      .then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-          var key = childSnapshot.key;
-          let player = childSnapshot.val();
-          return player;
-        });
+      .child(roomId)
+      .child('name')
+      .on('value', function(snapshot) {
+        playername = snapshot.val();
       });
+    return playername;
   }
 
   componentDidMount() {
     // this.props.getAll();
-    // this.props.getPlayers(this.props.navigation.getParam('roomId'));
-    //
-    //
+    const players = this.getPlayers(this.props.navigation.getParam('roomId'));
+    this.setState({ players });
   }
   render() {
-    // const roomId = this.props.navigation.getParam('roomId');
-    const players = this.getPlayers();
-
+    const roomId = this.props.navigation.getParam('roomId');
     return (
       <View style={styles.container}>
         <Text>{this.props.room}</Text>
@@ -60,8 +56,8 @@ class Waiting extends Component {
           </View>
         ) : (
           <View style={styles.buttonContainer}>
-            {/* {this.props.players.map(player => ( */}
-            <Text>{this.player}</Text>
+            {/* {this.state.players.map(player => ( */}
+            <Text>{this.state.players}</Text>
             {/* ))} */}
             <Button
               onPress={() => this.props.navigation.navigate('Vote')}
@@ -89,7 +85,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     // getAll: () => dispatch(getAllPlayers()),
-    getPlayers: room => dispatch(getPlayersInRoom(room)),
+    // getPlayers: room => dispatch(getPlayersInRoom(room)),
   };
 };
 
