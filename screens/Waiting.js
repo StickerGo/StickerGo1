@@ -3,7 +3,7 @@ import { Button, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 import { getOneRoom } from '../reducer/roomReducer';
-import { getPlayersInRoom } from '../reducer/roomReducer';
+import { getPlayersinRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import db from '../reducer/firebase';
@@ -20,7 +20,7 @@ class Waiting extends Component {
     };
   }
 
-  getPlayers(roomId) {
+  getPlayersinRoom(roomId) {
     let playername;
     db.database()
       .ref('players')
@@ -34,7 +34,9 @@ class Waiting extends Component {
 
   componentDidMount() {
     // this.props.getAll();
-    const players = this.getPlayers(this.props.navigation.getParam('roomId'));
+    const players = this.getPlayersinRoom(
+      this.props.navigation.getParam('roomId')
+    );
     this.setState({ players });
   }
   render() {
@@ -42,6 +44,7 @@ class Waiting extends Component {
     return (
       <View style={styles.container}>
         <Text>{this.props.room}</Text>
+        <Text>{this.state.players}</Text>
         {/* {players.map(player => (
           <Text key={player.name}>{player.name}</Text>
         ))} */}
@@ -85,7 +88,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     // getAll: () => dispatch(getAllPlayers()),
-    // getPlayers: room => dispatch(getPlayersInRoom(room)),
+    // fetchPlayers: room => dispatch(getPlayersinRoom(room)),
   };
 };
 

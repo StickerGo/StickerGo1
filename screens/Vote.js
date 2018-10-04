@@ -9,7 +9,9 @@ export default class Contest extends Component {
   _onPressButton() {}
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      photos: [],
+    };
   }
 
   getPhotos() {

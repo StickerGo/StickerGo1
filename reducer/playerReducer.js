@@ -51,15 +51,16 @@ export const getPlayersinRoom = roomid => {
       console.log('beginning getAllPlayers');
       db.database()
         .ref('/players')
+        .child(roomid)
+        .child('name')
         .on('value', snapshot => {
-          let playersinroom;
           console.log('indispatch');
-          const players = snapshot.val() || [];
-          console.log(players);
-          dispatch(getPlayersbyRoom(players));
+          const playersinroom = snapshot.val() || [];
+          console.log(playersinroom);
+          dispatch(getPlayersbyRoom(playersinroom));
         });
     } catch (err) {
-      console.error('THUNK WRONG WITH GET ALL PLAYERS', err);
+      console.error('THUNK WRONG WITH GET PLAYERS IN ROOM', err);
     }
   };
 };
