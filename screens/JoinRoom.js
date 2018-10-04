@@ -3,6 +3,8 @@ import { TouchableOpacity, View, Text, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
+import { getOneRoom } from '../reducer/roomReducer';
+import db from '../reducer/firebase';
 
 class Join extends React.Component {
   _onPressButton() {}
@@ -22,7 +24,25 @@ class Join extends React.Component {
     //once we connect with the room generator, add to id
     const id = randomNum;
     this.setState({ id: id });
+    // this.props.checkRoom(this.state.code);
   }
+  // checkRooms(roomId) {
+  //   let value;
+  //   let roomcheck;
+  //   let check = db
+  //     .database()
+  //     .ref('rooms')
+  //     .child('id')
+  //     .once('value', function(snapshot) {
+  //       value = snapshot.val();
+  //       if (value === { roomId }) roomcheck = true;
+  //       else {
+  //         roomcheck = false;
+  //       }
+  //       console.log('Check room ', value);
+  //     });
+  //   return roomcheck;
+  // }
 
   addPlayer(name) {
     this.props.addAPlayer({
@@ -33,6 +53,7 @@ class Join extends React.Component {
       roomId: this.state.code,
     });
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -64,10 +85,14 @@ class Join extends React.Component {
             onPress={() => {
               this.addPlayer(this.state.name);
               //need to send to "Waiting" room later
-              this.props.navigation.navigate('DrawCanvas', {
+              this.props.navigation.navigate('Waiting', {
                 userId: this.state.name + this.state.id,
                 roomId: this.state.code,
               });
+              // this.props.navigation.navigate('DrawCanvas', {
+              //   userId: this.state.name + this.state.id,
+              //   roomId: this.state.code,
+              // });
             }}
           >
             <Text style={styles.buttonText}>Start</Text>
@@ -123,6 +148,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
+    // checkRoom: roomId => dispatch(getOneRoom(roomId)),
   };
 };
 

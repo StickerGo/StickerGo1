@@ -2,13 +2,30 @@ import React, { Component } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 //import { stylesContest } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
+import { connect } from 'react-redux';
+import db from '../reducer/firebase';
 
 export default class Contest extends Component {
   _onPressButton() {}
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      photos: [],
+    };
   }
+
+  getPhotos() {
+    let photos;
+    db.database()
+      .ref('players')
+      .child(userId)
+      .child('photo')
+      .on('value', function(snapshot) {
+        photos = snapshot.val();
+      });
+    return photos;
+  }
+
   render() {
     return (
       <View style={styles.container}>
