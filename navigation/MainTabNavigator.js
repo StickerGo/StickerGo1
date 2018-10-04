@@ -23,7 +23,7 @@ const HomeStack = createStackNavigator(
     CreateRoom: CreateRoom,
     RoomCode: RoomCode,
     JoinRoom: JoinRoom,
-    Draw: DrawCanvas,
+    DrawCanvas: DrawCanvas,
     CameraView: CameraView,
     VoteScreen: Vote,
     Waiting: Waiting,
@@ -56,7 +56,7 @@ const GameStack = createStackNavigator(
     CreateRoom: CreateRoom,
     RoomCode: RoomCode,
     JoinRoom: JoinRoom,
-    Draw: DrawCanvas,
+    DrawCanvas: DrawCanvas,
     CameraView: CameraView,
     VoteScreen: Vote,
     Waiting: Waiting,
@@ -64,7 +64,7 @@ const GameStack = createStackNavigator(
     Settings: Settings,
   },
   {
-    initialRouteName: 'Draw',
+    initialRouteName: 'DrawCanvas',
   }
 );
 
@@ -107,7 +107,7 @@ const SettingsStack = createStackNavigator(
     CreateRoom: CreateRoom,
     RoomCode: RoomCode,
     JoinRoom: JoinRoom,
-    Draw: DrawCanvas,
+    DrawCanvas: DrawCanvas,
     CameraView: CameraView,
     VoteScreen: Vote,
     Waiting: Waiting,

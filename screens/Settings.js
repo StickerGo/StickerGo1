@@ -14,10 +14,10 @@ class Settings extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text>Name: {this.props.player.name}</Text>
-        <Text>RoomId: {this.props.player.roomId}</Text>
-        <Text>Prompt: {this.props.room.promptForRoom}</Text>
-        <Text>Edit canvas paint color to:</Text>
+        <Text style={styles.text}>Name: {this.props.player.name}</Text>
+        <Text style={styles.text}>RoomId: {this.props.player.roomId}</Text>
+        <Text style={styles.text}>Prompt: {this.props.room.promptForRoom}</Text>
+        <Text style={styles.text}>Edit canvas paint color to:</Text>
       </View>
     );
   }
