@@ -34,17 +34,48 @@ const addPhoto = photo => {
   };
 };
 
+/////
+
+const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
+
+const getPlayersbyRoom = players => {
+  return {
+    type: GET_PLAYERSBYROOM,
+    players,
+  };
+};
+
+export const getPlayersinRoom = roomid => {
+  return dispatch => {
+    try {
+      console.log('beginning getAllPlayers');
+      db.database()
+        .ref('/players')
+        .child(roomid)
+        .child('name')
+        .on('value', snapshot => {
+          console.log('indispatch');
+          const playersinroom = snapshot.val() || [];
+          console.log(playersinroom);
+          dispatch(getPlayersbyRoom(playersinroom));
+        });
+    } catch (err) {
+      console.error('THUNK WRONG WITH GET PLAYERS IN ROOM', err);
+    }
+  };
+};
+/////////
+
 // thunk creators
 export const getAllPlayers = () => {
   return dispatch => {
     try {
       console.log('beginning getAllPlayers');
-
       db.database()
-        .ref('players')
+        .ref('/players')
         .on('value', snapshot => {
           const players = snapshot.val() || [];
-          console.log(players);
+          // console.log(players);
           dispatch(getAll(players));
         });
     } catch (err) {
@@ -73,6 +104,7 @@ export const FBAddPlayer = player => {
 const initialStatePlayer = {
   players: [],
   player: {},
+  playersInRoom: [],
 };
 
 const playerReducer = (state = initialStatePlayer, action) => {
@@ -93,7 +125,11 @@ const playerReducer = (state = initialStatePlayer, action) => {
     //   ...state,
     //   draws: [...state.draws, action.draw],
     // };
-
+    case GET_PLAYERSBYROOM:
+      return {
+        ...state,
+        playersInRoom: action.players,
+      };
     default:
       return state;
   }

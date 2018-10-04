@@ -2,21 +2,52 @@ import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
+import { getOneRoom } from '../reducer/roomReducer';
+import { getPlayersinRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
-
+import db from '../reducer/firebase';
 let counter = 1;
 
 class Waiting extends Component {
   _onPressButton() {}
+  constructor() {
+    super();
+    this.state = {
+      count: 1,
+      players: '',
+      allplayers: [],
+    };
+  }
+
+  getPlayersinRoom(roomId) {
+    let playername;
+    db.database()
+      .ref('players')
+      .child(roomId)
+      .child('name')
+      .on('value', function(snapshot) {
+        playername = snapshot.val();
+      });
+    return playername;
+  }
+
   componentDidMount() {
-    this.props.getAll();
-    //
-    //
+    // this.props.getAll();
+    const players = this.getPlayersinRoom(
+      this.props.navigation.getParam('roomId')
+    );
+    this.setState({ players });
   }
   render() {
+    const roomId = this.props.navigation.getParam('roomId');
     return (
       <View style={styles.container}>
+        <Text>{this.props.room}</Text>
+        <Text>{this.state.players}</Text>
+        {/* {players.map(player => (
+          <Text key={player.name}>{player.name}</Text>
+        ))} */}
         {counter === 0 ? (
           <View style={styles.buttonContainer}>
             <Button
@@ -29,7 +60,7 @@ class Waiting extends Component {
         ) : (
           <View style={styles.buttonContainer}>
             {/* {this.state.players.map(player => ( */}
-            {/* <Text>"Player name"</Text> */}
+            <Text>{this.state.players}</Text>
             {/* ))} */}
             <Button
               onPress={() => this.props.navigation.navigate('Vote')}
@@ -50,12 +81,14 @@ const styles = stylesDefault;
 const mapStateToProps = state => {
   return {
     players: state.players,
+    room: state.room,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAll: () => dispatch(getAllPlayers()),
+    // getAll: () => dispatch(getAllPlayers()),
+    // fetchPlayers: room => dispatch(getPlayersinRoom(room)),
   };
 };
 

@@ -34,7 +34,11 @@ class RoomCode extends Component {
 
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => this.props.navigation.navigate('Waiting')}
+            onPress={() =>
+              this.props.navigation.navigate('Waiting', {
+                roomId: this.props.roomId,
+              })
+            }
             title="Start Game"
             color="white"
           />
