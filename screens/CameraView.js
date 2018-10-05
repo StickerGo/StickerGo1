@@ -66,7 +66,7 @@ class LinkScreen extends React.Component {
     this.saveImage();
   };
   render() {
-    console.log('what is room id : ', this.props.roomId);
+    console.log('ROOM ID IN CAMERA VIEW', this.props.roomId);
     const roomId = this.props.roomId;
     return (
       <View
@@ -100,7 +100,7 @@ class LinkScreen extends React.Component {
             style={styles.button}
             onPress={() => {
               this.screenShot();
-              this.props.navigation.navigate('VoteScreen', { roomId: roomId });
+              this.props.navigation.navigate('VoteScreen');
             }}
           >
             <Text style={styles.buttonText}>capture!</Text>
@@ -121,7 +121,7 @@ class LinkScreen extends React.Component {
       .ref('players')
       .child(userId)
       .child('draw')
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         newImage = snapshot.val();
       });
     return newImage;
