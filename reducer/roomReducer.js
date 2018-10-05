@@ -50,7 +50,6 @@ export const getOneRoom = roomId => {
       .child(roomId)
       .on('value', function(snapshot) {
         const room = snapshot.val() || [];
-        console.log('PASS ROOM', room);
         dispatch(getOne(room));
       });
   };

@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, TouchableOpacity, View, Text } from 'react-native';
+import Expo, { LinearGradient } from 'expo';
+import {
+  Alert,
+  AppRegistry,
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+} from 'react-native';
 // import { stylesWinner } from '../styles/componentStyles';
 import { connect } from 'react-redux';
 import { getWinner } from '../reducer/playerReducer';
-import { getOneRoom } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
@@ -15,15 +22,38 @@ class Winner extends Component {
     };
   }
   componentDidMount() {
-    this.props.getRoom(this.props.player.roomId);
     this.props.getTheWinner(this.props.room.winnerId);
   }
   render() {
-    if (this.props) {
-      return (
-        <View style={styles.container}>
+    console.log('in the render of the Winner');
+    return (
+      <View
+        style={{
+          flex: 1,
+
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'cadetblue',
+        }}
+      >
+        <LinearGradient
+          colors={['#192f6a', 'cadetblue']}
+          style={{
+            padding: 40,
+            alignItems: 'stretch',
+          }}
+        >
           <Text />
-          <Text style={styles.heading2}>Winner is: </Text>
+          <Text style={styles.text}>Winner is: </Text>
+          {this.props.winner && (
+            <View style={styles.nonButtonContainer}>
+              <Text style={styles.text}>{this.props.winner.name}</Text>
+              <Image
+                style={styles.image}
+                source={{ uri: this.props.winner.photo }}
+              />
+            </View>
+          )}
           <Text />
 
           <View style={styles.buttonGroup}>
@@ -40,9 +70,9 @@ class Winner extends Component {
               <Text style={styles.buttonText}>Exit</Text>
             </TouchableOpacity>
           </View>
-        </View>
-      );
-    }
+        </LinearGradient>
+      </View>
+    );
   }
 }
 
@@ -50,7 +80,6 @@ class Winner extends Component {
 
 const mapStateToProps = state => {
   return {
-    player: state.players.player,
     room: state.rooms.room,
     winner: state.players.winner,
   };
@@ -58,7 +87,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getRoom: roomId => dispatch(getOneRoom(roomId)),
     getTheWinner: winnerId => dispatch(getWinner(winnerId)),
   };
 };
