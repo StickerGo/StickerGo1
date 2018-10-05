@@ -12,6 +12,7 @@ import db from '../reducer/firebase';
 import { stylesDefault } from '../styles/componentStyles';
 console.disableYellowBox = true;
 import TouchableView from './TouchableView';
+import Timer from './Timer';
 
 import { View as GraphicsView } from 'expo-graphics';
 
@@ -87,6 +88,7 @@ export default class LinkScreen extends React.Component {
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
         </TouchableView>
+        <Timer />
         <View style={styles.buttonGroup}>
           <TouchableOpacity style={styles.button} onPress={this.decreaseSize}>
             <Text style={styles.buttonText}>-size</Text>
