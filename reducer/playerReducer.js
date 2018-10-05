@@ -24,10 +24,10 @@ const addPlayer = player => {
     player,
   };
 };
-const addDraw = draw => {
+const addDraw = drawing => {
   return {
     type: ADD_DRAW,
-    draw,
+    drawing,
   };
 };
 
@@ -66,7 +66,6 @@ const addPhoto = photo => {
 export const getAllPlayers = () => {
   return dispatch => {
     try {
-      console.log('beginning getAllPlayers');
       db.database()
         .ref('/players')
         .on('value', snapshot => {
@@ -82,7 +81,6 @@ export const getAllPlayers = () => {
 export const getWinner = playerId => {
   return dispatch => {
     try {
-      console.log('beginning getWinner');
       db.database()
         .ref('/players')
         .child(playerId)
@@ -106,6 +104,22 @@ export const FBAddPlayer = player => {
         .set(player);
 
       dispatch(addPlayer(player));
+    } catch (err) {
+      console.error('THUNK WRONG', err);
+    }
+  };
+};
+
+export const addDrawing = (drawing, playerId) => {
+  return async dispatch => {
+    try {
+      db.database()
+        .ref('players')
+        .child(`/${playerId}/draw`)
+        .set(drawing)
+        .then(() => {
+          dispatch(addDraw(drawing));
+        });
     } catch (err) {
       console.error('THUNK WRONG', err);
     }

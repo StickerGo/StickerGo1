@@ -13,29 +13,31 @@ import { stylesDefault } from '../styles/componentStyles';
 console.disableYellowBox = true;
 import TouchableView from './TouchableView';
 import Timer from './Timer';
+import { connect } from 'react-redux';
 
 import { View as GraphicsView } from 'expo-graphics';
 
-export default class LinkScreen extends React.Component {
+class LinkScreen extends React.Component {
   constructor(props) {
     super(props);
     this.position = new THREE.Vector3();
     this.aim = new THREE.Vector3();
     this.state = {
-      userId: this.props.navigation.getParam('userId'),
+      userId: '',
       image: '',
       photo: '',
       sizeChanger: 5,
     };
     this.increaseSize = this.increaseSize.bind(this);
     this.decreaseSize = this.decreaseSize.bind(this);
+    this.saveImage = this.saveImage.bind(this);
   }
   saveImage() {
     const photo = this.state.photo;
 
     db.database()
       .ref('players')
-      .child(`/${this.props.navigation.getParam('userId')}/photo`)
+      .child(`/${this.props.player.id}/photo`)
       .set(photo.photo);
   }
   increaseSize() {
@@ -66,18 +68,16 @@ export default class LinkScreen extends React.Component {
   };
   render() {
     return (
-      <View
-        style={{ flex: 1 }}
-        ref={view => {
-          this._container = view;
-        }}
-      >
+      <View style={{ flex: 1 }}>
         <TouchableView
           style={{ flex: 1 }}
           shouldCancelWhenOutside={false}
           onTouchesBegan={this.onTouchesBegan}
         >
           <GraphicsView
+            ref={view => {
+              this._container = view;
+            }}
             style={{ flex: 2 }}
             onContextCreate={this.onContextCreate}
             onRender={this.onRender}
@@ -88,7 +88,11 @@ export default class LinkScreen extends React.Component {
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
         </TouchableView>
-        <Timer navigation={this.props.navigation} navigateTo="VoteScreen" />
+        <Timer
+          navigation={this.props.navigation}
+          navigateTo="VoteScreen"
+          screenshot={this.screenShot}
+        />
         <View style={styles.buttonGroup}>
           <TouchableOpacity style={styles.button} onPress={this.decreaseSize}>
             <Text style={styles.buttonText}>-size</Text>
@@ -97,7 +101,7 @@ export default class LinkScreen extends React.Component {
             style={styles.button}
             onPress={() => {
               this.screenShot();
-              this.props.navigation.navigate('Winner');
+              this.props.navigation.navigate('VoteScreen');
             }}
           >
             <Text style={styles.buttonText}>capture!</Text>
@@ -111,12 +115,12 @@ export default class LinkScreen extends React.Component {
   }
 
   getImage() {
-    let userId = this.state.userId;
+    let playerId = this.props.player.id;
 
     let newImage;
     db.database()
       .ref('players')
-      .child(userId)
+      .child(playerId)
       .child('draw')
       .on('value', function(snapshot) {
         newImage = snapshot.val();
@@ -201,5 +205,13 @@ export default class LinkScreen extends React.Component {
     }
   };
 }
+
+const mapStateToProps = state => {
+  return {
+    player: state.players.player,
+  };
+};
+
+export default connect(mapStateToProps)(LinkScreen);
 
 const styles = stylesDefault;
