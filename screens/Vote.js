@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  CheckBox,
+  InlineImage,
+} from 'react-native';
 //import { stylesContest } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
@@ -11,24 +19,51 @@ export default class Contest extends Component {
     super();
     this.state = {
       photos: [],
+      image: '',
     };
   }
 
-  getPhotos() {
-    let photos;
-    db.database()
+  getPlayersinRoom() {
+    let temp = [];
+    const players = db
+      .database()
       .ref('players')
-      .child(userId)
-      .child('photo')
+      .orderByChild('roomId')
+      .equalTo(this.props.navigation.getParam('roomId'))
       .on('value', function(snapshot) {
-        photos = snapshot.val();
+        temp.push(snapshot.val());
       });
-    return photos;
+    return temp;
   }
 
   render() {
+    // const roomId = '-LO-g12iBdup0TnqFhuC';
+    const roomId = this.props.navigation.getParam('roomId');
+    let [objects] = this.getPlayersinRoom();
+    let array = [];
+    for (let player in objects) {
+      array.push(objects[player]);
+    }
+    let photos = [];
+    array.map(players => photos.push(players.name));
     return (
       <View style={styles.container}>
+        <ScrollView>
+          {array.map(players => (
+            <Image
+              key={players.name}
+              source={{
+                uri: players.photo,
+              }}
+              style={{
+                width: 500,
+                height: 500,
+                resizeMode: 'cover',
+                aspectRatio: 1.0,
+              }}
+            />
+          ))}
+        </ScrollView>
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}

@@ -45,6 +45,7 @@ class Waiting extends Component {
 
   render() {
     const roomId = this.props.navigation.getParam('roomId');
+
     const playersList = this.getPlayersinRoom()
     return (
       <View style={styles.container}>
@@ -60,23 +61,29 @@ class Waiting extends Component {
             {counter++}
           </View>
         ) : (
-            <View style={styles.buttonGroup}>
-              {playersList.map(player => (
-                <Text style={styles.text} key={player.id}>
-                  {player.name}
-                </Text>
-              ))}
-              <Text style={styles.test}>{this.props.roomId}</Text>
-              {/* ))} */}
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.props.navigation.navigate('Vote')}
-              >
-                <Text style={styles.buttonText}>Go To Vote</Text>
-              </TouchableOpacity>
-              {counter--}
-            </View>
-          )}
+
+          <View style={styles.buttonGroup}>
+            {array.map(player => (
+              <Text style={styles.text} key={player.name}>
+                {player.name}
+              </Text>
+            ))}
+            <Text style={styles.test}>{this.props.roomId}</Text>
+            {/* ))} */}
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                this.props.navigation.navigate('VoteScreen', {
+                  roomId: this.props.navigation.getParam('roomId'),
+                })
+              }
+            >
+              <Text style={styles.buttonText}>Go To Vote</Text>
+            </TouchableOpacity>
+            {counter--}
+          </View>
+        )}
+
       </View>
     );
   }
