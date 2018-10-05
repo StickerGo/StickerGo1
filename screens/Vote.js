@@ -15,7 +15,7 @@ import db from '../reducer/firebase';
 import { getPlayersinRoom } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -25,24 +25,24 @@ class Contest extends Component {
   }
 
   componentDidMount() {
-    const roomId = this.props.navigation.getParam('roomId');
+    const roomId = this.props.roomId;
     console.log('what is room id in vote', roomId);
     this.props.getPlayersinRoom(roomId);
   }
 
   render() {
-    // const roomId = '-LO-g12iBdup0TnqFhuC';
-    const roomId = this.props.navigation.getParam('roomId');
-    let [objects] = this.props.getPlayersinRoom(roomId);
-    let array = [];
-    for (let player in objects) {
-      array.push(objects[player]);
-    }
-    let photos = [];
-    array.map(players => photos.push(players.name));
+    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
+    // const roomId = this.props.navigation.getParam('roomId');
+    // let [objects] = this.props.getPlayersinRoom(roomId);
+    // let array = [];
+    // for (let player in objects) {
+    //   array.push(objects[player]);
+    // }
+    // let photos = [];
+    // array.map(players => photos.push(players.name));
     return (
       <View style={styles.container}>
-        <ScrollView>
+        {/* <ScrollView>
           {array.map(players => (
             <Image
               key={players.name}
@@ -57,7 +57,7 @@ class Contest extends Component {
               }}
             />
           ))}
-        </ScrollView>
+        </ScrollView> */}
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
@@ -94,6 +94,7 @@ const mapStateToProps = state => {
   return {
     players: state.players.players,
     roomSize: state.rooms.room.numPlayers,
+    roomId: state.rooms.room.id
   };
 };
 

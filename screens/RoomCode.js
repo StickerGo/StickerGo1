@@ -7,7 +7,7 @@ import { addToRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -34,6 +34,7 @@ class RoomCode extends Component {
   }
 
   render() {
+    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
     return (
       <View style={styles.container}>
         <View style={styles.nonButtonContainer}>
