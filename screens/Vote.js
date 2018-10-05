@@ -12,9 +12,10 @@ import {
 import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
 import db from '../reducer/firebase';
+import { getPlayersinRoom } from '../reducer/roomReducer';
 
-export default class Contest extends Component {
-  _onPressButton() {}
+class Contest extends Component {
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -23,32 +24,25 @@ export default class Contest extends Component {
     };
   }
 
-  getPlayersinRoom() {
-    let temp = [];
-    const players = db
-      .database()
-      .ref('players')
-      .orderByChild('roomId')
-      .equalTo(this.props.navigation.getParam('roomId'))
-      .on('value', function(snapshot) {
-        temp.push(snapshot.val());
-      });
-    return temp;
+  componentDidMount() {
+    const roomId = this.props.roomId;
+    console.log('what is room id in vote', roomId);
+    this.props.getPlayersinRoom(roomId);
   }
 
   render() {
-    // const roomId = '-LO-g12iBdup0TnqFhuC';
-    const roomId = this.props.navigation.getParam('roomId');
-    let [objects] = this.getPlayersinRoom();
-    let array = [];
-    for (let player in objects) {
-      array.push(objects[player]);
-    }
-    let photos = [];
-    array.map(players => photos.push(players.name));
+    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
+    // const roomId = this.props.navigation.getParam('roomId');
+    // let [objects] = this.props.getPlayersinRoom(roomId);
+    // let array = [];
+    // for (let player in objects) {
+    //   array.push(objects[player]);
+    // }
+    // let photos = [];
+    // array.map(players => photos.push(players.name));
     return (
       <View style={styles.container}>
-        <ScrollView>
+        {/* <ScrollView>
           {array.map(players => (
             <Image
               key={players.name}
@@ -63,7 +57,7 @@ export default class Contest extends Component {
               }}
             />
           ))}
-        </ScrollView>
+        </ScrollView> */}
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
@@ -95,3 +89,23 @@ const styles = stylesDefault;
 //     justifyContent: 'space-between',
 //   },
 // });
+
+const mapStateToProps = state => {
+  return {
+    players: state.players.players,
+    roomSize: state.rooms.room.numPlayers,
+    roomId: state.rooms.room.id
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    // getAll: () => dispatch(getAllPlayers()),
+    getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Contest);

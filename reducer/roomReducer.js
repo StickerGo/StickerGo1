@@ -6,8 +6,14 @@ const GET_ALL_ROOMS = 'GET_ALL_ROOMS';
 const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
+const GET_ALL_IN_ROOM = 'GET_ALL';
+
 
 //action creators
+
+const getAllInRoom = playersInRoom => {
+  return { type: GET_ALL_IN_ROOM, playersInRoom };
+};
 const getAll = rooms => {
   return { type: GET_ALL_ROOMS, rooms };
 };
@@ -61,6 +67,35 @@ export const getOneRoom = roomId => {
 //   };
 // };
 
+export const getPlayersinRoom = roomId => {
+  return async dispatch => {
+    try {
+      console.log('roomId', roomId);
+      let temp = [];
+      const dbplayers = await db
+        .database()
+        .ref('rooms')
+        .child(roomId)
+        .child('players')
+        .on('value', function(snapshot) {
+          temp.push(snapshot.val());
+        });
+
+      console.log('what is temp', temp);
+      // const [players] = temp;
+      // let playersArray = [];
+      // if (players) {
+      //   for (let player in players) {
+      //     playersArray.push(players[player]);
+      //   }
+      // }
+      dispatch(getAllInRoom(temp));
+    } catch (err) {
+      console.error('THERE IS ERROR WITH PLAYERS IN ROOM', err);
+    }
+  };
+};
+
 export const createRoom = roomInfo => {
   return dispatch => {
     const room = db
@@ -92,6 +127,7 @@ export const addToRoom = (playerId, playerName, roomId) => {
 const initialStateRoom = {
   rooms: [],
   room: {},
+  playersInRoom: [],
 };
 
 const roomReducer = (state = initialStateRoom, action) => {
@@ -116,6 +152,11 @@ const roomReducer = (state = initialStateRoom, action) => {
       return {
         ...state,
         room: action.room,
+      };
+    case GET_ALL_IN_ROOM:
+      return {
+        ...state,
+        playersInRoom: action.playersInRoom,
       };
     default:
       return state;

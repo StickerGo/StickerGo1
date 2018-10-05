@@ -67,6 +67,8 @@ class LinkScreen extends React.Component {
     this.saveImage();
   };
   render() {
+    console.log('ROOM ID IN CAMERA VIEW', this.props.roomId);
+    const roomId = this.props.roomId;
     return (
       <View style={{ flex: 1 }}>
         <TouchableView
@@ -83,7 +85,7 @@ class LinkScreen extends React.Component {
             onRender={this.onRender}
             onResize={this.onResize}
             isArEnabled
-            isArRunningStateEnabled
+            // isArRunningStateEnabled
             isArCameraStateEnabled
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
@@ -208,6 +210,7 @@ class LinkScreen extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    roomId: state.rooms.room.id,
     player: state.players.player,
   };
 };

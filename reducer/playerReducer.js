@@ -1,6 +1,7 @@
 import db from './firebase';
 
 //action types
+
 const GET_ALL = 'GET_ALL';
 const GET_WINNER = 'GET_WINNER';
 const ADD_PLAYER = 'ADD_PLAYER';
@@ -37,30 +38,6 @@ const addPhoto = photo => {
     photo,
   };
 };
-
-/////
-
-// const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
-
-// const getPlayersbyRoom = players => {
-//   return {
-//     type: GET_PLAYERSBYROOM,
-//     players,
-//   };
-// };
-
-// export const getPlayersinRoom = () => {
-//   let temp = [];
-//   const players = db
-//     .database()
-//     .ref('players')
-//     .equalTo(this.props.navigation.getParam('roomId'))
-//     .on('value', function(snapshot) {
-//       temp.push(snapshot.val());
-//     });
-//   return temp;
-// };
-/////////
 
 // thunk creators
 export const getAllPlayers = () => {

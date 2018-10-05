@@ -10,7 +10,7 @@ import db from '../reducer/firebase';
 let counter = 1;
 
 class Waiting extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -21,32 +21,14 @@ class Waiting extends Component {
     // this.getPlayersinRoom = this.getPlayersinRoom.bind(this);
   }
 
-  getPlayersinRoom() {
-    let temp = [];
-    const dbplayers = db
-      .database()
-      .ref('players')
-      .orderByChild('roomId')
-      .equalTo(this.props.navigation.getParam('roomId'))
-      .on('value', function (snapshot) {
-        temp.push(snapshot.val());
-      });
-    const [players] = temp
-    let playersArray = []
-    for (let player in players) {
-      playersArray.push(players[player])
-    }
-    return playersArray
-  }
-
   componentDidMount() {
+    // const roomId = this.props.navigation.getParam('roomId');
+    // this.props.getPlayersinRoom(roomId);
     this.props.getAll();
   }
 
   render() {
-    const roomId = this.props.navigation.getParam('roomId');
-
-    const playersList = this.getPlayersinRoom()
+    const playersList = this.getPlayersinRoom();
     return (
       <View style={styles.container}>
         <Text>{roomId}</Text>
@@ -61,7 +43,6 @@ class Waiting extends Component {
             {counter++}
           </View>
         ) : (
-
           <View style={styles.buttonGroup}>
             {array.map(player => (
               <Text style={styles.text} key={player.name}>
@@ -83,7 +64,6 @@ class Waiting extends Component {
             {counter--}
           </View>
         )}
-
       </View>
     );
   }
@@ -102,7 +82,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getAll: () => dispatch(getAllPlayers()),
-    // fetchPlayers: room => dispatch(getPlayersinRoom(room)),
+    getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
   };
 };
 
