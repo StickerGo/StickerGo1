@@ -88,7 +88,7 @@ export default class LinkScreen extends React.Component {
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
         </TouchableView>
-        <Timer />
+        <Timer navigation={this.props.navigation} navigateTo="Waiting" />
         <View style={styles.buttonGroup}>
           <TouchableOpacity style={styles.button} onPress={this.decreaseSize}>
             <Text style={styles.buttonText}>-size</Text>

@@ -5,6 +5,7 @@ import { TouchableOpacity, Platform, AppState, Text, View } from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
+import Timer from './Timer';
 // import { stylesHome } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 
@@ -127,6 +128,7 @@ class Home extends Component {
             />
           </View>
         </View>
+        <Timer navigation={this.props.navigation} navigateTo="CameraView" />
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.undoButton}
