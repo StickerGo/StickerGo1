@@ -25,7 +25,8 @@ class Join extends React.Component {
       name: 'Enter name',
       code: '',
       id: '',
-      playerId: ''
+      playerId: '',
+      roomExists: true
     };
     this.addPlayer = this.addPlayer.bind(this);
     this.checkRoomCode = this.checkRoomCode.bind(this)
@@ -39,52 +40,38 @@ class Join extends React.Component {
     this.setState({ id: id });
     // this.props.checkRoom(this.state.code);
   }
-  // checkRooms(roomId) {
-  //   let value;
-  //   let roomcheck;
-  //   let check = db
-  //     .database()
-  //     .ref('rooms')
-  //     .child('id')
-  //     .once('value', function(snapshot) {
-  //       value = snapshot.val();
-  //       if (value === { roomId }) roomcheck = true;
-  //       else {
-  //         roomcheck = false;
-  //       }
-  //       console.log('Check room ', value);
-  //     });
-  //   return roomcheck;
-  // }
+
 
   async addPlayer(name) {
-    const playerId = name + this.state.id
-    this.setState({ playerId })
-    this.props.addAPlayer({
-      name,
-      id: playerId,
-      draw: '',
-      photo: '',
-      roomId: this.state.code,
-    });
-    const rooms = await this.checkRoomCode(this.state.code)
-    console.log('DID YA WORK?', rooms)
-    this.props.addPlayerToRoom(playerId, this.state.code)
+    const roomExists = await this.checkRoomCode(this.state.code)
+    if (roomExists) {
+      const playerId = name + this.state.id
+      this.setState({ playerId })
+      this.props.addAPlayer({
+        name,
+        id: playerId,
+        draw: '',
+        photo: '',
+        roomId: this.state.code,
+      });
+      this.props.addPlayerToRoom(playerId, this.state.code)
+      this.props.navigation.navigate('Waiting', {
+        userId: this.state.name + this.state.id,
+        roomId: this.state.code,
+      });
+    } else {
+      this.setState({ roomExists: false })
+    }
   }
 
 
 
-  checkRoomCode(code) {
-    const roomRef = db
+  async checkRoomCode(code) {
+    const snapshot = await db
       .database()
-      .ref('rooms')
-      .child(code)
-      .once('value', function (snapshot) {
-        let exists = (snapshot.val() !== null)
-        console.log('what is snapshot.val', snapshot.val())
-        console.log('what is exists', exists)
-        checkRoomCodeCallback(code, exists)
-      })
+      .ref(`rooms/${code}`)
+      .once('value')
+    return snapshot.exists()
   }
 
   // addPlayerToRoom()
@@ -103,6 +90,9 @@ class Join extends React.Component {
               });
             }}
           />
+          {
+            this.state.roomExists === false && <Text>Invalid Room Number</Text>
+          }
           <Text style={styles.text}>Enter room code</Text>
           <TextInput
             style={styles.textEnter}
@@ -119,10 +109,6 @@ class Join extends React.Component {
             style={styles.button}
             onPress={() => {
               this.addPlayer(this.state.name);
-              this.props.navigation.navigate('Waiting', {
-                userId: this.state.name + this.state.id,
-                roomId: this.state.code,
-              });
             }}
           >
             <Text style={styles.buttonText}>Start</Text>
