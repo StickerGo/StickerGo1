@@ -23,15 +23,23 @@ class Waiting extends Component {
 
   componentDidMount() {
     // const roomId = this.props.navigation.getParam('roomId');
-    // this.props.getPlayersinRoom(roomId);
-    this.props.getAll();
   }
 
   render() {
-    const playersList = this.getPlayersinRoom();
+    // const playersList = this.getPlayersinRoom();
+    console.log('find room id', this.props.room);
+    console.log(' Find roomId', this.props.players[0].roomId);
+    console.log('Find players count', this.props.players.length);
+    let checknum;
+    if (this.props.roomSize === this.props.players.length) {
+      checknum = true;
+    } else {
+      checknum = false;
+    }
+    console.log(checknum, 'Check');
     return (
       <View style={styles.container}>
-        <Text>{roomId}</Text>
+        {/* {this.props.roomSize === this.props.players.length ? ( */}
         {this.props && this.props.players.length ? (
           <View style={styles.buttonGroup}>
             <TouchableOpacity
@@ -44,11 +52,11 @@ class Waiting extends Component {
           </View>
         ) : (
           <View style={styles.buttonGroup}>
-            {array.map(player => (
+            {/* {array.map(player => (
               <Text style={styles.text} key={player.name}>
                 {player.name}
               </Text>
-            ))}
+            ))} */}
             <Text style={styles.test}>{this.props.roomId}</Text>
             {/* ))} */}
             <TouchableOpacity
@@ -76,6 +84,7 @@ const mapStateToProps = state => {
   return {
     players: state.players.players,
     roomSize: state.rooms.room.numPlayers,
+    room: state.rooms.room.id,
   };
 };
 

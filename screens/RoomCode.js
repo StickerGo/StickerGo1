@@ -7,7 +7,7 @@ import { addToRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -34,7 +34,7 @@ class RoomCode extends Component {
   }
 
   render() {
-    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
+    console.log('ROOM ID IN ROOM CODE', this.props.roomId);
     return (
       <View style={styles.container}>
         <View style={styles.nonButtonContainer}>
@@ -47,7 +47,7 @@ class RoomCode extends Component {
           <TouchableOpacity
             style={styles.button}
             //update to send to "Waiting" room later
-            onPress={() => this.props.navigation.navigate('DrawCanvas')}
+            onPress={() => this.props.navigation.navigate('Waiting')}
           >
             <Text style={styles.buttonText}>Start Game</Text>
           </TouchableOpacity>
