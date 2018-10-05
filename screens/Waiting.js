@@ -22,13 +22,16 @@ class Waiting extends Component {
   }
 
   componentDidMount() {
-    // const roomId = this.props.navigation.getParam('roomId');
+    // const roomId = this.props.room
+    // this.props.getRoomInfo(roomId);
+    // this.props.getPlayersinRoom(this.props.room);
   }
 
   render() {
     // const playersList = this.getPlayersinRoom();
-    console.log('find room id', this.props.room);
-    console.log(' Find roomId', this.props.players[0].roomId);
+    const roomId = this.props.room;
+    // console.log('find room id', this.props.room);
+    console.log('When they join', this.props.roomSize);
     console.log('Find players count', this.props.players.length);
     let checknum;
     if (this.props.roomSize === this.props.players.length) {
@@ -42,12 +45,16 @@ class Waiting extends Component {
         {/* {this.props.roomSize === this.props.players.length ? ( */}
         {this.props && this.props.players.length ? (
           <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate('DrawCanvas')}
-            >
-              <Text style={styles.buttonText}>Start Game</Text>
-            </TouchableOpacity>
+            {this.props.roomSize === this.props.players.length ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate('DrawCanvas')}
+              >
+                <Text style={styles.buttonText}>Start Game</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.buttonText}>Waiting</Text>
+            )}
             {counter++}
           </View>
         ) : (
@@ -92,6 +99,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getAll: () => dispatch(getAllPlayers()),
     getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
+    getRoomInfo: roomId => dispatch(getOneRoom(roomId)),
   };
 };
 

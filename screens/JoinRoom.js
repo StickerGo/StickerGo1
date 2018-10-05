@@ -54,7 +54,11 @@ class Join extends React.Component {
         roomId: this.state.code,
       });
       this.props.addPlayerToRoom(playerId, name, this.state.code);
-      this.props.navigation.navigate('DrawCanvas', {
+      // this.props.navigation.navigate('DrawCanvas', {
+      //   userId: this.state.name + this.state.id,
+      //   roomId: this.state.code,
+      // });
+      this.props.navigation.navigate('Waiting', {
         userId: this.state.name + this.state.id,
         roomId: this.state.code,
       });
