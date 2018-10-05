@@ -10,28 +10,33 @@ import db from '../reducer/firebase';
 let counter = 1;
 
 class Waiting extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
       count: 1,
       players: '',
-      allplayers: {},
+      allplayers: [],
     };
     // this.getPlayersinRoom = this.getPlayersinRoom.bind(this);
   }
 
   getPlayersinRoom() {
     let temp = [];
-    const players = db
+    const dbplayers = db
       .database()
       .ref('players')
       .orderByChild('roomId')
       .equalTo(this.props.navigation.getParam('roomId'))
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         temp.push(snapshot.val());
       });
-    return temp;
+    const [players] = temp
+    let playersArray = []
+    for (let player in players) {
+      playersArray.push(players[player])
+    }
+    return playersArray
   }
 
   componentDidMount() {
@@ -40,20 +45,11 @@ class Waiting extends Component {
 
   render() {
     const roomId = this.props.navigation.getParam('roomId');
-    let [objects] = this.getPlayersinRoom();
-    let array = [];
-    for (let player in objects) {
-      array.push(objects[player]);
-    }
-    // console.log(array);
+
+    const playersList = this.getPlayersinRoom()
     return (
       <View style={styles.container}>
-        {array.map(player => (
-          <Text style={styles.text} key={player.name}>
-            {player.name}
-          </Text>
-        ))}
-        )<Text>{roomId}</Text>
+        <Text>{roomId}</Text>
         {this.props && this.props.players.length ? (
           <View style={styles.buttonGroup}>
             <TouchableOpacity
@@ -65,6 +61,7 @@ class Waiting extends Component {
             {counter++}
           </View>
         ) : (
+
           <View style={styles.buttonGroup}>
             {array.map(player => (
               <Text style={styles.text} key={player.name}>
@@ -86,6 +83,7 @@ class Waiting extends Component {
             {counter--}
           </View>
         )}
+
       </View>
     );
   }

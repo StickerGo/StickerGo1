@@ -111,16 +111,6 @@ const playerReducer = (state = initialStatePlayer, action) => {
         players: [...state.players, action.player],
         player: action.player,
       };
-    // case ADD_DRAW:
-    // return {
-    //   ...state,
-    //   draws: [...state.draws, action.draw],
-    // };
-    // case GET_PLAYERSBYROOM:
-    //   return {
-    //     ...state,
-    //     playersInRoom: action.players,
-    //   };
     default:
       return state;
   }
