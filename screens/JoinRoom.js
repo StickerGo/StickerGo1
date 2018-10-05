@@ -3,20 +3,34 @@ import { TouchableOpacity, View, Text, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
-import { getOneRoom } from '../reducer/roomReducer';
+import { getOneRoom, addToRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
+
+function checkRoomCodeCallback(code, exists) {
+  if (exists) {
+    console.log('THE ROOM EXISTS!');
+    return true;
+  } else {
+    console.log('THE ROOM DOES NOT EXIST :(');
+    return false;
+  }
+}
 
 class Join extends React.Component {
   _onPressButton() {}
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       pickval: 2,
       name: 'Enter name',
       code: '',
       id: '',
+      playerId: '',
+      roomExists: true,
     };
     this.addPlayer = this.addPlayer.bind(this);
+    this.checkRoomCode = this.checkRoomCode.bind(this);
+    // this.checkRoomCodeCallback = this.checkRoomCodeCallback.bind(this)
   }
 
   componentDidMount() {
@@ -26,33 +40,38 @@ class Join extends React.Component {
     this.setState({ id: id });
     // this.props.checkRoom(this.state.code);
   }
-  // checkRooms(roomId) {
-  //   let value;
-  //   let roomcheck;
-  //   let check = db
-  //     .database()
-  //     .ref('rooms')
-  //     .child('id')
-  //     .once('value', function(snapshot) {
-  //       value = snapshot.val();
-  //       if (value === { roomId }) roomcheck = true;
-  //       else {
-  //         roomcheck = false;
-  //       }
-  //       console.log('Check room ', value);
-  //     });
-  //   return roomcheck;
-  // }
 
-  addPlayer(name) {
-    this.props.addAPlayer({
-      name,
-      id: name + this.state.id,
-      draw: '',
-      photo: '',
-      roomId: this.state.code,
-    });
+  async addPlayer(name) {
+    const roomExists = await this.checkRoomCode(this.state.code);
+    if (roomExists) {
+      const playerId = name + this.state.id;
+      this.setState({ playerId });
+      this.props.addAPlayer({
+        name,
+        id: playerId,
+        draw: '',
+        photo: '',
+        roomId: this.state.code,
+      });
+      this.props.addPlayerToRoom(playerId, this.state.code);
+      this.props.navigation.navigate('DrawCanvas', {
+        userId: this.state.name + this.state.id,
+        roomId: this.state.code,
+      });
+    } else {
+      this.setState({ roomExists: false });
+    }
   }
+
+  async checkRoomCode(code) {
+    const snapshot = await db
+      .database()
+      .ref(`rooms/${code}`)
+      .once('value');
+    return snapshot.exists();
+  }
+
+  // addPlayerToRoom()
 
   render() {
     return (
@@ -75,6 +94,7 @@ class Join extends React.Component {
               });
             }}
           />
+          {this.state.roomExists === false && <Text>Invalid Room Number</Text>}
           <Text style={styles.text}>Enter room code</Text>
           <TextInput
             style={styles.textEnter}
@@ -91,15 +111,6 @@ class Join extends React.Component {
             style={styles.startButton}
             onPress={() => {
               this.addPlayer(this.state.name);
-              //need to send to "Waiting" room later
-              // this.props.navigation.navigate('Waiting', {
-              //   userId: this.state.name + this.state.id,
-              //   roomId: this.state.code,
-              // });
-              this.props.navigation.navigate('DrawCanvas', {
-                userId: this.state.name + this.state.id,
-                roomId: this.state.code,
-              });
             }}
           >
             <Text style={styles.startButtonText}>Join</Text>
@@ -156,6 +167,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
     // checkRoom: roomId => dispatch(getOneRoom(roomId)),
+    addPlayerToRoom: (playerId, roomId) =>
+      dispatch(addToRoom(playerId, roomId)),
   };
 };
 

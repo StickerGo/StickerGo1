@@ -385,7 +385,7 @@ export const stylesDefault = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontFamily: 'Avenir',
-    fontSize: 30,
+    fontSize: 27,
     color: 'white',
     margin: 10,
   },
@@ -399,11 +399,11 @@ export const stylesDefault = StyleSheet.create({
   sketch: {
     flex: 4,
     width: 300,
-    height: 400,
+    height: 300,
   },
   sketchContainer: {
-    flex: 9,
-    padding: 10,
+    flex: 8,
+    padding: 12,
     borderColor: 'lightpink',
     borderWidth: 10,
     backgroundColor: 'white',
