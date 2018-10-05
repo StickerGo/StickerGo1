@@ -3,14 +3,16 @@ import { Button, TouchableOpacity, View, Text } from 'react-native';
 // import { stylesRoomCode } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { FBAddPlayer } from '../reducer/playerReducer';
+import { addToRoom } from '../reducer/roomReducer'
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
       code: '01',
+      roomId: ''
     };
     this.playerId = Math.floor(Math.random() * 1000 + 1);
   }
@@ -23,25 +25,27 @@ class RoomCode extends Component {
       photo: '',
       roomId: this.props.roomId,
     });
-    console.log('player in roomcode is', this.props.player);
+    this.setState({ roomId: this.props.roomId })
+    this.props.addPlayerToRoom(id, this.props.roomId)
   }
+
   render() {
+    console.log('ROOM ID', this.state.roomId)
     return (
       <View style={styles.container}>
         <View style={styles.nonButtonContainer}>
           <Text style={styles.heading}>Here is your code:</Text>
           <View style={styles.textBkg}>
-            <Text style={styles.text}>{this.props.roomId}</Text>
+            <Text style={styles.text}>{this.state.roomId}</Text>
           </View>
         </View>
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              this.props.navigation.navigate('Waiting', {
-                roomId: this.props.roomId,
-              });
-            }}
+
+            //update to send to "Waiting" room later
+            onPress={() => this.props.navigation.navigate('DrawCanvas')}
+
           >
             <Text style={styles.buttonText}>Start Game</Text>
           </TouchableOpacity>
@@ -61,6 +65,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addPlayer: player => dispatch(FBAddPlayer(player)),
+    addPlayerToRoom: (playerId, roomId) => dispatch(addToRoom(playerId, roomId))
   };
 };
 
