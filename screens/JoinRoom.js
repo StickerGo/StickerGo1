@@ -92,14 +92,14 @@ class Join extends React.Component {
             onPress={() => {
               this.addPlayer(this.state.name);
               //need to send to "Waiting" room later
-              this.props.navigation.navigate('Waiting', {
-                userId: this.state.name + this.state.id,
-                roomId: this.state.code,
-              });
-              // this.props.navigation.navigate('DrawCanvas', {
+              // this.props.navigation.navigate('Waiting', {
               //   userId: this.state.name + this.state.id,
               //   roomId: this.state.code,
               // });
+              this.props.navigation.navigate('DrawCanvas', {
+                userId: this.state.name + this.state.id,
+                roomId: this.state.code,
+              });
             }}
           >
             <Text style={styles.startButtonText}>Join</Text>
