@@ -13,10 +13,11 @@ import { stylesDefault } from '../styles/componentStyles';
 console.disableYellowBox = true;
 import TouchableView from './TouchableView';
 import Timer from './Timer';
+import { connect } from 'react-redux';
 
 import { View as GraphicsView } from 'expo-graphics';
 
-export default class LinkScreen extends React.Component {
+class LinkScreen extends React.Component {
   constructor(props) {
     super(props);
     this.position = new THREE.Vector3();
@@ -65,6 +66,8 @@ export default class LinkScreen extends React.Component {
     this.saveImage();
   };
   render() {
+    console.log('what is room id : ', this.props.roomId);
+    const roomId = this.props.roomId;
     return (
       <View
         style={{ flex: 1 }}
@@ -83,7 +86,7 @@ export default class LinkScreen extends React.Component {
             onRender={this.onRender}
             onResize={this.onResize}
             isArEnabled
-            isArRunningStateEnabled
+            // isArRunningStateEnabled
             isArCameraStateEnabled
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
@@ -97,7 +100,7 @@ export default class LinkScreen extends React.Component {
             style={styles.button}
             onPress={() => {
               this.screenShot();
-              this.props.navigation.navigate('Winner');
+              this.props.navigation.navigate('VoteScreen', { roomId: roomId });
             }}
           >
             <Text style={styles.buttonText}>capture!</Text>
@@ -201,5 +204,25 @@ export default class LinkScreen extends React.Component {
     }
   };
 }
+
+const mapStateToProps = state => {
+  return {
+    roomId: state.rooms.room.id,
+    player: state.players.player,
+  };
+};
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     addPlayer: player => dispatch(FBAddPlayer(player)),
+//     addToRoom: (playerId, playerName, roomId) =>
+//       dispatch(addToRoom(playerId, playerName, roomId)),
+//   };
+// };
+
+export default connect(
+  mapStateToProps
+  // mapDispatchToProps
+)(LinkScreen);
 
 const styles = stylesDefault;
