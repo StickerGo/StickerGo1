@@ -12,7 +12,7 @@ class Timer extends React.Component {
     this.startCountdown = this.startCountdown.bind(this);
     this.intervalID = null;
     this.state = {
-      countdown: 5,
+      countdown: 60,
       displayedMinutes: '',
       displayedSeconds: '',
     };
