@@ -34,17 +34,39 @@ const addPhoto = photo => {
   };
 };
 
+/////
+
+// const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
+
+// const getPlayersbyRoom = players => {
+//   return {
+//     type: GET_PLAYERSBYROOM,
+//     players,
+//   };
+// };
+
+// export const getPlayersinRoom = () => {
+//   let temp = [];
+//   const players = db
+//     .database()
+//     .ref('players')
+//     .equalTo(this.props.navigation.getParam('roomId'))
+//     .on('value', function(snapshot) {
+//       temp.push(snapshot.val());
+//     });
+//   return temp;
+// };
+/////////
+
 // thunk creators
 export const getAllPlayers = () => {
   return dispatch => {
     try {
       console.log('beginning getAllPlayers');
-
       db.database()
-        .ref('players')
+        .ref('/players')
         .on('value', snapshot => {
           const players = snapshot.val() || [];
-          console.log(players);
           dispatch(getAll(players));
         });
     } catch (err) {
@@ -73,6 +95,7 @@ export const FBAddPlayer = player => {
 const initialStatePlayer = {
   players: [],
   player: {},
+  playersInRoom: [],
 };
 
 const playerReducer = (state = initialStatePlayer, action) => {
@@ -88,12 +111,6 @@ const playerReducer = (state = initialStatePlayer, action) => {
         players: [...state.players, action.player],
         player: action.player,
       };
-    // case ADD_DRAW:
-    // return {
-    //   ...state,
-    //   draws: [...state.draws, action.draw],
-    // };
-
     default:
       return state;
   }
