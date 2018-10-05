@@ -2,12 +2,13 @@ import db from './firebase';
 
 //action types
 let count = 0;
-const GET_ALL = 'GET_ALL';
+
 const ADD_PLAYER = 'ADD_PLAYER';
 const ADD_DRAW = 'ADD_DRAW';
 const ADD_PHOTO = 'ADD_PHOTO';
 const GET_ALL_DRAW = 'GET_ALL_DRAW';
 const GET_ALL_PHOTO = 'GET_ALL_PHOTO';
+const GET_ALL = 'GET_ALL';
 
 //action creators
 const getAll = players => {
@@ -33,30 +34,6 @@ const addPhoto = photo => {
     photo,
   };
 };
-
-/////
-
-// const GET_PLAYERSBYROOM = 'GET_PLAYERSBYROOM';
-
-// const getPlayersbyRoom = players => {
-//   return {
-//     type: GET_PLAYERSBYROOM,
-//     players,
-//   };
-// };
-
-// export const getPlayersinRoom = () => {
-//   let temp = [];
-//   const players = db
-//     .database()
-//     .ref('players')
-//     .equalTo(this.props.navigation.getParam('roomId'))
-//     .on('value', function(snapshot) {
-//       temp.push(snapshot.val());
-//     });
-//   return temp;
-// };
-/////////
 
 // thunk creators
 export const getAllPlayers = () => {

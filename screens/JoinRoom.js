@@ -53,7 +53,7 @@ class Join extends React.Component {
         photo: '',
         roomId: this.state.code,
       });
-      this.props.addPlayerToRoom(playerId, this.state.code);
+      this.props.addPlayerToRoom(playerId, name, this.state.code);
       this.props.navigation.navigate('DrawCanvas', {
         userId: this.state.name + this.state.id,
         roomId: this.state.code,

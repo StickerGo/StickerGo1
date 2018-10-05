@@ -5,9 +5,14 @@ import db from './firebase';
 const GET_ALL_ROOMS = 'GET_ALL_ROOMS';
 const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
-const ADD_TO_ROOM = 'ADD_TO_ROOM'
+const ADD_TO_ROOM = 'ADD_TO_ROOM';
+const GET_ALL_IN_ROOM = 'GET_ALL';
 
 //action creators
+
+const getAllInRoom = playersInRoom => {
+  return { type: GET_ALL_IN_ROOM, playersInRoom };
+};
 const getAll = rooms => {
   return { type: GET_ALL_ROOMS, rooms };
 };
@@ -18,8 +23,8 @@ const makeOne = room => {
   return { type: MAKE_ONE_ROOM, room };
 };
 const addPlayerToRoom = room => {
-  return { type: ADD_TO_ROOM, room }
-}
+  return { type: ADD_TO_ROOM, room };
+};
 
 // thunk creators
 export const getAllRooms = () => {
@@ -27,7 +32,7 @@ export const getAllRooms = () => {
     try {
       db.database()
         .ref('rooms')
-        .on('value', function (snapshot) {
+        .on('value', function(snapshot) {
           const rooms = snapshot.val() || [];
           dispatch(getAll(rooms));
         });
@@ -42,7 +47,7 @@ export const getOneRoom = roomId => {
     db.database()
       .ref('rooms')
       .child(roomId)
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         const room = snapshot.val() || [];
         console.log('PASS ROOM', room);
         dispatch(getOne(room));
@@ -62,18 +67,47 @@ export const getOneRoom = roomId => {
 //   };
 // };
 
+export const getPlayersinRoom = roomId => {
+  return async dispatch => {
+    try {
+      console.log('roomId', roomId);
+      let temp = [];
+      const dbplayers = await db
+        .database()
+        .ref('rooms')
+        .child(roomId)
+        .child('players')
+        .on('value', function(snapshot) {
+          temp.push(snapshot.val());
+        });
+
+      console.log('what is temp', temp);
+      // const [players] = temp;
+      // let playersArray = [];
+      // if (players) {
+      //   for (let player in players) {
+      //     playersArray.push(players[player]);
+      //   }
+      // }
+      dispatch(getAllInRoom(temp));
+    } catch (err) {
+      console.error('THERE IS ERROR WITH PLAYERS IN ROOM', err);
+    }
+  };
+};
+
 export const createRoom = roomInfo => {
   return dispatch => {
     const room = db
       .database()
       .ref('rooms')
       .child(roomInfo.id)
-      .set(roomInfo)
-    dispatch(makeOne(roomInfo))
-  }
-}
+      .set(roomInfo);
+    dispatch(makeOne(roomInfo));
+  };
+};
 
-export const addToRoom = (playerId, roomId) => {
+export const addToRoom = (playerId, playerName, roomId) => {
   return dispatch => {
     const room = db
       .database()
@@ -81,16 +115,17 @@ export const addToRoom = (playerId, roomId) => {
       .child(roomId)
       .child('players')
       .child(playerId)
-      .set(true)
-    dispatch(addPlayerToRoom(room))
-  }
-}
+      .set({ name: playerName, votes: 0 });
+    dispatch(addPlayerToRoom(room));
+  };
+};
 
 //reducer
 
 const initialStateRoom = {
   rooms: [],
   room: {},
+  playersInRoom: [],
 };
 
 const roomReducer = (state = initialStateRoom, action) => {
@@ -114,8 +149,13 @@ const roomReducer = (state = initialStateRoom, action) => {
     case ADD_TO_ROOM:
       return {
         ...state,
-        room: action.room
-      }
+        room: action.room,
+      };
+    case GET_ALL_IN_ROOM:
+      return {
+        ...state,
+        playersInRoom: action.playersInRoom,
+      };
     default:
       return state;
   }
