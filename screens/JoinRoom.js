@@ -167,8 +167,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
     // checkRoom: roomId => dispatch(getOneRoom(roomId)),
-    addPlayerToRoom: (playerId, roomId) =>
-      dispatch(addToRoom(playerId, roomId)),
+    addPlayerToRoom: (playerId, playerName, roomId) =>
+      dispatch(addToRoom(playerId, playerName, roomId)),
   };
 };
 

@@ -8,6 +8,7 @@ const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
 const GET_ALL_IN_ROOM = 'GET_ALL';
 
+
 //action creators
 
 const getAllInRoom = playersInRoom => {
@@ -109,14 +110,16 @@ export const createRoom = roomInfo => {
 
 export const addToRoom = (playerId, playerName, roomId) => {
   return dispatch => {
-    const room = db
+    return db
       .database()
       .ref('rooms')
       .child(roomId)
       .child('players')
       .child(playerId)
-      .set({ name: playerName, votes: 0 });
-    dispatch(addPlayerToRoom(room));
+      .set({ name: playerName, votes: 0 })
+      .then(() => {
+        dispatch(getOneRoom(roomId));
+      });
   };
 };
 

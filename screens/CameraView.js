@@ -91,7 +91,7 @@ class LinkScreen extends React.Component {
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
         </TouchableView>
-        <Timer navigation={this.props.navigation} navigateTo="Vote" />
+        <Timer navigation={this.props.navigation} navigateTo="VoteScreen" />
         <View style={styles.buttonGroup}>
           <TouchableOpacity style={styles.button} onPress={this.decreaseSize}>
             <Text style={styles.buttonText}>-size</Text>
