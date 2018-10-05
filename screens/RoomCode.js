@@ -37,7 +37,8 @@ class RoomCode extends Component {
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.navigation.navigate('Waiting')}
+            //update to send to "Waiting" room later
+            onPress={() => this.props.navigation.navigate('DrawCanvas')}
           >
             <Text style={styles.buttonText}>Start Game</Text>
           </TouchableOpacity>
