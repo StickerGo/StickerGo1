@@ -15,7 +15,7 @@ import { stylesDefault } from '../styles/componentStyles';
 console.disableYellowBox = true;
 
 class Room extends React.Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -40,7 +40,7 @@ class Room extends React.Component {
       winnerId: '',
       promptForRoom: prompt,
       players: {},
-      joined: 1
+      joined: 1,
     };
     this.props.generateRoom(roomInfo);
   }
