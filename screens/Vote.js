@@ -15,7 +15,7 @@ import db from '../reducer/firebase';
 import { getPlayersinRoom } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -24,40 +24,34 @@ class Contest extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const roomId = this.props.roomId;
-    console.log('what is room id in vote', roomId);
-    this.props.getPlayersinRoom(roomId);
+    await this.props.getPlayersinRoom(roomId);
   }
 
+  findPlayerImage = () => {
+    const playersInRoom = this.props.playersInRoom;
+    const arrOfImages = playersInRoom.map(async player => {
+      try {
+        const dbImages = await db
+          .database()
+          .ref('players')
+          .child(player)
+          .child('photo')
+          .once('value');
+        console.log('what the hell', dbImages.val());
+        return dbImages.val();
+      } catch (err) {
+        console.error('THERE IS SOMETHING WRONG IN ARRAYOFIMAGES', err);
+      }
+    });
+    console.log('arrofimages', arrOfImages);
+    return arrOfImages;
+  };
+
   render() {
-    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
-    // const roomId = this.props.navigation.getParam('roomId');
-    // let [objects] = this.props.getPlayersinRoom(roomId);
-    // let array = [];
-    // for (let player in objects) {
-    //   array.push(objects[player]);
-    // }
-    // let photos = [];
-    // array.map(players => photos.push(players.name));
     return (
       <View style={styles.container}>
-        {/* <ScrollView>
-          {array.map(players => (
-            <Image
-              key={players.name}
-              source={{
-                uri: players.photo,
-              }}
-              style={{
-                width: 500,
-                height: 500,
-                resizeMode: 'cover',
-                aspectRatio: 1.0,
-              }}
-            />
-          ))}
-        </ScrollView> */}
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
@@ -70,6 +64,7 @@ class Contest extends Component {
       </View>
     );
   }
+  //
 }
 
 //const styles = stylesContest;
@@ -94,7 +89,8 @@ const mapStateToProps = state => {
   return {
     players: state.players.players,
     roomSize: state.rooms.room.numPlayers,
-    roomId: state.rooms.room.id
+    roomId: state.rooms.room.id,
+    playersInRoom: state.rooms.playersInRoom,
   };
 };
 

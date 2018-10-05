@@ -6,8 +6,7 @@ const GET_ALL_ROOMS = 'GET_ALL_ROOMS';
 const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
-const GET_ALL_IN_ROOM = 'GET_ALL';
-
+const GET_ALL_IN_ROOM = 'GET_ALL_IN_ROOM';
 
 //action creators
 
@@ -78,11 +77,11 @@ export const getPlayersinRoom = roomId => {
         .ref('rooms')
         .child(roomId)
         .child('players')
-        .on('value', function(snapshot) {
-          temp.push(snapshot.val());
-        });
+        .once('value');
+      temp = dbplayers.val();
 
-      console.log('what is temp', temp);
+      let keysArr = Object.keys(temp);
+
       // const [players] = temp;
       // let playersArray = [];
       // if (players) {
@@ -90,7 +89,7 @@ export const getPlayersinRoom = roomId => {
       //     playersArray.push(players[player]);
       //   }
       // }
-      dispatch(getAllInRoom(temp));
+      dispatch(getAllInRoom(keysArr));
     } catch (err) {
       console.error('THERE IS ERROR WITH PLAYERS IN ROOM', err);
     }
