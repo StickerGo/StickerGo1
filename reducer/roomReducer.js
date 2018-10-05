@@ -5,7 +5,7 @@ import db from './firebase';
 const GET_ALL_ROOMS = 'GET_ALL_ROOMS';
 const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
-const ADD_TO_ROOM = 'ADD_TO_ROOM'
+const ADD_TO_ROOM = 'ADD_TO_ROOM';
 
 //action creators
 const getAll = rooms => {
@@ -18,8 +18,8 @@ const makeOne = room => {
   return { type: MAKE_ONE_ROOM, room };
 };
 const addPlayerToRoom = room => {
-  return { type: ADD_TO_ROOM, room }
-}
+  return { type: ADD_TO_ROOM, room };
+};
 
 // thunk creators
 export const getAllRooms = () => {
@@ -27,7 +27,7 @@ export const getAllRooms = () => {
     try {
       db.database()
         .ref('rooms')
-        .on('value', function (snapshot) {
+        .on('value', function(snapshot) {
           const rooms = snapshot.val() || [];
           dispatch(getAll(rooms));
         });
@@ -42,7 +42,7 @@ export const getOneRoom = roomId => {
     db.database()
       .ref('rooms')
       .child(roomId)
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         const room = snapshot.val() || [];
         console.log('PASS ROOM', room);
         dispatch(getOne(room));
@@ -68,23 +68,25 @@ export const createRoom = roomInfo => {
       .database()
       .ref('rooms')
       .child(roomInfo.id)
-      .set(roomInfo)
-    dispatch(makeOne(roomInfo))
-  }
-}
+      .set(roomInfo);
+    dispatch(makeOne(roomInfo));
+  };
+};
 
-export const addToRoom = (playerId, roomId) => {
+export const addToRoom = (playerId, playerName, roomId) => {
   return dispatch => {
-    const room = db
+    return db
       .database()
       .ref('rooms')
       .child(roomId)
       .child('players')
       .child(playerId)
-      .set(true)
-    dispatch(addPlayerToRoom(room))
-  }
-}
+      .set({ name: playerName, votes: 0 })
+      .then(() => {
+        dispatch(getOneRoom(roomId));
+      });
+  };
+};
 
 //reducer
 
@@ -114,8 +116,8 @@ const roomReducer = (state = initialStateRoom, action) => {
     case ADD_TO_ROOM:
       return {
         ...state,
-        room: action.room
-      }
+        room: action.room,
+      };
     default:
       return state;
   }

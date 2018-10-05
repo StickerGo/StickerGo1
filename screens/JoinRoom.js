@@ -53,11 +53,8 @@ class Join extends React.Component {
         photo: '',
         roomId: this.state.code,
       });
-      this.props.addPlayerToRoom(playerId, this.state.code);
-      this.props.navigation.navigate('DrawCanvas', {
-        userId: this.state.name + this.state.id,
-        roomId: this.state.code,
-      });
+      this.props.addPlayerToRoom(playerId, this.state.name, this.state.code);
+      this.props.navigation.navigate('DrawCanvas');
     } else {
       this.setState({ roomExists: false });
     }
@@ -167,8 +164,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
     // checkRoom: roomId => dispatch(getOneRoom(roomId)),
-    addPlayerToRoom: (playerId, roomId) =>
-      dispatch(addToRoom(playerId, roomId)),
+    addPlayerToRoom: (playerId, playerName, roomId) =>
+      dispatch(addToRoom(playerId, playerName, roomId)),
   };
 };
 
