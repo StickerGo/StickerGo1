@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Image, View, Text } from 'react-native';
+import {
+  TouchableOpacity,
+  Image,
+  View,
+  Text,
+  TouchableHighlight,
+} from 'react-native';
 //import { stylesCreate } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
+import { LinearGradient } from 'expo';
 
 export default class Start extends React.Component {
   constructor(props) {
@@ -16,32 +23,44 @@ export default class Start extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.nonButtonContainer}>
-          <Text style={styles.heading}>StickerGo</Text>
-          <Text style={styles.text}>go STICK it!</Text>
-          <Image
-            style={styles.image}
-            source={{
-              uri: 'https://media.giphy.com/media/26tPgy93ssTeTTSqA/giphy.gif',
-            }}
-          />
-        </View>
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              this.props.navigation.navigate('CreateRoom');
-            }}
-          >
-            <Text style={styles.buttonText}>Create a Room</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.props.navigation.navigate('JoinRoom')}
-          >
-            <Text style={styles.buttonText}>Join a Room</Text>
-          </TouchableOpacity>
-        </View>
+        <LinearGradient
+          colors={['#192f6a', 'cadetblue', 'lightpink']}
+          style={{
+            padding: 20,
+            alignItems: 'stretch',
+          }}
+        >
+          <View style={styles.nonButtonContainer}>
+            <Text style={styles.heading}>StickerGo</Text>
+
+            <Image
+              style={styles.image}
+              source={{
+                uri:
+                  'https://media.giphy.com/media/4Zqfoq9gQl0gHuowmc/giphy.gif',
+              }}
+            />
+          </View>
+
+          <View style={styles.buttonGroup}>
+            <TouchableHighlight
+              style={styles.button}
+              underlayColor="cadetblue"
+              onPress={() => {
+                this.props.navigation.navigate('CreateRoom');
+              }}
+            >
+              <Text style={styles.buttonText}>Create Room</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor="cadetblue"
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate('JoinRoom')}
+            >
+              <Text style={styles.buttonText}>Join Room</Text>
+            </TouchableHighlight>
+          </View>
+        </LinearGradient>
       </View>
     );
   }

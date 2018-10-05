@@ -8,16 +8,16 @@ import db from '../reducer/firebase';
 
 function checkRoomCodeCallback(code, exists) {
   if (exists) {
-    console.log('THE ROOM EXISTS!')
-    return true
+    console.log('THE ROOM EXISTS!');
+    return true;
   } else {
-    console.log('THE ROOM DOES NOT EXIST :(')
-    return false
+    console.log('THE ROOM DOES NOT EXIST :(');
+    return false;
   }
 }
 
 class Join extends React.Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor(props) {
     super(props);
     this.state = {
@@ -26,10 +26,10 @@ class Join extends React.Component {
       code: '',
       id: '',
       playerId: '',
-      roomExists: true
+      roomExists: true,
     };
     this.addPlayer = this.addPlayer.bind(this);
-    this.checkRoomCode = this.checkRoomCode.bind(this)
+    this.checkRoomCode = this.checkRoomCode.bind(this);
     // this.checkRoomCodeCallback = this.checkRoomCodeCallback.bind(this)
   }
 
@@ -41,12 +41,11 @@ class Join extends React.Component {
     // this.props.checkRoom(this.state.code);
   }
 
-
   async addPlayer(name) {
-    const roomExists = await this.checkRoomCode(this.state.code)
+    const roomExists = await this.checkRoomCode(this.state.code);
     if (roomExists) {
-      const playerId = name + this.state.id
-      this.setState({ playerId })
+      const playerId = name + this.state.id;
+      this.setState({ playerId });
       this.props.addAPlayer({
         name,
         id: playerId,
@@ -54,49 +53,52 @@ class Join extends React.Component {
         photo: '',
         roomId: this.state.code,
       });
-      this.props.addPlayerToRoom(playerId, this.state.code)
-      this.props.navigation.navigate('Waiting', {
+      this.props.addPlayerToRoom(playerId, this.state.code);
+      this.props.navigation.navigate('DrawCanvas', {
         userId: this.state.name + this.state.id,
         roomId: this.state.code,
       });
     } else {
-      this.setState({ roomExists: false })
+      this.setState({ roomExists: false });
     }
   }
-
-
 
   async checkRoomCode(code) {
     const snapshot = await db
       .database()
       .ref(`rooms/${code}`)
-      .once('value')
-    return snapshot.exists()
+      .once('value');
+    return snapshot.exists();
   }
 
   // addPlayerToRoom()
 
   render() {
     return (
-      <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'lightpink',
+        }}
+      >
         <View style={styles.nonButtonContainer}>
           <Text style={styles.text}>Enter your name</Text>
           <TextInput
             style={styles.textEnter}
-            placeholder="your name here"
+            placeholder="Your Name Here"
             onChangeText={text => {
               this.setState({
                 name: text,
               });
             }}
           />
-          {
-            this.state.roomExists === false && <Text>Invalid Room Number</Text>
-          }
+          {this.state.roomExists === false && <Text>Invalid Room Number</Text>}
           <Text style={styles.text}>Enter room code</Text>
           <TextInput
             style={styles.textEnter}
-            placeholder="room code here"
+            placeholder="Your Code Here"
             onChangeText={text => {
               this.setState({
                 code: text,
@@ -106,12 +108,12 @@ class Join extends React.Component {
         </View>
         <View style={styles.buttonGroup}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.startButton}
             onPress={() => {
               this.addPlayer(this.state.name);
             }}
           >
-            <Text style={styles.buttonText}>Start</Text>
+            <Text style={styles.startButtonText}>Join</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -165,7 +167,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
     // checkRoom: roomId => dispatch(getOneRoom(roomId)),
-    addPlayerToRoom: (playerId, roomId) => dispatch(addToRoom(playerId, roomId)),
+    addPlayerToRoom: (playerId, roomId) =>
+      dispatch(addToRoom(playerId, roomId)),
   };
 };
 
