@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Text, TextInput } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
-import { getOneRoom, addToRoom } from '../reducer/roomReducer';
+import { addToRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
 
 function checkRoomCodeCallback(code, exists) {
@@ -75,14 +81,7 @@ class Join extends React.Component {
 
   render() {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'lightpink',
-        }}
-      >
+      <ScrollView style={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           <Text style={styles.text}>Enter your name</Text>
           <TextInput
@@ -94,6 +93,7 @@ class Join extends React.Component {
               });
             }}
           />
+
           {this.state.roomExists === false && <Text>Invalid Room Number</Text>}
           <Text style={styles.text}>Enter room code</Text>
           <TextInput
@@ -106,7 +106,7 @@ class Join extends React.Component {
             }}
           />
         </View>
-        <View style={styles.buttonGroup}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
@@ -116,7 +116,7 @@ class Join extends React.Component {
             <Text style={styles.startButtonText}>Join</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

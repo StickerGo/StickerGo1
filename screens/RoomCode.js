@@ -1,13 +1,13 @@
+import { LinearGradient } from 'expo';
 import React, { Component } from 'react';
-import { Button, TouchableOpacity, View, Text } from 'react-native';
-// import { stylesRoomCode } from '../styles/componentStyles';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { stylesDefault } from '../styles/componentStyles';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { addToRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -34,24 +34,29 @@ class RoomCode extends Component {
   }
 
   render() {
-    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
+    console.log('ROOM ID IN ROOM CODE', this.props.roomId);
     return (
       <View style={styles.container}>
-        <View style={styles.nonButtonContainer}>
-          <Text style={styles.heading}>Here is your code:</Text>
-          <View style={styles.textBkg}>
-            <Text color={0x000}>{this.state.roomId}</Text>
+        <LinearGradient
+          colors={['#192f6a', 'cadetblue', 'lightpink']}
+          style={styles.linearGradientstyle}
+        >
+          <View style={styles.nonButtonContainer}>
+            <Text style={styles.text}>Here is your code:</Text>
+            <View style={styles.textBkg}>
+              <Text style={styles.codeText}>{this.state.roomId}</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={styles.button}
-            //update to send to "Waiting" room later
-            onPress={() => this.props.navigation.navigate('DrawCanvas')}
-          >
-            <Text style={styles.buttonText}>Start Game</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.startButton}
+              //update to send to "Waiting" room later
+              onPress={() => this.props.navigation.navigate('DrawCanvas')}
+            >
+              <Text style={styles.startButtonText}>start</Text>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
       </View>
     );
   }

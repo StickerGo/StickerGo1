@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Button,
   TouchableOpacity,
   View,
   Picker,
   Text,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { getAllPrompts } from '../reducer/promptReducer';
 import { createRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
-// import { stylesRoom } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
-console.disableYellowBox = true;
 
 class Room extends React.Component {
   _onPressButton() {}
@@ -21,7 +19,6 @@ class Room extends React.Component {
     this.state = {
       pickval: 2,
       typedText: 'Enter name',
-      playerId: '',
     };
     this.getRoom = this.getRoom.bind(this);
   }
@@ -46,7 +43,7 @@ class Room extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           <View style={styles.container}>
             <Text style={styles.text}>Enter your name</Text>
@@ -70,16 +67,15 @@ class Room extends React.Component {
                 this.setState({ pickval: itemValue })
               }
             >
-              <Picker.Item label="1" value="" />
               <Picker.Item label="2" value="2" />
               <Picker.Item label="3" value="3" />
               <Picker.Item label="4" value="4" />
             </Picker>
           </View>
         </View>
-        <View style={styles.buttonGroup}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.startButton}
             onPress={() => {
               this.getRoom();
               this.props.navigation.navigate('RoomCode', {
@@ -87,10 +83,10 @@ class Room extends React.Component {
               });
             }}
           >
-            <Text style={styles.buttonText}>Get Code</Text>
+            <Text style={styles.startButtonText}>get code</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

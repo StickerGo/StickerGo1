@@ -11,7 +11,7 @@ import Waiting from '../screens/Waiting';
 import Vote from '../screens/Vote';
 import Winner from '../screens/Winner';
 
-export default (HomeStack = createStackNavigator(
+export default createStackNavigator(
   {
     Home: Home,
     CreateRoom: CreateRoom,
@@ -26,5 +26,6 @@ export default (HomeStack = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
+    headerMode: 'none',
   }
-));
+);

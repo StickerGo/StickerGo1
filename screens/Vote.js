@@ -13,9 +13,10 @@ import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
 import db from '../reducer/firebase';
 import { getPlayersinRoom } from '../reducer/roomReducer';
+import { LinearGradient } from 'expo';
 
 class Contest extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -31,7 +32,7 @@ class Contest extends Component {
   }
 
   render() {
-    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
+    console.log('ROOM ID IN ROOM CODE', this.props.roomId);
     // const roomId = this.props.navigation.getParam('roomId');
     // let [objects] = this.props.getPlayersinRoom(roomId);
     // let array = [];
@@ -42,8 +43,12 @@ class Contest extends Component {
     // array.map(players => photos.push(players.name));
     return (
       <View style={styles.container}>
-        {/* <ScrollView>
-          {array.map(players => (
+        <LinearGradient
+          colors={['#192f6a', 'cadetblue', 'lightpink']}
+          style={styles.linearGradientstyle}
+        >
+          <ScrollView style={styles.nonButtonContainer}>
+            {/*array.map(players => (
             <Image
               key={players.name}
               source={{
@@ -56,23 +61,23 @@ class Contest extends Component {
                 aspectRatio: 1.0,
               }}
             />
-          ))}
-        </ScrollView> */}
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.props.navigation.navigate('Winner')}
-          >
-            <Text style={styles.buttonText}>Submit vote</Text>
-          </TouchableOpacity>
-        </View>
-        ) }
+          ))*/}
+          </ScrollView>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate('Winner')}
+            >
+              <Text style={styles.buttonText}>Submit vote</Text>
+            </TouchableOpacity>
+          </View>
+          ) }
+        </LinearGradient>
       </View>
     );
   }
 }
 
-//const styles = stylesContest;
 const styles = stylesDefault;
 
 // const styles = StyleSheet.create({
@@ -94,7 +99,7 @@ const mapStateToProps = state => {
   return {
     players: state.players.players,
     roomSize: state.rooms.room.numPlayers,
-    roomId: state.rooms.room.id
+    roomId: state.rooms.room.id,
   };
 };
 

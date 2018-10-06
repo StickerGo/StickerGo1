@@ -14,7 +14,7 @@ console.disableYellowBox = true;
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -111,26 +111,24 @@ class Home extends Component {
   };
 
   render() {
-    console.log('ROOM ID IN DRAW ROOM', this.props.roomId)
     return (
-      <View
-        style={{
-          flex: 1,
-
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'cadetblue',
-        }}
-      >
+      <View style={styles.container}>
         <LinearGradient
-          colors={['#192f6a', 'cadetblue']}
-          style={{
-            padding: 40,
-            alignItems: 'stretch',
-          }}
+          colors={['#192f6a', 'cadetblue', 'lightpink']}
+          style={styles.linearGradientstyle}
         >
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.undoButton}
+              onPress={() => {
+                this.sketch.undo();
+              }}
+            >
+              <Text style={styles.buttonText}>undo</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.nonButtonContainer}>
-            <Text style={styles.heading2}>Challenge: {this.props.prompt}</Text>
+            <Text style={styles.text}>Challenge: {this.props.prompt}</Text>
 
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
@@ -146,19 +144,12 @@ class Home extends Component {
           </View>
 
           <Timer
+            style={{ flex: 1 }}
             navigation={this.props.navigation}
             navigateTo="CameraView"
             screenshot={this.saveImage}
           />
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              style={styles.undoButton}
-              onPress={() => {
-                this.sketch.undo();
-              }}
-            >
-              <Text style={styles.buttonText}>undo</Text>
-            </TouchableOpacity>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
@@ -169,7 +160,7 @@ class Home extends Component {
                 });
               }}
             >
-              <Text style={styles.buttonText}>save</Text>
+              <Text style={styles.buttonText}>DONE</Text>
             </TouchableOpacity>
           </View>
         </LinearGradient>
@@ -184,7 +175,7 @@ const mapStateToProps = state => {
   return {
     player: state.players.player,
     prompt: state.prompts.prompt,
-    roomId: state.rooms.room.id
+    roomId: state.rooms.room.id,
   };
 };
 

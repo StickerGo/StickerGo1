@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Expo, { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo';
 import {
   Alert,
   AppRegistry,
@@ -25,23 +25,11 @@ class Winner extends Component {
     this.props.getTheWinner(this.props.room.winnerId);
   }
   render() {
-    console.log('in the render of the Winner');
     return (
-      <View
-        style={{
-          flex: 1,
-
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'cadetblue',
-        }}
-      >
+      <View style={styles.container}>
         <LinearGradient
-          colors={['#192f6a', 'cadetblue']}
-          style={{
-            padding: 40,
-            alignItems: 'stretch',
-          }}
+          colors={['#192f6a', 'cadetblue', 'lightpink']}
+          style={styles.linearGradientstyle}
         >
           <Text />
           <Text style={styles.text}>Winner is: </Text>

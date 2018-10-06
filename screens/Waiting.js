@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo';
 import React, { Component } from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -31,39 +32,44 @@ class Waiting extends Component {
     const playersList = this.getPlayersinRoom();
     return (
       <View style={styles.container}>
-        <Text>{roomId}</Text>
-        {this.props && this.props.players.length ? (
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate('DrawCanvas')}
-            >
-              <Text style={styles.buttonText}>Start Game</Text>
-            </TouchableOpacity>
-            {counter++}
-          </View>
-        ) : (
-          <View style={styles.buttonGroup}>
-            {array.map(player => (
-              <Text style={styles.text} key={player.name}>
-                {player.name}
-              </Text>
-            ))}
-            <Text style={styles.test}>{this.props.roomId}</Text>
-            {/* ))} */}
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() =>
-                this.props.navigation.navigate('VoteScreen', {
-                  roomId: this.props.navigation.getParam('roomId'),
-                })
-              }
-            >
-              <Text style={styles.buttonText}>Go To Vote</Text>
-            </TouchableOpacity>
-            {counter--}
-          </View>
-        )}
+        <LinearGradient
+          colors={['#192f6a', 'cadetblue', 'lightpink']}
+          style={styles.linearGradientstyle}
+        >
+          <Text>{roomId}</Text>
+          {this.props && this.props.players.length ? (
+            <View style={styles.buttonGroup}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate('DrawCanvas')}
+              >
+                <Text style={styles.buttonText}>Start Game</Text>
+              </TouchableOpacity>
+              {counter++}
+            </View>
+          ) : (
+            <View style={styles.buttonGroup}>
+              {array.map(player => (
+                <Text style={styles.text} key={player.name}>
+                  {player.name}
+                </Text>
+              ))}
+              <Text style={styles.test}>{this.props.roomId}</Text>
+              {/* ))} */}
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('VoteScreen', {
+                    roomId: this.props.navigation.getParam('roomId'),
+                  })
+                }
+              >
+                <Text style={styles.buttonText}>Go To Vote</Text>
+              </TouchableOpacity>
+              {counter--}
+            </View>
+          )}
+        </LinearGradient>
       </View>
     );
   }
