@@ -20,7 +20,7 @@ class Room extends React.Component {
     super();
     this.state = {
       pickval: 2,
-      typedText: 'Enter name',
+      typedText: '',
       playerId: '',
     };
     this.getRoom = this.getRoom.bind(this);
@@ -45,6 +45,7 @@ class Room extends React.Component {
     this.props.generateRoom(roomInfo);
   }
   render() {
+    let checkName = this.state.typedText.trim() === '';
     return (
       <View style={styles.container}>
         <View style={styles.nonButtonContainer}>
@@ -59,6 +60,9 @@ class Room extends React.Component {
                 });
               }}
             />
+            {checkName && (
+              <Text style={styles.buttonText}>Name is Required</Text>
+            )}
           </View>
           <View style={styles.pickerContainer}>
             <Text style={styles.text}>How many players?</Text>
@@ -70,7 +74,6 @@ class Room extends React.Component {
                 this.setState({ pickval: itemValue })
               }
             >
-              <Picker.Item label="1" value="" />
               <Picker.Item label="2" value="2" />
               <Picker.Item label="3" value="3" />
               <Picker.Item label="4" value="4" />
@@ -81,10 +84,12 @@ class Room extends React.Component {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              this.getRoom();
-              this.props.navigation.navigate('RoomCode', {
-                name: this.state.typedText,
-              });
+              if (this.state.typedText.trim() !== '') {
+                this.getRoom();
+                this.props.navigation.navigate('RoomCode', {
+                  name: this.state.typedText,
+                });
+              }
             }}
           >
             <Text style={styles.buttonText}>Get Code</Text>

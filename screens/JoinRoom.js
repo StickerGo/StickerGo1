@@ -22,7 +22,7 @@ class Join extends React.Component {
     super(props);
     this.state = {
       pickval: 2,
-      name: 'Enter name',
+      name: '',
       code: '',
       id: '',
       playerId: '',
@@ -78,6 +78,7 @@ class Join extends React.Component {
   // addPlayerToRoom()
 
   render() {
+    let checkName = this.state.name.trim() === '';
     return (
       <View
         style={{
@@ -98,7 +99,10 @@ class Join extends React.Component {
               });
             }}
           />
-          {this.state.roomExists === false && <Text>Invalid Room Number</Text>}
+          {checkName && <Text>Name is Required</Text>}
+          {this.state.roomExists === false && (
+            <Text style={styles.text}>Invalid Room Number</Text>
+          )}
           <Text style={styles.text}>Enter room code</Text>
           <TextInput
             style={styles.textEnter}
