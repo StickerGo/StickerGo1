@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 // import { stylesWinner } from '../styles/componentStyles';
 import { connect } from 'react-redux';
-import { getWinner } from '../reducer/playerReducer';
+import { getAllPrompts } from '../reducer/promptReducer';
+import { getWinner, playerExitGame } from '../reducer/playerReducer';
+import { exitGame, resetRoom } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
@@ -23,6 +25,21 @@ class Winner extends Component {
   }
   componentDidMount() {
     this.props.getTheWinner(this.props.room.winnerId);
+    this.props.getAllPrompts();
+  }
+  replay() {
+    let newPrompt = this.props.prompts[
+      Math.floor(Math.random() * this.props.prompts.length)
+    ];
+    while (newPrompt === this.props.room.promptForRoom) {
+      newPrompt = this.props.prompts[
+        Math.floor(Math.random() * this.props.prompts.length)
+      ];
+    }
+    const roomInfo = this.props.room;
+    roomInfo.newPrompt = newPrompt;
+    this.props.reset(roomInfo);
+    this.props.navigation.navigate('Waiting');
   }
   render() {
     return (
@@ -53,7 +70,10 @@ class Winner extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => this.props.navigation.navigate('Home')}
+              onPress={() => {
+                this.props.exit();
+                this.props.navigation.navigate('Home');
+              }}
             >
               <Text style={styles.buttonText}>Exit</Text>
             </TouchableOpacity>
@@ -75,7 +95,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getAllPrompts: () => dispatch(getAllPrompts()),
     getTheWinner: winnerId => dispatch(getWinner(winnerId)),
+    exit: () => {
+      dispatch(playerExitGame());
+      dispatch(exitGame());
+    },
+    reset: roomInfo => {
+      dispatch(resetRoom(roomInfo));
+    },
   };
 };
 

@@ -18,7 +18,8 @@ class Room extends React.Component {
     super();
     this.state = {
       pickval: 2,
-      typedText: 'Enter name',
+      name: '',
+      nameEntered: true,
     };
     this.getRoom = this.getRoom.bind(this);
   }
@@ -27,32 +28,40 @@ class Room extends React.Component {
   }
 
   getRoom() {
-    const prompt = this.props.prompts[
-      Math.floor(Math.random() * this.props.prompts.length)
-    ];
-    const roomInfo = {
-      id: Math.floor(Math.random() * 100000 + 1).toString(),
-      numPlayers: this.state.pickval,
-      status: 'open',
-      winnerId: '',
-      promptForRoom: prompt,
-      players: {},
-      joined: 1,
-    };
-    this.props.generateRoom(roomInfo);
+    if (!this.state.name) {
+      this.setState({ nameEntered: false });
+    } else {
+      const prompt = this.props.prompts[
+        Math.floor(Math.random() * this.props.prompts.length)
+      ];
+      const roomInfo = {
+        id: Math.floor(Math.random() * 100000 + 1).toString(),
+        numPlayers: this.state.pickval,
+        status: 'open',
+        winnerId: '',
+        promptForRoom: prompt,
+        players: {},
+        joined: 1,
+      };
+      this.props.generateRoom(roomInfo);
+      this.props.navigation.navigate('RoomCode', {
+        name: this.state.name,
+      });
+    }
   }
   render() {
     return (
       <ScrollView style={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           <View style={styles.container}>
+            {this.state.nameEntered === false && <Text>Name required</Text>}
             <Text style={styles.text}>Enter your name</Text>
             <TextInput
               style={styles.textEnter}
               placeholder="your name here"
               onChangeText={text => {
                 this.setState(previousState => {
-                  return { typedText: text };
+                  return { name: text };
                 });
               }}
             />
@@ -78,9 +87,6 @@ class Room extends React.Component {
             style={styles.startButton}
             onPress={() => {
               this.getRoom();
-              this.props.navigation.navigate('RoomCode', {
-                name: this.state.typedText,
-              });
             }}
           >
             <Text style={styles.startButtonText}>get code</Text>

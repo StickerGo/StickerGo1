@@ -21,7 +21,6 @@ class RoomCode extends Component {
     const id = this.props.navigation.getParam('name') + this.playerId;
     const name = this.props.navigation.getParam('name');
     this.setState({ roomId: this.props.roomId });
-
     this.props.addPlayer({
       name: this.props.navigation.getParam('name'),
       id,

@@ -12,15 +12,15 @@ import { stylesDefault } from '../styles/componentStyles';
 import { addToRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
 
-function checkRoomCodeCallback(code, exists) {
-  if (exists) {
-    console.log('THE ROOM EXISTS!');
-    return true;
-  } else {
-    console.log('THE ROOM DOES NOT EXIST :(');
-    return false;
-  }
-}
+// function checkRoomCodeCallback(code, exists) {
+//   if (exists) {
+//     console.log('THE ROOM EXISTS!');
+//     return true;
+//   } else {
+//     console.log('THE ROOM DOES NOT EXIST :(');
+//     return false;
+//   }
+// }
 
 class Join extends React.Component {
   _onPressButton() {}
@@ -28,7 +28,8 @@ class Join extends React.Component {
     super(props);
     this.state = {
       pickval: 2,
-      name: 'Enter name',
+      name: '',
+      nameEntered: true,
       code: '',
       id: '',
       playerId: '',
@@ -49,7 +50,7 @@ class Join extends React.Component {
 
   async addPlayer(name) {
     const roomExists = await this.checkRoomCode(this.state.code);
-    if (roomExists) {
+    if (roomExists && name) {
       const playerId = name + this.state.id;
       this.setState({ playerId });
       this.props.addAPlayer({
@@ -64,6 +65,8 @@ class Join extends React.Component {
         userId: this.state.name + this.state.id,
         roomId: this.state.code,
       });
+    } else if (!name) {
+      this.setState({ nameEntered: false });
     } else {
       this.setState({ roomExists: false });
     }
@@ -83,6 +86,7 @@ class Join extends React.Component {
     return (
       <ScrollView style={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
+          {this.state.nameEntered === false && <Text>Name required</Text>}
           <Text style={styles.text}>Enter your name</Text>
           <TextInput
             style={styles.textEnter}

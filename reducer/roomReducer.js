@@ -6,42 +6,49 @@ const GET_ALL_ROOMS = 'GET_ALL_ROOMS';
 const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
-const GET_ALL_IN_ROOM = 'GET_ALL';
-
+const GET_ALL_IN_ROOM = 'GET_ALL_IN_ROOM';
+const RESET_GAME = 'RESET_GAME';
+const EXIT_GAME = 'EXIT_GAME';
 
 //action creators
 
 const getAllInRoom = playersInRoom => {
   return { type: GET_ALL_IN_ROOM, playersInRoom };
 };
-const getAll = rooms => {
-  return { type: GET_ALL_ROOMS, rooms };
-};
+// const getAll = rooms => {
+//   return { type: GET_ALL_ROOMS, rooms };
+// };
 const getOne = room => {
   return { type: GET_ONE_ROOM, room };
 };
 const makeOne = room => {
   return { type: MAKE_ONE_ROOM, room };
 };
-const addPlayerToRoom = room => {
-  return { type: ADD_TO_ROOM, room };
+// const addPlayerToRoom = room => {
+//   return { type: ADD_TO_ROOM, room };
+// };
+const resetGame = roomReset => {
+  return { type: RESET_GAME, roomReset };
+};
+export const exitGame = () => {
+  return { type: EXIT_GAME };
 };
 
 // thunk creators
-export const getAllRooms = () => {
-  return dispatch => {
-    try {
-      db.database()
-        .ref('rooms')
-        .on('value', function(snapshot) {
-          const rooms = snapshot.val() || [];
-          dispatch(getAll(rooms));
-        });
-    } catch (err) {
-      console.error('THUNK WRONG WITH GET ALL ROOMS', err);
-    }
-  };
-};
+// export const getAllRooms = () => {
+//   return dispatch => {
+//     try {
+//       db.database()
+//         .ref('rooms')
+//         .on('value', function(snapshot) {
+//           const rooms = snapshot.val() || [];
+//           dispatch(getAll(rooms));
+//         });
+//     } catch (err) {
+//       console.error('THUNK WRONG WITH GET ALL ROOMS', err);
+//     }
+//   };
+// };
 
 export const getOneRoom = roomId => {
   return dispatch => {
@@ -102,8 +109,8 @@ export const createRoom = roomInfo => {
       .database()
       .ref('rooms')
       .child(roomInfo.id)
-      .set(roomInfo);
-    dispatch(makeOne(roomInfo));
+      .set(roomInfo)
+      .then(() => dispatch(makeOne(roomInfo)));
   };
 };
 
@@ -119,6 +126,33 @@ export const addToRoom = (playerId, playerName, roomId) => {
       .then(() => {
         dispatch(getOneRoom(roomId));
       });
+  };
+};
+
+export const resetRoom = roomInfo => {
+  //1. reset prompt
+  //2. reset winnerId
+  //3. reset each player's votes
+  return dispatch => {
+    const playersInRoom = roomInfo.players;
+    const resetWinner = db
+      .database()
+      .ref('rooms')
+      .child(`/${roomInfo.id}/winnerId`)
+      .set('');
+    const resetPrompt = db
+      .database()
+      .ref('rooms')
+      .child(`/${roomInfo.id}/promptForRoom`)
+      .set(roomInfo.newPrompt);
+    const resetPlayerVotes = playersInRoom.map(playerId => {
+      return db
+        .database()
+        .ref('rooms')
+        .child(`/${roomInfo.id}/players/${playerId}/votes`)
+        .set(0);
+    });
+    dispatch(getOneRoom(roomInfo.id));
   };
 };
 
@@ -158,6 +192,8 @@ const roomReducer = (state = initialStateRoom, action) => {
         ...state,
         playersInRoom: action.playersInRoom,
       };
+    case EXIT_GAME:
+      return initialStateRoom;
     default:
       return state;
   }
