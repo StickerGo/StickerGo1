@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 import { getOneRoom } from '../reducer/roomReducer';
 import { getPlayersinRoom } from '../reducer/roomReducer';
-// import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import db from '../reducer/firebase';
 let counter = 1;
@@ -18,34 +17,27 @@ class Waiting extends Component {
       players: '',
       allplayers: [],
     };
-    // this.getPlayersinRoom = this.getPlayersinRoom.bind(this);
   }
 
-  componentDidMount() {
-    // const roomId = this.props.room
-    // this.props.getRoomInfo(roomId);
-    // this.props.getPlayersinRoom(this.props.room);
-  }
+  componentDidMount() {}
 
   render() {
-    // const playersList = this.getPlayersinRoom();
-    const roomId = this.props.room;
-    // console.log('find room id', this.props.room);
-    console.log('When they join', this.props.roomSize);
-    console.log('Find players count', this.props.players.length);
+    let play = this.props.room.players;
+    let playcount;
+    if (typeof play === 'object') {
+      playcount = Object.getOwnPropertyNames(play).length;
+    }
     let checknum;
-    if (this.props.roomSize === this.props.players.length) {
+    if (Number(this.props.roomSize) === playcount) {
       checknum = true;
     } else {
       checknum = false;
     }
-    console.log(checknum, 'Check');
     return (
       <View style={styles.container}>
-        {/* {this.props.roomSize === this.props.players.length ? ( */}
-        {this.props && this.props.players.length ? (
+        {this.props && this.props.players ? (
           <View style={styles.buttonGroup}>
-            {this.props.roomSize === this.props.players.length ? (
+            {checknum ? (
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => this.props.navigation.navigate('DrawCanvas')}
@@ -66,16 +58,20 @@ class Waiting extends Component {
             ))} */}
             <Text style={styles.test}>{this.props.roomId}</Text>
             {/* ))} */}
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() =>
-                this.props.navigation.navigate('VoteScreen', {
-                  roomId: this.props.navigation.getParam('roomId'),
-                })
-              }
-            >
-              <Text style={styles.buttonText}>Go To Vote</Text>
-            </TouchableOpacity>
+            {this.props.roomSize === playcount ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('VoteScreen', {
+                    roomId: this.props.navigation.getParam('roomId'),
+                  })
+                }
+              >
+                <Text style={styles.buttonText}>Go To Vote</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.buttonText}>Waiting</Text>
+            )}
             {counter--}
           </View>
         )}
@@ -84,14 +80,14 @@ class Waiting extends Component {
   }
 }
 
-// const styles = stylesWaiting;
 const styles = stylesDefault;
 
 const mapStateToProps = state => {
   return {
     players: state.players.players,
     roomSize: state.rooms.room.numPlayers,
-    room: state.rooms.room.id,
+    roomId: state.rooms.room.id,
+    room: state.rooms.room,
   };
 };
 
@@ -99,7 +95,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getAll: () => dispatch(getAllPlayers()),
     getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
-    getRoomInfo: roomId => dispatch(getOneRoom(roomId)),
+    getOneRoom: roomId => dispatch(getOneRoom(roomId)),
   };
 };
 

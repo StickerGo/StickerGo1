@@ -59,8 +59,8 @@ class Join extends React.Component {
       //   roomId: this.state.code,
       // });
       this.props.navigation.navigate('Waiting', {
-        userId: this.state.name + this.state.id,
-        roomId: this.state.code,
+        // userId: this.state.name + this.state.id,
+        // roomId: this.state.code,
       });
     } else {
       this.setState({ roomExists: false });
@@ -164,6 +164,7 @@ const styles = stylesDefault;
 const mapStateToProps = state => {
   return {
     players: state.players,
+    roomId: state.rooms.room.id,
   };
 };
 
