@@ -44,14 +44,14 @@ class Home extends Component {
     appState: AppState.currentState,
   };
 
-  saveImage() {
+  saveImage = () => {
     const draw = this.state.image;
 
     db.database()
       .ref('players')
       .child(`/${this.props.player.id}/draw`)
       .set(draw.uri);
-  }
+  };
 
   handleAppStateChangeAsync = nextAppState => {
     if (
@@ -145,7 +145,11 @@ class Home extends Component {
             </View>
           </View>
 
-          <Timer navigation={this.props.navigation} navigateTo="CameraView" />
+          <Timer
+            navigation={this.props.navigation}
+            navigateTo="CameraView"
+            screenshot={this.saveImage}
+          />
           <View style={styles.buttonGroup}>
             <TouchableOpacity
               style={styles.undoButton}
