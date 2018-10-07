@@ -23,20 +23,21 @@ class LinkScreen extends React.Component {
     this.position = new THREE.Vector3();
     this.aim = new THREE.Vector3();
     this.state = {
-      userId: this.props.navigation.getParam('userId'),
+      userId: '',
       image: '',
       photo: '',
       sizeChanger: 5,
     };
     this.increaseSize = this.increaseSize.bind(this);
     this.decreaseSize = this.decreaseSize.bind(this);
+    this.saveImage = this.saveImage.bind(this);
   }
   saveImage() {
     const photo = this.state.photo;
 
     db.database()
       .ref('players')
-      .child(`/${this.props.navigation.getParam('userId')}/photo`)
+      .child(`/${this.props.player.id}/photo`)
       .set(photo.photo);
   }
   increaseSize() {
@@ -68,18 +69,16 @@ class LinkScreen extends React.Component {
   render() {
     const roomId = this.props.roomId;
     return (
-      <View
-        style={{ flex: 1 }}
-        ref={view => {
-          this._container = view;
-        }}
-      >
+      <View style={{ flex: 1 }}>
         <TouchableView
           style={{ flex: 1 }}
           shouldCancelWhenOutside={false}
           onTouchesBegan={this.onTouchesBegan}
         >
           <GraphicsView
+            ref={view => {
+              this._container = view;
+            }}
             style={{ flex: 2 }}
             onContextCreate={this.onContextCreate}
             onRender={this.onRender}
@@ -90,7 +89,11 @@ class LinkScreen extends React.Component {
             arTrackingConfiguration={AR.TrackingConfigurations.World}
           />
         </TouchableView>
-        <Timer navigation={this.props.navigation} navigateTo="VoteScreen" />
+        <Timer
+          navigation={this.props.navigation}
+          navigateTo="VoteScreen"
+          screenshot={this.screenShot}
+        />
         <View style={styles.buttonGroup}>
           <TouchableOpacity style={styles.button} onPress={this.decreaseSize}>
             <Text style={styles.buttonText}>-size</Text>
@@ -113,12 +116,12 @@ class LinkScreen extends React.Component {
   }
 
   getImage() {
-    let userId = this.state.userId;
+    let playerId = this.props.player.id;
 
     let newImage;
     db.database()
       .ref('players')
-      .child(userId)
+      .child(playerId)
       .child('draw')
       .on('value', function(snapshot) {
         newImage = snapshot.val();
@@ -212,17 +215,6 @@ const mapStateToProps = state => {
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     addPlayer: player => dispatch(FBAddPlayer(player)),
-//     addToRoom: (playerId, playerName, roomId) =>
-//       dispatch(addToRoom(playerId, playerName, roomId)),
-//   };
-// };
-
-export default connect(
-  mapStateToProps
-  // mapDispatchToProps
-)(LinkScreen);
+export default connect(mapStateToProps)(LinkScreen);
 
 const styles = stylesDefault;
