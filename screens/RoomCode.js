@@ -20,14 +20,18 @@ class RoomCode extends Component {
   componentDidMount() {
     const id = this.props.navigation.getParam('name') + this.playerId;
     const name = this.props.navigation.getParam('name');
+    // const id = 'Ave001';
+    // const name = 'Ave';
     this.setState({ roomId: this.props.roomId });
 
     this.props.addPlayer({
       name: this.props.navigation.getParam('name'),
+      // name: '',
       id,
       draw: '',
       photo: '',
       roomId: this.props.roomId,
+      //status: 'drawing'
     });
 
     this.props.addToRoom(id, name, this.props.roomId);
@@ -47,7 +51,8 @@ class RoomCode extends Component {
           <TouchableOpacity
             style={styles.button}
             //update to send to "Waiting" room later
-            onPress={() => this.props.navigation.navigate('Waiting')}
+            // onPress={() => this.props.navigation.navigate('Waiting')}
+            onPress={() => this.props.navigation.navigate('DrawCanvas')}
           >
             <Text style={styles.buttonText}>Start Game</Text>
           </TouchableOpacity>

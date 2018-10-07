@@ -103,8 +103,10 @@ class LinkScreen extends React.Component {
             style={styles.button}
             onPress={() => {
               this.screenShot();
-              // this.props.navigation.navigate('VoteScreen');
-              this.props.navigation.navigate('Waiting');
+              this.props.navigation.navigate('VoteScreen');
+              // this.updatePlayer();
+              //updatePlayerstatus for Waiting to VoteScreen
+              // this.props.navigation.navigate('Waiting');
             }}
           >
             <Text style={styles.buttonText}>capture!</Text>

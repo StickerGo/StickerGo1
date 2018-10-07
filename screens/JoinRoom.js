@@ -52,16 +52,11 @@ class Join extends React.Component {
         draw: '',
         photo: '',
         roomId: this.state.code,
+        //status: 'drawing', capturing
       });
       this.props.addPlayerToRoom(playerId, name, this.state.code);
-      // this.props.navigation.navigate('DrawCanvas', {
-      //   userId: this.state.name + this.state.id,
-      //   roomId: this.state.code,
-      // });
-      this.props.navigation.navigate('Waiting', {
-        // userId: this.state.name + this.state.id,
-        // roomId: this.state.code,
-      });
+      this.props.navigation.navigate('DrawCanvas');
+      //this.props.navigation.navigate('Waiting');
     } else {
       this.setState({ roomExists: false });
     }
@@ -79,6 +74,7 @@ class Join extends React.Component {
 
   render() {
     let checkName = this.state.name.trim() === '';
+    let checkChar = !/^[a-zA-Z]*$/g.test(this.state.name);
     return (
       <View
         style={{
@@ -100,6 +96,7 @@ class Join extends React.Component {
             }}
           />
           {checkName && <Text style={styles.text}>Name is Required</Text>}
+          {checkChar && <Text style={styles.text}>Letters Only</Text>}
           {this.state.roomExists === false && (
             <Text style={styles.text}>Invalid Room Number</Text>
           )}
@@ -118,7 +115,9 @@ class Join extends React.Component {
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
-              this.addPlayer(this.state.name);
+              if (this.state.name.trim() !== '' && !checkChar) {
+                this.addPlayer(this.state.name);
+              }
             }}
           >
             <Text style={styles.startButtonText}>Join</Text>

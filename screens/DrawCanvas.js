@@ -164,9 +164,7 @@ class Home extends Component {
               onPress={() => {
                 this.saveImage();
                 const id = this.props.player.id;
-                this.props.navigation.navigate('CameraView', {
-                  userId: id,
-                });
+                this.props.navigation.navigate('CameraView');
               }}
             >
               <Text style={styles.buttonText}>save</Text>

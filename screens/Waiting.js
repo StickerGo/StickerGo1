@@ -7,7 +7,7 @@ import { getPlayersinRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import db from '../reducer/firebase';
-let counter = 0;
+let counter = 2;
 
 class Waiting extends Component {
   _onPressButton() {}
@@ -37,7 +37,7 @@ class Waiting extends Component {
     return (
       <View style={styles.container}>
         {/* {this.props && this.props.players ? ( */}
-        {play && counter !== 0 ? (
+        {this.props ? (
           <View style={styles.buttonGroup}>
             {checknum ? (
               <TouchableOpacity
@@ -49,7 +49,7 @@ class Waiting extends Component {
             ) : (
               <Text style={styles.buttonText}>Waiting</Text>
             )}
-            {counter++}
+            {counter--}
           </View>
         ) : (
           <View style={styles.buttonGroup}>
@@ -59,7 +59,7 @@ class Waiting extends Component {
               </Text>
             ))} */}
             {/* ))} */}
-            {this.props.roomSize === playcount ? (
+            {checknum ? (
               <TouchableOpacity
                 style={styles.button}
                 onPress={() =>
@@ -73,7 +73,8 @@ class Waiting extends Component {
             ) : (
               <Text style={styles.buttonText}>Waiting</Text>
             )}
-            {counter--}
+            {console.log('VALUE', counter)}
+            {counter++}
           </View>
         )}
       </View>
