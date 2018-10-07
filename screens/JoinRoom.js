@@ -99,7 +99,7 @@ class Join extends React.Component {
               });
             }}
           />
-          {checkName && <Text>Name is Required</Text>}
+          {checkName && <Text style={styles.text}>Name is Required</Text>}
           {this.state.roomExists === false && (
             <Text style={styles.text}>Invalid Room Number</Text>
           )}

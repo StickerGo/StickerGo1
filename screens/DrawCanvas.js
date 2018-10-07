@@ -14,7 +14,7 @@ console.disableYellowBox = true;
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -111,11 +111,11 @@ class Home extends Component {
   };
 
   render() {
-    console.log('ROOM ID IN DRAW ROOM', this.props.roomId)
+    console.log('ROOM ID IN DRAW ROOM', this.props.roomId);
     return (
       <View
         style={{
-          flex: 1,
+          flex: 2,
 
           justifyContent: 'center',
           alignItems: 'center',
@@ -184,7 +184,7 @@ const mapStateToProps = state => {
   return {
     player: state.players.player,
     prompt: state.prompts.prompt,
-    roomId: state.rooms.room.id
+    roomId: state.rooms.room.id,
   };
 };
 

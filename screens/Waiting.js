@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 import { getOneRoom } from '../reducer/roomReducer';
 import { getPlayersinRoom } from '../reducer/roomReducer';
+// import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import db from '../reducer/firebase';
-let counter = 1;
+let counter = 0;
 
 class Waiting extends Component {
   _onPressButton() {}
@@ -35,7 +36,8 @@ class Waiting extends Component {
     }
     return (
       <View style={styles.container}>
-        {this.props && this.props.players ? (
+        {/* {this.props && this.props.players ? ( */}
+        {play && counter !== 0 ? (
           <View style={styles.buttonGroup}>
             {checknum ? (
               <TouchableOpacity
@@ -56,7 +58,6 @@ class Waiting extends Component {
                 {player.name}
               </Text>
             ))} */}
-            <Text style={styles.test}>{this.props.roomId}</Text>
             {/* ))} */}
             {this.props.roomSize === playcount ? (
               <TouchableOpacity
