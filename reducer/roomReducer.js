@@ -7,6 +7,7 @@ const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
 const GET_ALL_IN_ROOM = 'GET_ALL_IN_ROOM';
+const GOT_IMAGES = 'GOT_IMAGES'
 
 //action creators
 
@@ -26,13 +27,18 @@ const addPlayerToRoom = room => {
   return { type: ADD_TO_ROOM, room };
 };
 
+const gotImages = image => {
+  console.log('in the action creator', image)
+  return { type: GOT_IMAGES, image }
+}
+
 // thunk creators
 export const getAllRooms = () => {
   return dispatch => {
     try {
       db.database()
         .ref('rooms')
-        .on('value', function(snapshot) {
+        .on('value', function (snapshot) {
           const rooms = snapshot.val() || [];
           dispatch(getAll(rooms));
         });
@@ -47,29 +53,17 @@ export const getOneRoom = roomId => {
     db.database()
       .ref('rooms')
       .child(roomId)
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         const room = snapshot.val() || [];
         dispatch(getOne(room));
       });
   };
 };
 
-// export const createRoom = roomInfo => {
-//   return dispatch => {
-//     const room = db
-//       .database()
-//       .ref('rooms')
-//       .push();
-//     roomInfo.id = room.key;
-//     room.set(roomInfo);
-//     dispatch(makeOne(roomInfo));
-//   };
-// };
 
 export const getPlayersinRoom = roomId => {
   return async dispatch => {
     try {
-      console.log('roomId', roomId);
       let temp = [];
       const dbplayers = await db
         .database()
@@ -81,13 +75,6 @@ export const getPlayersinRoom = roomId => {
 
       let keysArr = Object.keys(temp);
 
-      // const [players] = temp;
-      // let playersArray = [];
-      // if (players) {
-      //   for (let player in players) {
-      //     playersArray.push(players[player]);
-      //   }
-      // }
       dispatch(getAllInRoom(keysArr));
     } catch (err) {
       console.error('THERE IS ERROR WITH PLAYERS IN ROOM', err);
@@ -121,12 +108,58 @@ export const addToRoom = (playerId, playerName, roomId) => {
   };
 };
 
+// export const getImages = (arrIds) => {
+//   return async dispatch => {
+//     const test = []
+//     const imagesPromises = await arrIds.map(async player => {
+//       const jessIsAwesome = db
+//         .database()
+//         .ref('players')
+//         .child(player)
+//         .child('photo')
+//         .on('child_added', s => {
+//           console.log('what is s?', s.val())
+//           const image = s.val()
+//           console.log('what is typeof s?', typeof s)
+//           console.log('what is image?', image)
+//           console.log('what is typeof image?', typeof image)
+//           test.push(image)
+//           return s.val()
+//         });
+//       console.log('hmmm', test)
+//       console.log('what is jessisAwesome', jessIsAwesome)
+//       return jessIsAwesome;
+//       // return test
+//     });
+//     console.log('hmmm', test)
+//     console.log('images promises', imagesPromises)
+//     const arrOfImages = Promise.all(test)
+//     console.log('in the thunk creater', arrOfImages)
+//     dispatch(gotImages(imagesPromises))
+//   }
+// }
+export const getImages = (id) => {
+  return dispatch => {
+    db.database()
+      .ref('players')
+      .child(id)
+      .child('photo')
+      .on('value', function (snapshot) {
+        const image = snapshot.val()
+        if (image !== '') {
+          dispatch(gotImages(image))
+        }
+      })
+  }
+}
+
 //reducer
 
 const initialStateRoom = {
   rooms: [],
   room: {},
   playersInRoom: [],
+  images: []
 };
 
 const roomReducer = (state = initialStateRoom, action) => {
@@ -157,6 +190,11 @@ const roomReducer = (state = initialStateRoom, action) => {
         ...state,
         playersInRoom: action.playersInRoom,
       };
+    case GOT_IMAGES:
+      return {
+        ...state,
+        images: [...state.images, action.image]
+      }
     default:
       return state;
   }

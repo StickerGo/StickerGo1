@@ -14,7 +14,7 @@ import { getWinner } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -25,7 +25,6 @@ class Winner extends Component {
     this.props.getTheWinner(this.props.room.winnerId);
   }
   render() {
-    console.log('in the render of the Winner');
     return (
       <View
         style={{

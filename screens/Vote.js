@@ -12,10 +12,10 @@ import {
 import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
 import db from '../reducer/firebase';
-import { getPlayersinRoom } from '../reducer/roomReducer';
+import { getPlayersinRoom, getImages } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -26,30 +26,25 @@ class Contest extends Component {
 
   async componentDidMount() {
     const roomId = this.props.roomId;
-    await this.props.getPlayersinRoom(roomId);
+    try {
+      await this.props.getPlayersinRoom(roomId);
+      console.log('do we have the players?', this.props.playersInRoom)
+      for (let i = 0; i < this.props.playersInRoom.length; i++) {
+        await this.props.getImages(this.props.playersInRoom[i])
+      }
+      console.log('did we get the images???', this.props.images)
+    } catch (error) {
+      console.log('there was an error!!!', error)
+    }
+
   }
 
-  findPlayerImage = () => {
-    const playersInRoom = this.props.playersInRoom;
-    const arrOfImages = playersInRoom.map(async player => {
-      try {
-        const dbImages = await db
-          .database()
-          .ref('players')
-          .child(player)
-          .child('photo')
-          .once('value');
-        console.log('what the hell', dbImages.val());
-        return dbImages.val();
-      } catch (err) {
-        console.error('THERE IS SOMETHING WRONG IN ARRAYOFIMAGES', err);
-      }
-    });
-    console.log('arrofimages', arrOfImages);
-    return arrOfImages;
-  };
-
   render() {
+    if (this.props.images.length) {
+
+      console.log('WHAT ARE THE IMAGES PLEASE!?!', this.props.images)
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.buttonGroup}>
@@ -67,23 +62,7 @@ class Contest extends Component {
   //
 }
 
-//const styles = stylesContest;
 const styles = stylesDefault;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//   },
-//   buttonContainer: {
-//     margin: 20,
-//   },
-//   alternativeLayoutButtonContainer: {
-//     margin: 20,
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//   },
-// });
 
 const mapStateToProps = state => {
   return {
@@ -91,13 +70,14 @@ const mapStateToProps = state => {
     roomSize: state.rooms.room.numPlayers,
     roomId: state.rooms.room.id,
     playersInRoom: state.rooms.playersInRoom,
+    images: state.rooms.images
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    // getAll: () => dispatch(getAllPlayers()),
     getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
+    getImages: playerIds => dispatch(getImages(playerIds))
   };
 };
 

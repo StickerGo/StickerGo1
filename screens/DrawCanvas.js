@@ -111,7 +111,6 @@ class Home extends Component {
   };
 
   render() {
-    console.log('ROOM ID IN DRAW ROOM', this.props.roomId)
     return (
       <View
         style={{

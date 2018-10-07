@@ -34,7 +34,6 @@ class RoomCode extends Component {
   }
 
   render() {
-    console.log('ROOM ID IN ROOM CODE', this.props.roomId)
     return (
       <View style={styles.container}>
         <View style={styles.nonButtonContainer}>

@@ -52,8 +52,6 @@ class Timer extends React.Component {
   }
 
   render() {
-    console.log('in the render of the Timer');
-    console.log('my props are', this.props);
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
