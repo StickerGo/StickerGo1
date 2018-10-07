@@ -67,7 +67,6 @@ class LinkScreen extends React.Component {
     this.saveImage();
   };
   render() {
-    console.log('ROOM ID IN CAMERA VIEW', this.props.roomId);
     const roomId = this.props.roomId;
     return (
       <View style={{ flex: 1 }}>
@@ -212,6 +211,7 @@ const mapStateToProps = state => {
   return {
     roomId: state.rooms.room.id,
     player: state.players.player,
+    
   };
 };
 
