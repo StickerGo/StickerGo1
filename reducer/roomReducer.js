@@ -8,6 +8,7 @@ const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
 const GET_ALL_IN_ROOM = 'GET_ALL_IN_ROOM';
 const GOT_IMAGES = 'GOT_IMAGES'
+const GOT_NUM_PLAYERS = 'GOT_NUM_PLAYERS'
 
 //action creators
 
@@ -28,8 +29,11 @@ const addPlayerToRoom = room => {
 };
 
 const gotImages = image => {
-  console.log('in the action creator', image)
   return { type: GOT_IMAGES, image }
+}
+
+const gotNumPlayers = num => {
+  return { type: GOT_NUM_PLAYERS, num }
 }
 
 // thunk creators
@@ -108,36 +112,6 @@ export const addToRoom = (playerId, playerName, roomId) => {
   };
 };
 
-// export const getImages = (arrIds) => {
-//   return async dispatch => {
-//     const test = []
-//     const imagesPromises = await arrIds.map(async player => {
-//       const jessIsAwesome = db
-//         .database()
-//         .ref('players')
-//         .child(player)
-//         .child('photo')
-//         .on('child_added', s => {
-//           console.log('what is s?', s.val())
-//           const image = s.val()
-//           console.log('what is typeof s?', typeof s)
-//           console.log('what is image?', image)
-//           console.log('what is typeof image?', typeof image)
-//           test.push(image)
-//           return s.val()
-//         });
-//       console.log('hmmm', test)
-//       console.log('what is jessisAwesome', jessIsAwesome)
-//       return jessIsAwesome;
-//       // return test
-//     });
-//     console.log('hmmm', test)
-//     console.log('images promises', imagesPromises)
-//     const arrOfImages = Promise.all(test)
-//     console.log('in the thunk creater', arrOfImages)
-//     dispatch(gotImages(imagesPromises))
-//   }
-// }
 export const getImages = (id) => {
   return dispatch => {
     db.database()
@@ -153,13 +127,27 @@ export const getImages = (id) => {
   }
 }
 
+export const getNumPlayers = (id) => {
+  return dispatch => {
+    db.database()
+      .ref('rooms')
+      .child(id)
+      .child('numPlayers')
+      .on('value', function (snapshot) {
+        const num = snapshot.val()
+        dispatch(gotNumPlayers(num))
+      })
+  }
+}
+
 //reducer
 
 const initialStateRoom = {
   rooms: [],
   room: {},
   playersInRoom: [],
-  images: []
+  images: [],
+  num: ''
 };
 
 const roomReducer = (state = initialStateRoom, action) => {
@@ -194,6 +182,11 @@ const roomReducer = (state = initialStateRoom, action) => {
       return {
         ...state,
         images: [...state.images, action.image]
+      }
+    case GOT_NUM_PLAYERS:
+      return {
+        ...state,
+        num: action.num
       }
     default:
       return state;
