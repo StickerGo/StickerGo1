@@ -8,6 +8,7 @@ import {
   CheckBox,
   InlineImage,
 } from 'react-native';
+
 //import { stylesContest } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
@@ -46,27 +47,44 @@ class Contest extends Component {
 
   render() {
     const imagesArray = this.props.images;
+    console.log('hello?');
     console.log('imagesArray', imagesArray);
-    if (imagesArray.length === this.props.numOfPlayers) {
+    if (imagesArray.length > 0) {
       return (
         <View style={styles.container}>
-          {imagesArray.map(image => {
-            return (
-              <Image
-                key={image}
-                source={{ isStatic: true, uri: image }}
-                style={{ flex: 1, width: '100%', resizeMode: 'contain' }}
-              />
-            );
-          })}
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate('Winner')}
-            >
-              <Text style={styles.buttonText}>Submit vote</Text>
-            </TouchableOpacity>
-          </View>
+          <LinearGradient
+            colors={['cadetblue', 'lightpink']}
+            style={{ flex: 8, padding: 40 }}
+          >
+            <View style={styles.scrollContainer}>
+              <ScrollView contentContainerStyle={styles.scrollView}>
+                {imagesArray.map(image => {
+                  return (
+                    <Image
+                      key={image}
+                      source={{ isStatic: true, uri: image }}
+                      style={{
+                        width: 300,
+                        height: 300,
+                        margin: 10,
+                        padding: 30,
+
+                        alignSelf: 'center',
+                      }}
+                    />
+                  );
+                })}
+              </ScrollView>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.voteButton}
+                onPress={() => this.props.navigation.navigate('Winner')}
+              >
+                <Text style={styles.startButtonText}>Submit vote</Text>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
         </View>
       );
     } else {

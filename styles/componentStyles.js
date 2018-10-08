@@ -142,6 +142,17 @@ export const stylesDefault = StyleSheet.create({
     borderColor: 'cadetblue',
     marginBottom: '30%',
   },
+  voteButton: {
+    backgroundColor: 'white',
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '20%',
+  },
   pickerContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -231,5 +242,17 @@ export const stylesDefault = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
+  },
+  scrollContainer: {
+    flex: 6,
+    marginTop: '20%',
+  },
+  scrollView: {
+    flexGrow: 5,
+  },
+  buttonContainerVote: {
+    position: 'absolute',
+    flexDirection: 'row',
+    height: '10%',
   },
 });
