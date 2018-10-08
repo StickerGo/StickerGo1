@@ -196,4 +196,30 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  challengeText: {
+    flex: 0.5,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 20,
+    color: 'white',
+    // flexWrap: 'wrap',
+  },
+  challenge: {
+    flex: 0.5,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 40,
+    color: 'white',
+    // flexWrap: 'wrap',
+    paddingBottom: 20
+  },
+  timer: {
+    flex: 1,
+    color: '#CD5C5C',
+    fontSize: 10
+  }
 });
