@@ -23,7 +23,7 @@ const getAllInRoom = playersInRoom => {
 // const getAll = rooms => {
 //   return { type: GET_ALL_ROOMS, rooms };
 // };
-const getOne = room => {
+const gotOneRoom = room => {
   return { type: GET_ONE_ROOM, room };
 };
 const makeOne = room => {
@@ -49,22 +49,6 @@ const gotNumPlayers = num => {
 
 // thunk creators
 
-// export const getAllRooms = () => {
-//   return dispatch => {
-//     try {
-//       db.database()
-//         .ref('rooms')
-//         .on('value', function(snapshot) {
-//           const rooms = snapshot.val() || [];
-//           dispatch(getAll(rooms));
-//         });
-//     } catch (err) {
-//       console.error('THUNK WRONG WITH GET ALL ROOMS', err);
-//     }
-//   };
-// };
-
-
 export const getOneRoom = roomId => {
   return dispatch => {
     db.database()
@@ -72,7 +56,7 @@ export const getOneRoom = roomId => {
       .child(roomId)
       .on('value', function (snapshot) {
         const room = snapshot.val() || [];
-        dispatch(getOne(room));
+        dispatch(gotOneRoom(room));
       });
   };
 };

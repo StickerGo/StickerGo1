@@ -21,7 +21,7 @@ import {
 } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {

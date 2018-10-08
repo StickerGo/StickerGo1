@@ -65,11 +65,11 @@ class LinkScreen extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={styles.linearGradientstyle}
+          style={styles.linearGradientstyleDraw}
         >
           <View style={styles.nonButtonContainer}>
             <TouchableView
-              style={{ flex: 5, width: 300, height: 400 }}
+              style={{ paddingTop: 20, flex: 5, width: 300, height: 400 }}
               shouldCancelWhenOutside={false}
               onTouchesBegan={this.onTouchesBegan}
             >
@@ -77,6 +77,7 @@ class LinkScreen extends React.Component {
                 ref={view => {
                   this._container = view;
                 }}
+                style={{ width: '100%', height: '100%' }}
                 onContextCreate={this.onContextCreate}
                 onRender={this.onRender}
                 onResize={this.onResize}
@@ -101,13 +102,13 @@ class LinkScreen extends React.Component {
               <Text style={styles.buttonText}>size--</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.button}
+              style={styles.captureButton}
               onPress={() => {
                 this.screenShot();
                 this.props.navigation.navigate('VoteScreen');
               }}
             >
-              <Text style={styles.buttonText}>capture!</Text>
+              <Text style={styles.captureButtonText}>capture!</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.tinyButton}
@@ -129,7 +130,7 @@ class LinkScreen extends React.Component {
       .ref('players')
       .child(playerId)
       .child('draw')
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         newImage = snapshot.val();
       });
     return newImage;
@@ -219,7 +220,7 @@ const mapStateToProps = state => {
   return {
     roomId: state.rooms.room.id,
     player: state.players.player,
-    
+
   };
 };
 

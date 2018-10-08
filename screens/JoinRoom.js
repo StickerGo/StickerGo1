@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
-import { addToRoom } from '../reducer/roomReducer';
+import { addToRoom, getOneRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
 
 // function checkRoomCodeCallback(code, exists) {
@@ -31,7 +31,7 @@ const DismissKeyboard = ({ children }) => (
 );
 
 class Join extends React.Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor(props) {
     super(props);
     this.state = {
@@ -69,8 +69,9 @@ class Join extends React.Component {
         //status: 'drawing', capturing
       });
       this.props.addPlayerToRoom(playerId, name, this.state.code);
-      this.props.navigation.navigate('DrawCanvas');
-      //this.props.navigation.navigate('Waiting');
+      // this.props.getRoom(this.state.code)
+      console.log('was the room saved to props?', this.props.room)
+      this.props.navigation.navigate('Waiting', { roomId: this.state.code });
     } else {
       this.setState({ roomExists: false });
     }
@@ -151,45 +152,12 @@ class Join extends React.Component {
 }
 
 const styles = stylesDefault;
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   buttonContainer: {
-//     margin: 80,
-//     backgroundColor: '#00BFFF',
-//     height: 40,
-//     justifyContent: 'center',
-//     width: 75,
-//     borderRadius: 10,
-//     overflow: 'hidden',
-//   },
-//   welcome: {
-//     fontSize: 20,
-//     textAlign: 'center',
-//   },
-//   alternativeLayoutButtonContainer: {
-//     margin: 20,
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//   },
-//   textEnter: {
-//     height: 40,
-//     width: '70%',
-//     margin: 20,
-//     padding: 10,
-//     borderColor: '#40E0D0',
-//     borderWidth: 1,
-//     backgroundColor: 'white',
-//   },
-// });
 
 const mapStateToProps = state => {
   return {
     players: state.players,
     roomId: state.rooms.room.id,
+    room: state.rooms.room
   };
 };
 
@@ -197,8 +165,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
     // checkRoom: roomId => dispatch(getOneRoom(roomId)),
-    addPlayerToRoom: (playerId, playerName, roomId) =>
-      dispatch(addToRoom(playerId, playerName, roomId)),
+    addPlayerToRoom: (playerId, playerName, roomId) => dispatch(addToRoom(playerId, playerName, roomId)),
+    getRoom: roomId => dispatch(getOneRoom(roomId))
   };
 };
 
