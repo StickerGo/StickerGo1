@@ -1,17 +1,17 @@
 import { LinearGradient } from 'expo';
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
-import { getOneRoom } from '../reducer/roomReducer';
-import { getPlayersinRoom } from '../reducer/roomReducer';
+// import { getOneRoom } from '../reducer/roomReducer';
+import { getPlayersinRoom, getOneRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import db from '../reducer/firebase';
 let counter = 2;
 
 class Waiting extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -21,13 +21,20 @@ class Waiting extends Component {
     };
   }
 
-  componentDidMount() {}
+  async componentDidMount() {
+    await this.props.getRoom(this.props.navigation.getParam('roomId'))
+  }
 
   render() {
     let play = this.props.room.players;
+    let playersArray = []
     let playcount;
     if (typeof play === 'object') {
       playcount = Object.getOwnPropertyNames(play).length;
+      let playerKeys = Object.keys(play)
+      for (let i = 0; i < playerKeys.length; i++) {
+        playersArray.push(play[playerKeys[i]])
+      }
     }
     let checknum;
     if (Number(this.props.roomSize) === playcount) {
@@ -36,48 +43,61 @@ class Waiting extends Component {
       checknum = false;
     }
     return (
-      <View style={styles.container}>
-        {/* {this.props && this.props.players ? ( */}
+      <View style={styles.waitingContainer}>
         {this.props ? (
-          <View style={styles.buttonGroup}>
-            {checknum ? (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.props.navigation.navigate('DrawCanvas')}
-              >
-                <Text style={styles.buttonText}>Start Game</Text>
-              </TouchableOpacity>
-            ) : (
-              <Text style={styles.buttonText}>Waiting</Text>
-            )}
+          <View style={styles.list}>
+            <View style={{ flex: 1 }}>
+              {playersArray.map(player => {
+                return <Text key={player.name} style={styles.nameText}>{player.name}</Text>
+              })}
+            </View>
+            <View>
+              {checknum ? (
+                <TouchableOpacity
+                  style={styles.beginButton}
+                  onPress={() => this.props.navigation.navigate('DrawCanvas')}
+                >
+                  <Text style={styles.buttonTextHome}>Start Game</Text>
+                </TouchableOpacity>
+              ) : (
+                  <View>
+                    <Image
+                      style={styles.loadingImage}
+                      source={{
+                        uri:
+                          'https://media.giphy.com/media/9JgeNOiRwsvbg9RVsq/giphy.gif',
+                      }}
+                    />
+                    <Text style={styles.waitingText}>Waiting For More Players...</Text>
+                  </View>
+                )}
+            </View>
             {counter--}
+
           </View>
         ) : (
-          <View style={styles.buttonGroup}>
-            {/* {array.map(player => (
-              <Text style={styles.text} key={player.name}>
-                {player.name}
+            <View style={styles.buttonGroup}>
+              <Text style={styles.text}>
+                Something Went Wrong
               </Text>
-            ))} */}
-            {/* ))} */}
-            {checknum ? (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() =>
-                  this.props.navigation.navigate('VoteScreen', {
-                    roomId: this.props.navigation.getParam('roomId'),
-                  })
-                }
-              >
-                <Text style={styles.buttonText}>Go To Vote</Text>
-              </TouchableOpacity>
-            ) : (
-              <Text style={styles.buttonText}>Waiting</Text>
-            )}
-            {console.log('VALUE', counter)}
-            {counter++}
-          </View>
-        )}
+              {checknum ? (
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() =>
+                    this.props.navigation.navigate('VoteScreen', {
+                      roomId: this.props.navigation.getParam('roomId'),
+                    })
+                  }
+                >
+                  <Text style={styles.buttonText}>Go To Vote</Text>
+                </TouchableOpacity>
+              ) : (
+                  <Text style={styles.buttonText}>Waiting</Text>
+                )}
+              {console.log('VALUE', counter)}
+              {counter++}
+            </View>
+          )}
       </View>
     );
   }
@@ -98,7 +118,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getAll: () => dispatch(getAllPlayers()),
     getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
-    getOneRoom: roomId => dispatch(getOneRoom(roomId)),
+    getRoom: roomId => dispatch(getOneRoom(roomId)),
   };
 };
 

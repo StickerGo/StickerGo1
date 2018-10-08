@@ -6,6 +6,12 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  waitingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#40E0D0'
+  },
   linearGradientstyleHome: {
     padding: 20,
     paddingHorizontal: '40%',
@@ -15,7 +21,16 @@ export const stylesDefault = StyleSheet.create({
     padding: 20,
     alignItems: 'stretch',
   },
-
+  linearGradientstyleDraw: {
+    padding: 20,
+    alignItems: 'stretch',
+    paddingHorizontal: '40%'
+  },
+  linearGradientstyleRoomCode: {
+    padding: 20,
+    alignItems: 'stretch',
+    paddingHorizontal: '10%'
+  },
   nonButtonContainer: {
     flex: 4,
     justifyContent: 'center',
@@ -65,6 +80,13 @@ export const stylesDefault = StyleSheet.create({
     //for testing
     // backgroundColor: 'red',
   },
+  loadingImage: {
+    height: 300,
+    width: 300,
+    alignItems: 'stretch',
+    alignSelf: 'center'
+
+  },
   button: {
     height: '80%',
     width: '40%',
@@ -72,6 +94,29 @@ export const stylesDefault = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'space-evenly',
     overflow: 'hidden',
+  },
+  beginButton: {
+    height: '40%',
+    width: '40%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
+  captureButton: {
+    height: '80%',
+    width: '40%',
+    backgroundColor: '#40E0D0',
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
+  captureButtonText: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'white',
+    fontSize: 18,
   },
   buttonTextHome: {
     alignSelf: 'center',
@@ -110,8 +155,25 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'Avenir',
     fontSize: 35,
     color: 'white',
-    //for testing
-    // backgroundColor: 'green',
+  },
+  nameText: {
+    paddingTop: 20,
+    // flex: 1,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 35,
+    color: 'white',
+  },
+  waitingText: {
+    // flex: 2,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 25,
+    color: 'white',
   },
   textEnter: {
     marginVertical: '5%',
@@ -172,8 +234,8 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'Avenir',
     fontSize: 40,
     color: 'cadetblue',
-    //for testing
-    // backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textBkg: {
     flex: 3,
@@ -216,7 +278,7 @@ export const stylesDefault = StyleSheet.create({
   tinyButton: {
     height: '80%',
     width: '20%',
-    backgroundColor: 'red',
+    backgroundColor: '#CD5C5C',
     borderRadius: 10,
     justifyContent: 'space-evenly',
     overflow: 'hidden',
@@ -232,4 +294,44 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  challengeText: {
+    flex: 0.5,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 20,
+    color: 'white',
+    // flexWrap: 'wrap',
+  },
+  challenge: {
+    flex: 0.5,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 40,
+    color: 'white',
+    // flexWrap: 'wrap',
+    paddingBottom: '5%'
+  },
+  timerRed: {
+    flex: 1,
+    color: '#CD5C5C',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir'
+  },
+  timer: {
+    flex: 1,
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir'
+  },
+  list: {
+    flex: 4,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  }
 });
