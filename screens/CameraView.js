@@ -15,18 +15,7 @@ import Amplify, { Storage } from 'aws-amplify';
 // import { withAuthenticator } from 'aws-amplify-react-native';
 // import aws_exports from '../amplify/aws-exports';
 // Amplify.configure(aws_exports);
-Amplify.configure({
-  Auth: {
-    identityPoolId: 'us-east-1:9b67e108-2aa7-4fa4-8e9f-fc41fd11c694', //REQUIRED - Amazon Cognito Identity Pool ID
-    region: 'us-east-1', // REQUIRED - Amazon Cognito Region
-    //   // userPoolId: 'XX-XXXX-X_abcd1234', //OPTIONAL - Amazon Cognito User Pool ID
-    //   // userPoolWebClientId: 'XX-XXXX-X_abcd1234', //OPTIONAL - Amazon Cognito Web Client ID
-  },
-  Storage: {
-    bucket: 'tickero1-20181008144133-deployment', //REQUIRED -  Amazon S3 bucket
-    region: 'us-east-1', //OPTIONAL -  Amazon service region
-  },
-});
+Amplify.configure({});
 Storage.configure({ level: 'public' });
 
 // var AWS = require('aws-sdk');
