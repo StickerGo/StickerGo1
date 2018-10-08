@@ -6,10 +6,16 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  linearGradientstyleHome: {
+    padding: 20,
+    paddingHorizontal: 100,
+    alignItems: 'stretch',
+  },
   linearGradientstyle: {
     padding: 20,
     alignItems: 'stretch',
   },
+
   nonButtonContainer: {
     flex: 5,
     justifyContent: 'center',
@@ -33,6 +39,7 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'MarkerFelt-Wide',
     fontSize: 70,
     color: 'white',
+    marginBottom: 10,
     //for testing
     // backgroundColor: 'blue',
   },
@@ -41,6 +48,7 @@ export const stylesDefault = StyleSheet.create({
     height: 300,
     width: 300,
     alignItems: 'stretch',
+
     //for testing
     // backgroundColor: 'red',
   },

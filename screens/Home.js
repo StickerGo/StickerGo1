@@ -18,7 +18,7 @@ export default class Start extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={styles.linearGradientstyle}
+          style={styles.linearGradientstyleHome}
         >
           <View style={styles.nonButtonContainer}>
             <Text style={styles.heading}>StickerGo</Text>
