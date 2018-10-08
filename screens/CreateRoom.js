@@ -52,12 +52,11 @@ class Room extends React.Component {
   }
   render() {
     let checkName = this.state.typedText.trim() === '';
-    let checkChar = !/^[a-zA-Z]*$/g.test(this.state.typedText);
+    let checkChar = /^[a-zA-Z]*$/g.test(this.state.typedText);
     return (
       <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           <View style={styles.container}>
-            {this.state.nameEntered === false && <Text>Name required</Text>}
             <Text style={styles.text}>Enter your name</Text>
             <TextInput
               style={styles.textEnter}
@@ -93,7 +92,7 @@ class Room extends React.Component {
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
-              if (this.state.typedText.trim() !== '' && !checkChar) {
+              if (checkName && checkChar) {
                 this.setState(state => {
                   return { name: this.typedText };
                 });
