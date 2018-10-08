@@ -45,16 +45,9 @@ class Contest extends Component {
   }
 
   render() {
-    //     return (
-    //       <View style={styles.container}>
-    //         <LinearGradient
-    //           colors={['#192f6a', 'cadetblue', 'lightpink']}
-    //           style={styles.linearGradientstyle}
-    //         >
-    //           <View style={styles.buttonContainer}>
     const imagesArray = this.props.images;
     console.log('imagesArray', imagesArray);
-    if (imagesArray.length.toString() === this.props.numOfPlayers) {
+    if (imagesArray.length === this.props.numOfPlayers) {
       return (
         <View style={styles.container}>
           {imagesArray.map(image => {
@@ -74,10 +67,7 @@ class Contest extends Component {
               <Text style={styles.buttonText}>Submit vote</Text>
             </TouchableOpacity>
           </View>
-          // ) } //{' '}
         </View>
-        //     );
-        //      </View>
       );
     } else {
       return (

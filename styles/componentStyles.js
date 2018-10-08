@@ -6,14 +6,29 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  linearGradientstyleHome: {
+    padding: 20,
+    paddingHorizontal: '40%',
+    alignItems: 'stretch',
+  },
   linearGradientstyle: {
     padding: 20,
     alignItems: 'stretch',
   },
+
   nonButtonContainer: {
-    flex: 5,
+    flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    //for testing
+    // backgroundColor: 'yellow',
+  },
+
+  nonButtonContainerCreate: {
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10%',
     //for testing
     // backgroundColor: 'yellow',
   },
@@ -22,9 +37,12 @@ export const stylesDefault = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    marginTop: 25,
+
     //for testing
     // backgroundColor: 'black',
   },
+
   heading: {
     flex: 1,
     alignItems: 'center',
@@ -33,6 +51,8 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'MarkerFelt-Wide',
     fontSize: 70,
     color: 'white',
+    marginTop: 20,
+
     //for testing
     // backgroundColor: 'blue',
   },
@@ -41,6 +61,7 @@ export const stylesDefault = StyleSheet.create({
     height: 300,
     width: 300,
     alignItems: 'stretch',
+
     //for testing
     // backgroundColor: 'red',
   },
@@ -52,11 +73,19 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'space-evenly',
     overflow: 'hidden',
   },
-  buttonText: {
+  buttonTextHome: {
     alignSelf: 'center',
     fontWeight: 'bold',
     fontFamily: 'MarkerFelt-Wide',
     color: 'lightpink',
+    fontSize: 30,
+  },
+  buttonText: {
+    flex: 2,
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'white',
     fontSize: 18,
   },
   joinOrCreateRoomContainer: {
@@ -65,27 +94,33 @@ export const stylesDefault = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'lightpink',
   },
-  text: {
-    flex: 1,
+  textCreateName: {
     textAlign: 'center',
     alignSelf: 'center',
     fontWeight: 'bold',
     fontFamily: 'Avenir',
     fontSize: 40,
     color: 'white',
+  },
+  text: {
+    flex: 1,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 35,
+    color: 'white',
     //for testing
     // backgroundColor: 'green',
   },
   textEnter: {
-    flex: 1,
-    height: '100%',
-    width: '80%',
-    margin: 15,
-    padding: 20,
+    marginVertical: '5%',
+    padding: 10,
     borderColor: '#40E0D0',
     borderWidth: 1,
     backgroundColor: 'white',
-    fontSize: 25,
+    fontSize: 40,
+    textAlign: 'center',
   },
   startButtonText: {
     flex: 1,
@@ -105,24 +140,25 @@ export const stylesDefault = StyleSheet.create({
     margin: 30,
     borderWidth: 1,
     borderColor: 'cadetblue',
+    marginBottom: '30%',
   },
   pickerContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    margin: '10%',
   },
   twoPickers: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    borderColor: '#40E0D0',
     borderWidth: 1,
+    borderColor: '#40E0D0',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: '5%',
   },
   twoPickerItems: {
     height: '90%',
-    width: '90%',
+    width: '100%',
     fontWeight: 'bold',
     color: 'cadetblue',
     backgroundColor: 'white',
