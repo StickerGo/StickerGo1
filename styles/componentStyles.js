@@ -15,6 +15,11 @@ export const stylesDefault = StyleSheet.create({
     alignItems: 'stretch',
     paddingHorizontal: '40%'
   },
+  linearGradientstyleRoomCode: {
+    padding: 20,
+    alignItems: 'stretch',
+    paddingHorizontal: '10%'
+  },
   nonButtonContainer: {
     flex: 5,
     justifyContent: 'center',
