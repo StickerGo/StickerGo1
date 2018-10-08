@@ -17,7 +17,7 @@ import { getPlayersinRoom, getImages, getNumPlayers } from '../reducer/roomReduc
 
 
 class Contest extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -43,16 +43,9 @@ class Contest extends Component {
   }
 
   render() {
-//     return (
-//       <View style={styles.container}>
-//         <LinearGradient
-//           colors={['#192f6a', 'cadetblue', 'lightpink']}
-//           style={styles.linearGradientstyle}
-//         >
-//           <View style={styles.buttonContainer}>
     const imagesArray = this.props.images
     console.log('imagesArray', imagesArray)
-    if (imagesArray.length.toString() === this.props.numOfPlayers) {
+    if (imagesArray.length === this.props.numOfPlayers) {
       return (
         <View style={styles.container}>
           {
@@ -68,11 +61,6 @@ class Contest extends Component {
               <Text style={styles.buttonText}>Submit vote</Text>
             </TouchableOpacity>
           </View>
-
-//           ) }
-//         </LinearGradient>
-//       </View>
-//     );
         </View>
       );
     } else {
