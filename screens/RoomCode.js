@@ -48,8 +48,6 @@ class RoomCode extends Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.startButton}
-              //update to send to "Waiting" room later
-              // onPress={() => this.props.navigation.navigate('DrawCanvas')}
               onPress={() => this.props.navigation.navigate('Waiting')}
             >
               <Text style={styles.startButtonText}>start</Text>

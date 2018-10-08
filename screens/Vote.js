@@ -45,8 +45,8 @@ class Contest extends Component {
   }
 
   render() {
-    const imagesArray = this.props.images
-    console.log('imagesArray', imagesArray)
+    const imagesArray = this.props.images;
+    console.log('imagesArray', imagesArray);
     if (imagesArray.length === this.props.numOfPlayers) {
       return (
         <View style={styles.container}>
@@ -67,7 +67,7 @@ class Contest extends Component {
               <Text style={styles.buttonText}>Submit vote</Text>
             </TouchableOpacity>
           </View>
-        </View >
+        </View>
       );
     } else {
       return (

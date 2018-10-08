@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo';
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 // import { getOneRoom } from '../reducer/roomReducer';
@@ -43,25 +43,37 @@ class Waiting extends Component {
       checknum = false;
     }
     return (
-      <View style={styles.container}>
+      <View style={styles.waitingContainer}>
         {this.props ? (
-          <View style={styles.buttonGroup}>
-            {checknum ? (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.props.navigation.navigate('DrawCanvas')}
-              >
-                <Text style={styles.buttonText}>Start Game</Text>
-              </TouchableOpacity>
-            ) : (
-                <Text style={styles.buttonText}>Waiting For Players</Text>
-              )}
-            {counter--}
-            <View>
+          <View style={styles.list}>
+            <View style={{ flex: 1 }}>
               {playersArray.map(player => {
-                return <Text key={player.name} style={styles.text}>{player.name}</Text>
+                return <Text key={player.name} style={styles.nameText}>{player.name}</Text>
               })}
             </View>
+            <View>
+              {checknum ? (
+                <TouchableOpacity
+                  style={styles.beginButton}
+                  onPress={() => this.props.navigation.navigate('DrawCanvas')}
+                >
+                  <Text style={styles.buttonTextHome}>Start Game</Text>
+                </TouchableOpacity>
+              ) : (
+                  <View>
+                    <Image
+                      style={styles.loadingImage}
+                      source={{
+                        uri:
+                          'https://media.giphy.com/media/9JgeNOiRwsvbg9RVsq/giphy.gif',
+                      }}
+                    />
+                    <Text style={styles.waitingText}>Waiting For More Players...</Text>
+                  </View>
+                )}
+            </View>
+            {counter--}
+
           </View>
         ) : (
             <View style={styles.buttonGroup}>

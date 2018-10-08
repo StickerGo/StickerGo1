@@ -69,7 +69,7 @@ class LinkScreen extends React.Component {
         >
           <View style={styles.nonButtonContainer}>
             <TouchableView
-              style={{ flex: 5, width: 300, height: 400 }}
+              style={{ paddingTop: 20, flex: 5, width: 300, height: 400 }}
               shouldCancelWhenOutside={false}
               onTouchesBegan={this.onTouchesBegan}
             >
