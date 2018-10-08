@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Text, TextInput } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
-import { getOneRoom, addToRoom } from '../reducer/roomReducer';
+import { addToRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
 
-function checkRoomCodeCallback(code, exists) {
-  if (exists) {
-    console.log('THE ROOM EXISTS!');
-    return true;
-  } else {
-    console.log('THE ROOM DOES NOT EXIST :(');
-    return false;
-  }
-}
+// function checkRoomCodeCallback(code, exists) {
+//   if (exists) {
+//     console.log('THE ROOM EXISTS!');
+//     return true;
+//   } else {
+//     console.log('THE ROOM DOES NOT EXIST :(');
+//     return false;
+//   }
+// }
 
 class Join extends React.Component {
   _onPressButton() {}
@@ -43,7 +49,7 @@ class Join extends React.Component {
 
   async addPlayer(name) {
     const roomExists = await this.checkRoomCode(this.state.code);
-    if (roomExists) {
+    if (roomExists && name) {
       const playerId = name + this.state.id;
       this.setState({ playerId });
       this.props.addAPlayer({
@@ -76,15 +82,9 @@ class Join extends React.Component {
     let checkName = this.state.name.trim() === '';
     let checkChar = !/^[a-zA-Z]*$/g.test(this.state.name);
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'lightpink',
-        }}
-      >
+      <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
+          {this.state.nameEntered === false && <Text>Name required</Text>}
           <Text style={styles.text}>Enter your name</Text>
           <TextInput
             style={styles.textEnter}
@@ -111,7 +111,7 @@ class Join extends React.Component {
             }}
           />
         </View>
-        <View style={styles.buttonGroup}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
@@ -123,7 +123,7 @@ class Join extends React.Component {
             <Text style={styles.startButtonText}>Join</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

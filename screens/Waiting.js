@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo';
 import React, { Component } from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { connect } from 'react-redux';

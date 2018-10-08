@@ -9,6 +9,8 @@ const ADD_DRAW = 'ADD_DRAW';
 const ADD_PHOTO = 'ADD_PHOTO';
 const GET_ALL_DRAW = 'GET_ALL_DRAW';
 const GET_ALL_PHOTO = 'GET_ALL_PHOTO';
+const PLAYER_RESET_GAME = 'PLAYER_RESET_GAME';
+const PLAYER_EXIT_GAME = 'PLAYER_EXIT_GAME';
 
 //action creators
 const getAll = players => {
@@ -37,6 +39,10 @@ const addPhoto = photo => {
     type: ADD_PHOTO,
     photo,
   };
+};
+
+export const playerExitGame = () => {
+  return { type: PLAYER_EXIT_GAME };
 };
 
 // thunk creators
@@ -129,6 +135,8 @@ const playerReducer = (state = initialStatePlayer, action) => {
         ...state,
         winner: action.winner,
       };
+    case PLAYER_EXIT_GAME:
+      return initialStatePlayer;
     default:
       return state;
   }

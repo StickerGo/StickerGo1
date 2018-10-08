@@ -12,10 +12,12 @@ import {
 import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
 import db from '../reducer/firebase';
+import { LinearGradient } from 'expo';
 import { getPlayersinRoom, getImages, getNumPlayers } from '../reducer/roomReducer';
 
+
 class Contest extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -41,6 +43,13 @@ class Contest extends Component {
   }
 
   render() {
+//     return (
+//       <View style={styles.container}>
+//         <LinearGradient
+//           colors={['#192f6a', 'cadetblue', 'lightpink']}
+//           style={styles.linearGradientstyle}
+//         >
+//           <View style={styles.buttonContainer}>
     const imagesArray = this.props.images
     console.log('imagesArray', imagesArray)
     if (imagesArray.length.toString() === this.props.numOfPlayers) {
@@ -59,6 +68,11 @@ class Contest extends Component {
               <Text style={styles.buttonText}>Submit vote</Text>
             </TouchableOpacity>
           </View>
+
+//           ) }
+//         </LinearGradient>
+//       </View>
+//     );
         </View>
       );
     } else {

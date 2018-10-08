@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-  Image,
-  View,
-  Text,
-  TouchableHighlight,
-} from 'react-native';
-//import { stylesCreate } from '../styles/componentStyles';
+import { Image, View, Text, TouchableHighlight } from 'react-native';
 import { stylesDefault } from '../styles/componentStyles';
 import { LinearGradient } from 'expo';
 
@@ -25,10 +18,7 @@ export default class Start extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={{
-            padding: 20,
-            alignItems: 'stretch',
-          }}
+          style={styles.linearGradientstyle}
         >
           <View style={styles.nonButtonContainer}>
             <Text style={styles.heading}>StickerGo</Text>
@@ -42,7 +32,7 @@ export default class Start extends React.Component {
             />
           </View>
 
-          <View style={styles.buttonGroup}>
+          <View style={styles.buttonContainer}>
             <TouchableHighlight
               style={styles.button}
               underlayColor="cadetblue"
@@ -50,14 +40,14 @@ export default class Start extends React.Component {
                 this.props.navigation.navigate('CreateRoom');
               }}
             >
-              <Text style={styles.buttonText}>Create Room</Text>
+              <Text style={styles.buttonText}>create room</Text>
             </TouchableHighlight>
             <TouchableHighlight
               underlayColor="cadetblue"
               style={styles.button}
               onPress={() => this.props.navigation.navigate('JoinRoom')}
             >
-              <Text style={styles.buttonText}>Join Room</Text>
+              <Text style={styles.buttonText}>join room</Text>
             </TouchableHighlight>
           </View>
         </LinearGradient>

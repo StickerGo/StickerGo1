@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Button,
   TouchableOpacity,
   View,
   Picker,
   Text,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { getAllPrompts } from '../reducer/promptReducer';
 import { createRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
-// import { stylesRoom } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
-console.disableYellowBox = true;
 
 class Room extends React.Component {
   _onPressButton() {}
@@ -31,34 +29,42 @@ class Room extends React.Component {
   }
 
   getRoom() {
-    const prompt = this.props.prompts[
-      Math.floor(Math.random() * this.props.prompts.length)
-    ];
-    const roomInfo = {
-      id: Math.floor(Math.random() * 100000 + 1).toString(),
-      numPlayers: this.state.pickval,
-      status: 'open',
-      winnerId: '',
-      promptForRoom: prompt,
-      players: {},
-      joined: 1,
-    };
-    this.props.generateRoom(roomInfo);
+    if (!this.state.name) {
+      this.setState({ nameEntered: false });
+    } else {
+      const prompt = this.props.prompts[
+        Math.floor(Math.random() * this.props.prompts.length)
+      ];
+      const roomInfo = {
+        id: Math.floor(Math.random() * 100000 + 1).toString(),
+        numPlayers: this.state.pickval,
+        status: 'open',
+        winnerId: '',
+        promptForRoom: prompt,
+        players: {},
+        joined: 1,
+      };
+      this.props.generateRoom(roomInfo);
+      this.props.navigation.navigate('RoomCode', {
+        name: this.state.name,
+      });
+    }
   }
   render() {
     let checkName = this.state.typedText.trim() === '';
     let checkChar = !/^[a-zA-Z]*$/g.test(this.state.typedText);
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           <View style={styles.container}>
+            {this.state.nameEntered === false && <Text>Name required</Text>}
             <Text style={styles.text}>Enter your name</Text>
             <TextInput
               style={styles.textEnter}
               placeholder="your name here"
               onChangeText={text => {
                 this.setState(previousState => {
-                  return { typedText: text };
+                  return { name: text };
                 });
               }}
             />
@@ -83,9 +89,9 @@ class Room extends React.Component {
             </Picker>
           </View>
         </View>
-        <View style={styles.buttonGroup}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.startButton}
             onPress={() => {
               if (this.state.typedText.trim() !== '' && !checkChar) {
                 this.setState(state => {
@@ -98,10 +104,10 @@ class Room extends React.Component {
               }
             }}
           >
-            <Text style={styles.buttonText}>Get Code</Text>
+            <Text style={styles.startButtonText}>get code</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

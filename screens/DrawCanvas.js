@@ -112,24 +112,24 @@ class Home extends Component {
 
   render() {
     return (
-      <View
-        style={{
-          flex: 2,
 
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'cadetblue',
-        }}
-      >
+      <View style={styles.container}>
         <LinearGradient
-          colors={['#192f6a', 'cadetblue']}
-          style={{
-            padding: 40,
-            alignItems: 'stretch',
-          }}
+          colors={['#192f6a', 'cadetblue', 'lightpink']}
+          style={styles.linearGradientstyle}
         >
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.undoButton}
+              onPress={() => {
+                this.sketch.undo();
+              }}
+            >
+              <Text style={styles.buttonText}>undo</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.nonButtonContainer}>
-            <Text style={styles.heading2}>Challenge: {this.props.prompt}</Text>
+            <Text style={styles.text}>Challenge: {this.props.prompt}</Text>
 
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
@@ -145,19 +145,12 @@ class Home extends Component {
           </View>
 
           <Timer
+            style={{ flex: 1 }}
             navigation={this.props.navigation}
             navigateTo="CameraView"
             screenshot={this.saveImage}
           />
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              style={styles.undoButton}
-              onPress={() => {
-                this.sketch.undo();
-              }}
-            >
-              <Text style={styles.buttonText}>undo</Text>
-            </TouchableOpacity>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
@@ -166,7 +159,7 @@ class Home extends Component {
                 this.props.navigation.navigate('CameraView');
               }}
             >
-              <Text style={styles.buttonText}>save</Text>
+              <Text style={styles.buttonText}>DONE</Text>
             </TouchableOpacity>
           </View>
         </LinearGradient>
