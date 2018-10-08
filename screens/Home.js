@@ -18,7 +18,7 @@ export default class Start extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={styles.linearGradientstyle}
+          style={styles.linearGradientstyleHome}
         >
           <View style={styles.nonButtonContainer}>
             <Text style={styles.heading}>StickerGo</Text>
@@ -40,14 +40,14 @@ export default class Start extends React.Component {
                 this.props.navigation.navigate('CreateRoom');
               }}
             >
-              <Text style={styles.buttonText}>create room</Text>
+              <Text style={styles.buttonTextHome}>Create</Text>
             </TouchableHighlight>
             <TouchableHighlight
               underlayColor="cadetblue"
               style={styles.button}
               onPress={() => this.props.navigation.navigate('JoinRoom')}
             >
-              <Text style={styles.buttonText}>join room</Text>
+              <Text style={styles.buttonTextHome}>Join</Text>
             </TouchableHighlight>
           </View>
         </LinearGradient>
