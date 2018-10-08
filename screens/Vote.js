@@ -12,10 +12,10 @@ import {
 import { stylesDefault } from '../styles/componentStyles';
 import { connect } from 'react-redux';
 import db from '../reducer/firebase';
-import { getPlayersinRoom } from '../reducer/roomReducer';
+import { getPlayersinRoom, getImages, getNumPlayers } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -26,64 +26,52 @@ class Contest extends Component {
 
   async componentDidMount() {
     const roomId = this.props.roomId;
-    await this.props.getPlayersinRoom(roomId);
-  }
-
-  findPlayerImage = () => {
-    const playersInRoom = this.props.playersInRoom;
-    const arrOfImages = playersInRoom.map(async player => {
-      try {
-        const dbImages = await db
-          .database()
-          .ref('players')
-          .child(player)
-          .child('photo')
-          .once('value');
-        console.log('what the hell', dbImages.val());
-        return dbImages.val();
-      } catch (err) {
-        console.error('THERE IS SOMETHING WRONG IN ARRAYOFIMAGES', err);
+    try {
+      await this.props.getPlayersinRoom(roomId);
+      await this.props.getNumPlayers(roomId)
+      console.log('do we have the players?', this.props.playersInRoom)
+      for (let i = 0; i < this.props.playersInRoom.length; i++) {
+        await this.props.getImages(this.props.playersInRoom[i])
       }
-    });
-    console.log('arrofimages', arrOfImages);
-    return arrOfImages;
-  };
+      console.log('did we get the images???', this.props.images)
+    } catch (error) {
+      console.log('there was an error!!!', error)
+    }
+
+  }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.props.navigation.navigate('Winner')}
-          >
-            <Text style={styles.buttonText}>Submit vote</Text>
-          </TouchableOpacity>
+    const imagesArray = this.props.images
+    console.log('imagesArray', imagesArray)
+    if (imagesArray.length.toString() === this.props.numOfPlayers) {
+      return (
+        <View style={styles.container}>
+          {
+            imagesArray.map((image) => {
+              return <Image key={image} source={{ isStatic: true, uri: image }} style={{ flex: 1, width: '100%', resizeMode: 'contain' }} />
+            })
+          }
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate('Winner')}
+            >
+              <Text style={styles.buttonText}>Submit vote</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        ) }
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View>
+          <Text>Waiting For All Players</Text>
+        </View>
+      )
+    }
   }
-  //
 }
 
-//const styles = stylesContest;
 const styles = stylesDefault;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//   },
-//   buttonContainer: {
-//     margin: 20,
-//   },
-//   alternativeLayoutButtonContainer: {
-//     margin: 20,
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//   },
-// });
 
 const mapStateToProps = state => {
   return {
@@ -91,13 +79,16 @@ const mapStateToProps = state => {
     roomSize: state.rooms.room.numPlayers,
     roomId: state.rooms.room.id,
     playersInRoom: state.rooms.playersInRoom,
+    images: state.rooms.images,
+    numOfPlayers: state.rooms.num
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    // getAll: () => dispatch(getAllPlayers()),
     getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
+    getImages: playerIds => dispatch(getImages(playerIds)),
+    getNumPlayers: roomId => dispatch(getNumPlayers(roomId))
   };
 };
 
