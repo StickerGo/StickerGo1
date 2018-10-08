@@ -29,42 +29,40 @@ class Room extends React.Component {
   }
 
   getRoom() {
-    if (!this.state.name) {
-      this.setState({ nameEntered: false });
-    } else {
-      const prompt = this.props.prompts[
-        Math.floor(Math.random() * this.props.prompts.length)
-      ];
-      const roomInfo = {
-        id: Math.floor(Math.random() * 100000 + 1).toString(),
-        numPlayers: this.state.pickval,
-        status: 'open',
-        winnerId: '',
-        promptForRoom: prompt,
-        players: {},
-        joined: 1,
-      };
-      this.props.generateRoom(roomInfo);
-      this.props.navigation.navigate('RoomCode', {
-        name: this.state.name,
-      });
-    }
+    // if (!this.state.name) {
+    //   this.setState({ nameEntered: false });
+    // } else {
+    const prompt = this.props.prompts[
+      Math.floor(Math.random() * this.props.prompts.length)
+    ];
+    const roomInfo = {
+      id: Math.floor(Math.random() * 100000 + 1).toString(),
+      numPlayers: this.state.pickval,
+      status: 'open',
+      winnerId: '',
+      promptForRoom: prompt,
+      players: {},
+      joined: 1,
+    };
+    this.props.generateRoom(roomInfo);
+    this.props.navigation.navigate('RoomCode', {
+      name: this.state.name,
+    });
   }
   render() {
-    let checkName = this.state.typedText.trim() === '';
+    let checkName = this.state.typedText.trim() !== '';
     let checkChar = !/^[a-zA-Z]*$/g.test(this.state.typedText);
     return (
       <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           <View style={styles.container}>
-            {this.state.nameEntered === false && <Text>Name required</Text>}
             <Text style={styles.text}>Enter your name</Text>
             <TextInput
               style={styles.textEnter}
               placeholder="your name here"
               onChangeText={text => {
                 this.setState(previousState => {
-                  return { name: text };
+                  return { typedText: text };
                 });
               }}
             />
@@ -93,7 +91,7 @@ class Room extends React.Component {
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
-              if (this.state.typedText.trim() !== '' && !checkChar) {
+              if (checkName && !checkChar) {
                 this.setState(state => {
                   return { name: this.typedText };
                 });
