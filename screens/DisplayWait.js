@@ -22,21 +22,13 @@ class DisplayWait extends Component {
   componentDidMount() {}
 
   render() {
-    let play = this.props.room.players;
-    let playcount;
-    if (typeof play === 'object') {
-      playcount = Object.getOwnPropertyNames(play).length;
-    }
-    let checknum;
-    if (Number(this.props.roomSize) === playcount) {
-      checknum = true;
-    } else {
-      checknum = false;
-    }
     return (
       <View style={styles.container}>
         <View style={styles.buttonGroup}>
-          {checknum ? (
+          {/* style={styles.button}
+
+              // onPress={() => this.props.navigation.navigate('VoteScreen')} */}
+          {checkPhoto ? (
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.props.navigation.navigate('VoteScreen')}
@@ -46,9 +38,8 @@ class DisplayWait extends Component {
           ) : (
             <Text style={styles.buttonText}>Waiting</Text>
           )}
-          {counter--}
+          <Text style={styles.buttonText}>Starting Game</Text>
         </View>
-        )
       </View>
     );
   }

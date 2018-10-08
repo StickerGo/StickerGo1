@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "tickero1-20181008144133-authRole",
+            "UnauthRoleArn": "arn:aws:iam::183696305965:role/tickero1-20181008144133-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::183696305965:role/tickero1-20181008144133-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "tickero1-20181008144133-deployment",
+            "UnauthRoleName": "tickero1-20181008144133-unauthRole",
+            "StackName": "tickero1-20181008144133",
+            "StackId": "arn:aws:cloudformation:us-east-1:183696305965:stack/tickero1-20181008144133/c795a190-cb29-11e8-a49a-500c524294d2"
+        }
+    }
+}

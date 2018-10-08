@@ -14,6 +14,9 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "aws-amplify": "^1.1.6",
+    "aws-amplify-react-native": "^2.0.6",
+    "aws-sdk": "^2.329.0",
     "expo": "^30.0.1",
     "expo-graphics": "^1.0.0-alpha.6",
     "expo-pixi": "^0.3.1",
@@ -21,10 +24,12 @@
     "firebase": "^5.5.2",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react-native-fetch-blob": "^0.10.8",
     "react-navigation": "^2.16.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "rn-fetch-blob": "^0.10.13"
   },
   "devDependencies": {
     "jest-expo": "30.0.0"
