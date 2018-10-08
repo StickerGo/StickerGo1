@@ -5,12 +5,20 @@ import {
   Picker,
   Text,
   TextInput,
-  ScrollView,
+  TouchableWithoutFeedback,
+  Alert,
+  Keyboard,
 } from 'react-native';
 import { getAllPrompts } from '../reducer/promptReducer';
 import { createRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
 import { stylesDefault } from '../styles/componentStyles';
+
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 class Room extends React.Component {
   _onPressButton() {}
@@ -51,61 +59,72 @@ class Room extends React.Component {
   }
   render() {
     let checkName = this.state.typedText.trim() !== '';
-    let checkChar = !/^[a-zA-Z]*$/g.test(this.state.typedText);
+    let checkChar = /^[a-zA-Z]*$/g.test(this.state.typedText);
     return (
-      <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
-        <View style={styles.nonButtonContainer}>
-          <View style={styles.container}>
-            <Text style={styles.text}>Enter your name</Text>
-            <TextInput
-              style={styles.textEnter}
-              placeholder="your name here"
-              onChangeText={text => {
-                this.setState(previousState => {
-                  return { typedText: text };
-                });
+      <DismissKeyboard>
+        <View style={styles.joinOrCreateRoomContainer}>
+          <View style={styles.nonButtonContainerCreate}>
+            <View style={styles.container}>
+              <Text style={styles.textCreateName}>Enter your name</Text>
+              <TextInput
+                style={styles.textEnter}
+                placeholder="Your Name"
+                onChangeText={text => {
+                  this.setState(previousState => {
+                    return { typedText: text };
+                  });
+                }}
+              />
+
+              {checkName &&
+                !checkChar && (
+                  <Text style={styles.buttonText}>Letters Only</Text>
+                )}
+            </View>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.text}>How many players?</Text>
+              <Picker
+                selectedValue={this.state.pickval}
+                style={styles.twoPickers}
+                itemStyle={styles.twoPickerItems}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ pickval: itemValue })
+                }
+              >
+                <Picker.Item label="2" value="2" />
+                <Picker.Item label="3" value="3" />
+                <Picker.Item label="4" value="4" />
+              </Picker>
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.startButton}
+              onPress={() => {
+                if (!checkName) {
+                  return Alert.alert(
+                    'Who are you?',
+                    'Name Required',
+                    [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                    { cancelable: false }
+                  );
+                }
+                if (checkName && checkChar) {
+                  this.setState(state => {
+                    return { name: this.typedText };
+                  });
+                  this.getRoom();
+                  this.props.navigation.navigate('RoomCode', {
+                    name: this.state.typedText,
+                  });
+                }
               }}
-            />
-            {checkName && (
-              <Text style={styles.buttonText}>Name is Required</Text>
-            )}
-            {checkChar && <Text style={styles.buttonText}>Letters Only</Text>}
-          </View>
-          <View style={styles.pickerContainer}>
-            <Text style={styles.text}>How many players?</Text>
-            <Picker
-              selectedValue={this.state.pickval}
-              style={styles.twoPickers}
-              itemStyle={styles.twoPickerItems}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ pickval: itemValue })
-              }
             >
-              <Picker.Item label="2" value="2" />
-              <Picker.Item label="3" value="3" />
-              <Picker.Item label="4" value="4" />
-            </Picker>
+              <Text style={styles.startButtonText}>get code</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.startButton}
-            onPress={() => {
-              if (checkName && !checkChar) {
-                this.setState(state => {
-                  return { name: this.typedText };
-                });
-                this.getRoom();
-                this.props.navigation.navigate('RoomCode', {
-                  name: this.state.typedText,
-                });
-              }
-            }}
-          >
-            <Text style={styles.startButtonText}>get code</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      </DismissKeyboard>
     );
   }
 }

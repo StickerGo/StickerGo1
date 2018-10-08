@@ -4,7 +4,9 @@ import {
   View,
   Text,
   TextInput,
-  ScrollView,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
@@ -21,6 +23,12 @@ import db from '../reducer/firebase';
 //     return false;
 //   }
 // }
+
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 class Join extends React.Component {
   _onPressButton() {}
@@ -79,51 +87,65 @@ class Join extends React.Component {
   // addPlayerToRoom()
 
   render() {
-    let checkName = this.state.name.trim() === '';
-    let checkChar = !/^[a-zA-Z]*$/g.test(this.state.name);
+    let checkName = this.state.name.trim() !== '';
+    let checkChar = /^[a-zA-Z]*$/g.test(this.state.name);
     return (
-      <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
-        <View style={styles.nonButtonContainer}>
-          {this.state.nameEntered === false && <Text>Name required</Text>}
-          <Text style={styles.text}>Enter your name</Text>
-          <TextInput
-            style={styles.textEnter}
-            placeholder="Your Name Here"
-            onChangeText={text => {
-              this.setState({
-                name: text,
-              });
-            }}
-          />
-          {checkName && <Text style={styles.text}>Name is Required</Text>}
-          {checkChar && <Text style={styles.text}>Letters Only</Text>}
-          {this.state.roomExists === false && (
-            <Text style={styles.text}>Invalid Room Number</Text>
-          )}
-          <Text style={styles.text}>Enter room code</Text>
-          <TextInput
-            style={styles.textEnter}
-            placeholder="Your Code Here"
-            onChangeText={text => {
-              this.setState({
-                code: text,
-              });
-            }}
-          />
+      <DismissKeyboard>
+        <View style={styles.joinOrCreateRoomContainer}>
+          <View style={styles.nonButtonContainerCreate}>
+            <View style={styles.container}>
+              <Text style={styles.textCreateName}>Enter your name</Text>
+              <TextInput
+                style={styles.textEnter}
+                placeholder="Your Name Here"
+                onChangeText={text => {
+                  this.setState({
+                    name: text,
+                  });
+                }}
+              />
+              {checkName &&
+                !checkChar && (
+                  <Text style={styles.buttonText}>Letters Only</Text>
+                )}
+
+              <Text style={styles.textCreateName}>Enter room code</Text>
+              <TextInput
+                style={styles.textEnter}
+                placeholder="Your Code Here"
+                onChangeText={text => {
+                  this.setState({
+                    code: text,
+                  });
+                }}
+              />
+              {this.state.roomExists === false && (
+                <Text style={styles.buttonText}>Invalid Room Number</Text>
+              )}
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.startButton}
+              onPress={() => {
+                if (!checkName) {
+                  return Alert.alert(
+                    'Who are you?',
+                    'Name Required',
+                    [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                    { cancelable: false }
+                  );
+                }
+                if (checkName && checkChar) {
+                  this.addPlayer(this.state.name);
+                }
+              }}
+            >
+              <Text style={styles.startButtonText}>Join</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.startButton}
-            onPress={() => {
-              if (this.state.name.trim() !== '' && !checkChar) {
-                this.addPlayer(this.state.name);
-              }
-            }}
-          >
-            <Text style={styles.startButtonText}>Join</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      </DismissKeyboard>
     );
   }
 }
