@@ -54,14 +54,15 @@ class Contest extends Component {
     //           <View style={styles.buttonContainer}>
     const imagesArray = this.props.images;
     console.log('imagesArray', imagesArray);
-    if (imagesArray.length.toString() === this.props.numOfPlayers) {
+    // console.log('FIND NUM OF PLAYERS', imagesArray.legth);
+    if (imagesArray.length === this.props.numOfPlayers) {
       return (
         <View style={styles.container}>
           {imagesArray.map(image => {
             return (
               <Image
                 key={image}
-                source={{ isStatic: true, uri: image }}
+                source={{ uri: image }}
                 style={{ flex: 1, width: '100%', resizeMode: 'contain' }}
               />
             );
@@ -74,10 +75,8 @@ class Contest extends Component {
               <Text style={styles.buttonText}>Submit vote</Text>
             </TouchableOpacity>
           </View>
-          // ) } //{' '}
+          );
         </View>
-        //     );
-        //      </View>
       );
     } else {
       return (

@@ -9,7 +9,7 @@ import { getPlayersinRoom } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 import db from '../reducer/firebase';
 
-class Waiting extends Component {
+class DisplayWait extends Component {
   _onPressButton() {}
   constructor() {
     super();
@@ -39,7 +39,7 @@ class Waiting extends Component {
           {checknum ? (
             <TouchableOpacity
               style={styles.button}
-              onPress={() => this.props.navigation.navigate('DrawCanvas')}
+              onPress={() => this.props.navigation.navigate('VoteScreen')}
             >
               <Text style={styles.buttonText}>Start Game</Text>
             </TouchableOpacity>
@@ -76,4 +76,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Waiting);
+)(DisplayWait);
