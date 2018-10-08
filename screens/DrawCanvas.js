@@ -112,6 +112,7 @@ class Home extends Component {
 
   render() {
     return (
+
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
@@ -155,9 +156,7 @@ class Home extends Component {
               onPress={() => {
                 this.saveImage();
                 const id = this.props.player.id;
-                this.props.navigation.navigate('CameraView', {
-                  userId: id,
-                });
+                this.props.navigation.navigate('CameraView');
               }}
             >
               <Text style={styles.buttonText}>DONE</Text>

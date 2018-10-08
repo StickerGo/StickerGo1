@@ -18,8 +18,9 @@ class Room extends React.Component {
     super();
     this.state = {
       pickval: 2,
+      typedText: '',
+      playerId: '',
       name: '',
-      nameEntered: true,
     };
     this.getRoom = this.getRoom.bind(this);
   }
@@ -50,6 +51,8 @@ class Room extends React.Component {
     }
   }
   render() {
+    let checkName = this.state.typedText.trim() === '';
+    let checkChar = !/^[a-zA-Z]*$/g.test(this.state.typedText);
     return (
       <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
@@ -65,6 +68,10 @@ class Room extends React.Component {
                 });
               }}
             />
+            {checkName && (
+              <Text style={styles.buttonText}>Name is Required</Text>
+            )}
+            {checkChar && <Text style={styles.buttonText}>Letters Only</Text>}
           </View>
           <View style={styles.pickerContainer}>
             <Text style={styles.text}>How many players?</Text>
@@ -86,7 +93,15 @@ class Room extends React.Component {
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
-              this.getRoom();
+              if (this.state.typedText.trim() !== '' && !checkChar) {
+                this.setState(state => {
+                  return { name: this.typedText };
+                });
+                this.getRoom();
+                this.props.navigation.navigate('RoomCode', {
+                  name: this.state.typedText,
+                });
+              }
             }}
           >
             <Text style={styles.startButtonText}>get code</Text>
@@ -100,6 +115,7 @@ class Room extends React.Component {
 const mapStateToProps = state => {
   return {
     prompts: state.prompts.prompts,
+    player: state.players.player,
   };
 };
 

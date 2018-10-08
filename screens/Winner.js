@@ -16,7 +16,7 @@ import { exitGame, resetRoom } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {

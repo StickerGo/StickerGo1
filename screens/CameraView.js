@@ -60,6 +60,7 @@ class LinkScreen extends React.Component {
     this.saveImage();
   };
   render() {
+    const roomId = this.props.roomId;
     return (
       <View style={styles.container}>
         <LinearGradient
@@ -218,6 +219,7 @@ const mapStateToProps = state => {
   return {
     roomId: state.rooms.room.id,
     player: state.players.player,
+    
   };
 };
 

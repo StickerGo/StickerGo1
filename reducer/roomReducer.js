@@ -7,8 +7,13 @@ const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
 const GET_ALL_IN_ROOM = 'GET_ALL_IN_ROOM';
+
 const RESET_GAME = 'RESET_GAME';
 const EXIT_GAME = 'EXIT_GAME';
+
+const GOT_IMAGES = 'GOT_IMAGES'
+const GOT_NUM_PLAYERS = 'GOT_NUM_PLAYERS'
+
 
 //action creators
 
@@ -34,7 +39,16 @@ export const exitGame = () => {
   return { type: EXIT_GAME };
 };
 
+const gotImages = image => {
+  return { type: GOT_IMAGES, image }
+}
+
+const gotNumPlayers = num => {
+  return { type: GOT_NUM_PLAYERS, num }
+}
+
 // thunk creators
+
 // export const getAllRooms = () => {
 //   return dispatch => {
 //     try {
@@ -50,53 +64,35 @@ export const exitGame = () => {
 //   };
 // };
 
+
 export const getOneRoom = roomId => {
   return dispatch => {
     db.database()
       .ref('rooms')
       .child(roomId)
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         const room = snapshot.val() || [];
         dispatch(getOne(room));
       });
   };
 };
 
-// export const createRoom = roomInfo => {
-//   return dispatch => {
-//     const room = db
-//       .database()
-//       .ref('rooms')
-//       .push();
-//     roomInfo.id = room.key;
-//     room.set(roomInfo);
-//     dispatch(makeOne(roomInfo));
-//   };
-// };
 
 export const getPlayersinRoom = roomId => {
   return async dispatch => {
     try {
-      console.log('roomId', roomId);
       let temp = [];
       const dbplayers = await db
         .database()
         .ref('rooms')
         .child(roomId)
         .child('players')
-        .on('value', function(snapshot) {
-          temp.push(snapshot.val());
-        });
+        .once('value');
+      temp = dbplayers.val();
 
-      console.log('what is temp', temp);
-      // const [players] = temp;
-      // let playersArray = [];
-      // if (players) {
-      //   for (let player in players) {
-      //     playersArray.push(players[player]);
-      //   }
-      // }
-      dispatch(getAllInRoom(temp));
+      let keysArr = Object.keys(temp);
+
+      dispatch(getAllInRoom(keysArr));
     } catch (err) {
       console.error('THERE IS ERROR WITH PLAYERS IN ROOM', err);
     }
@@ -129,6 +125,7 @@ export const addToRoom = (playerId, playerName, roomId) => {
   };
 };
 
+
 export const resetRoom = roomInfo => {
   //1. reset prompt
   //2. reset winnerId
@@ -156,12 +153,43 @@ export const resetRoom = roomInfo => {
   };
 };
 
+export const getImages = (id) => {
+  return dispatch => {
+    db.database()
+      .ref('players')
+      .child(id)
+      .child('photo')
+      .on('value', function (snapshot) {
+        const image = snapshot.val()
+        if (image !== '') {
+          dispatch(gotImages(image))
+        }
+      })
+  }
+}
+
+export const getNumPlayers = (id) => {
+  return dispatch => {
+    db.database()
+      .ref('rooms')
+      .child(id)
+      .child('numPlayers')
+      .on('value', function (snapshot) {
+        const num = snapshot.val()
+        dispatch(gotNumPlayers(num))
+      })
+  }
+}
+
+
 //reducer
 
 const initialStateRoom = {
   rooms: [],
   room: {},
   playersInRoom: [],
+  images: [],
+  num: ''
 };
 
 const roomReducer = (state = initialStateRoom, action) => {
@@ -194,6 +222,16 @@ const roomReducer = (state = initialStateRoom, action) => {
       };
     case EXIT_GAME:
       return initialStateRoom;
+    case GOT_IMAGES:
+      return {
+        ...state,
+        images: [...state.images, action.image]
+      }
+    case GOT_NUM_PLAYERS:
+      return {
+        ...state,
+        num: action.num
+      }
     default:
       return state;
   }

@@ -20,20 +20,23 @@ class RoomCode extends Component {
   componentDidMount() {
     const id = this.props.navigation.getParam('name') + this.playerId;
     const name = this.props.navigation.getParam('name');
+    // const id = 'Ave001';
+    // const name = 'Ave';
     this.setState({ roomId: this.props.roomId });
     this.props.addPlayer({
       name: this.props.navigation.getParam('name'),
+      // name: '',
       id,
       draw: '',
       photo: '',
       roomId: this.props.roomId,
+      //status: 'drawing'
     });
 
     this.props.addToRoom(id, name, this.props.roomId);
   }
 
   render() {
-    console.log('ROOM ID IN ROOM CODE', this.props.roomId);
     return (
       <View style={styles.container}>
         <LinearGradient
