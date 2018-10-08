@@ -109,8 +109,8 @@ export const createRoom = roomInfo => {
       .database()
       .ref('rooms')
       .child(roomInfo.id)
-      .set(roomInfo)
-      .then(() => dispatch(makeOne(roomInfo)));
+      .set(roomInfo);
+    dispatch(makeOne(roomInfo));
   };
 };
 

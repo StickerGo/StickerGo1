@@ -131,7 +131,7 @@ export const stylesDefault = StyleSheet.create({
   },
   codeText: {
     flex: 1,
-    alignText: 'center',
+    textAlign: 'center',
     fontWeight: 'bold',
     fontFamily: 'Avenir',
     fontSize: 40,

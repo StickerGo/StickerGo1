@@ -51,7 +51,7 @@ class Room extends React.Component {
   }
   render() {
     return (
-      <ScrollView style={styles.joinOrCreateRoomContainer}>
+      <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           <View style={styles.container}>
             {this.state.nameEntered === false && <Text>Name required</Text>}

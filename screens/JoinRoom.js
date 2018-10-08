@@ -84,7 +84,7 @@ class Join extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.joinOrCreateRoomContainer}>
+      <ScrollView contentContainerStyle={styles.joinOrCreateRoomContainer}>
         <View style={styles.nonButtonContainer}>
           {this.state.nameEntered === false && <Text>Name required</Text>}
           <Text style={styles.text}>Enter your name</Text>
