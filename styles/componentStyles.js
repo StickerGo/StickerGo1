@@ -10,6 +10,11 @@ export const stylesDefault = StyleSheet.create({
     padding: 20,
     alignItems: 'stretch',
   },
+  linearGradientstyleDraw: {
+    padding: 20,
+    alignItems: 'stretch',
+    paddingHorizontal: '40%'
+  },
   nonButtonContainer: {
     flex: 5,
     justifyContent: 'center',
@@ -52,6 +57,21 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'space-evenly',
     overflow: 'hidden',
   },
+  captureButton: {
+    height: '80%',
+    width: '40%',
+    backgroundColor: '#40E0D0',
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
+  captureButtonText: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'white',
+    fontSize: 18,
+  },
   buttonText: {
     alignSelf: 'center',
     fontWeight: 'bold',
@@ -73,8 +93,6 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'Avenir',
     fontSize: 40,
     color: 'white',
-    //for testing
-    // backgroundColor: 'green',
   },
   textEnter: {
     flex: 1,
@@ -180,7 +198,7 @@ export const stylesDefault = StyleSheet.create({
   tinyButton: {
     height: '80%',
     width: '20%',
-    backgroundColor: 'red',
+    backgroundColor: '#CD5C5C',
     borderRadius: 10,
     justifyContent: 'space-evenly',
     overflow: 'hidden',
@@ -215,11 +233,20 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 40,
     color: 'white',
     // flexWrap: 'wrap',
-    paddingBottom: 20
+    paddingBottom: '5%'
+  },
+  timerRed: {
+    flex: 1,
+    color: '#CD5C5C',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir'
   },
   timer: {
     flex: 1,
-    color: '#CD5C5C',
-    fontSize: 10
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir'
   }
 });

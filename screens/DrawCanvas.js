@@ -107,7 +107,7 @@ class Home extends Component {
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={styles.linearGradientstyle}
+          style={styles.linearGradientstyleDraw}
         >
 
           <View style={styles.nonButtonContainer}>
@@ -127,7 +127,7 @@ class Home extends Component {
           </View>
 
           <Timer
-            // style={styles.timer}
+            style={styles.timer}
             navigation={this.props.navigation}
             navigateTo="CameraView"
             screenshot={this.saveImage}
