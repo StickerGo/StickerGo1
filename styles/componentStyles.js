@@ -10,7 +10,7 @@ export const stylesDefault = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#40E0D0'
+    backgroundColor: '#40E0D0',
   },
   linearGradientstyleHome: {
     padding: 20,
@@ -24,12 +24,12 @@ export const stylesDefault = StyleSheet.create({
   linearGradientstyleDraw: {
     padding: 20,
     alignItems: 'stretch',
-    paddingHorizontal: '40%'
+    paddingHorizontal: '40%',
   },
   linearGradientstyleRoomCode: {
     padding: 20,
     alignItems: 'stretch',
-    paddingHorizontal: '10%'
+    paddingHorizontal: '10%',
   },
   nonButtonContainer: {
     flex: 4,
@@ -84,8 +84,7 @@ export const stylesDefault = StyleSheet.create({
     height: 300,
     width: 300,
     alignItems: 'stretch',
-    alignSelf: 'center'
-
+    alignSelf: 'center',
   },
   button: {
     height: '80%',
@@ -204,6 +203,17 @@ export const stylesDefault = StyleSheet.create({
     borderColor: 'cadetblue',
     marginBottom: '30%',
   },
+  voteButton: {
+    backgroundColor: 'white',
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '20%',
+  },
   pickerContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -294,6 +304,18 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  scrollContainer: {
+    flex: 6,
+    marginTop: '20%',
+  },
+  scrollView: {
+    flexGrow: 5,
+  },
+  buttonContainerVote: {
+    position: 'absolute',
+    flexDirection: 'row',
+    height: '10%',
+  },
   challengeText: {
     flex: 0.5,
     textAlign: 'center',
@@ -313,25 +335,25 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 40,
     color: 'white',
     // flexWrap: 'wrap',
-    paddingBottom: '5%'
+    paddingBottom: '5%',
   },
   timerRed: {
     flex: 1,
     color: '#CD5C5C',
     fontSize: 30,
     fontWeight: 'bold',
-    fontFamily: 'Avenir'
+    fontFamily: 'Avenir',
   },
   timer: {
     flex: 1,
     color: 'white',
     fontSize: 30,
     fontWeight: 'bold',
-    fontFamily: 'Avenir'
+    fontFamily: 'Avenir',
   },
   list: {
     flex: 4,
     justifyContent: 'flex-start',
     alignItems: 'center',
-  }
+  },
 });
