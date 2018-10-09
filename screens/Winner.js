@@ -102,11 +102,8 @@ const mapStateToProps = state => {
     room: state.rooms.room,
     winner: state.players.winner,
     roomId: state.rooms.room.id,
-<<<<<<< HEAD
-    winners: state.rooms.room.winnerId
-=======
+    winners: state.rooms.room.winnerId,
     prompts: state.prompts.prompts,
->>>>>>> master
   };
 };
 

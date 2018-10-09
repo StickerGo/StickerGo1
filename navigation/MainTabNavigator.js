@@ -14,23 +14,17 @@ import WinnerWaiting from '../screens/WinnerWaiting'
 
 export default createStackNavigator(
   {
-    Home: Home, 
+    Home: Home,
     CreateRoom: CreateRoom,
     RoomCode: RoomCode,
     JoinRoom: JoinRoom,
     DrawCanvas: DrawCanvas,
     CameraView: CameraView,
-    VoteScreen: Vote, 
+    VoteScreen: Vote,
     Waiting: Waiting,
     Winner: Winner,
     Settings: Settings,
-<<<<<<< HEAD
     WinnerWaiting: WinnerWaiting
-=======
-
-    // WinnerWaiting: WinnerWaiting
-
->>>>>>> master
   },
   {
     initialRouteName: 'Home',
