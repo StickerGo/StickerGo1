@@ -9,6 +9,14 @@ import Timer from './Timer';
 import { connect } from 'react-redux';
 import { View as GraphicsView } from 'expo-graphics';
 console.disableYellowBox = true;
+import { addPhoto } from '../reducer/playerReducer';
+import Amplify, { Storage } from 'aws-amplify';
+
+import Amplifyconfigure from '../constants/AWS';
+console.log('PROCES', process);
+Amplify.configure(Amplifyconfigure.Amplifyconfigure);
+
+Storage.configure({ level: 'public' });
 
 class LinkScreen extends React.Component {
   constructor(props) {
@@ -25,14 +33,10 @@ class LinkScreen extends React.Component {
     this.decreaseSize = this.decreaseSize.bind(this);
     this.saveImage = this.saveImage.bind(this);
   }
-  saveImage() {
-    const photo = this.state.photo;
-
-    db.database()
-      .ref('players')
-      .child(`/${this.props.player.id}/photo`)
-      .set(photo.photo);
+  saveImage(photo) {
+    this.props.addAPhoto(photo, this.props.player.id);
   }
+
   increaseSize() {
     this.setState({
       sizeChanger: this.state.sizeChanger - 1,
@@ -52,12 +56,21 @@ class LinkScreen extends React.Component {
     /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
     const photo = await Expo.takeSnapshotAsync(this._container, options);
 
-    this.setState({
-      photo: { photo },
-      // strokeWidth: Math.random() * 30 + 10,
-      // strokeColor: Math.random() * 0xffffff,
-    });
-    this.saveImage();
+    const response = await fetch(photo);
+    const blob = await response.blob();
+    Storage.put(`${this.props.player.id}photo.jpg`, blob, {
+      contentType: 'image.jpg',
+    })
+      .then(async result => {
+        await this.saveImage(
+          `https://s3.us-east-1.amazonaws.com/tickero1-20181008144133-deployment/public/${
+            this.props.player.id
+          }photo.jpg`
+        );
+
+        this.props.navigation.navigate('VoteScreen');
+      })
+      .catch(e => console.log(e));
   };
   render() {
     const roomId = this.props.roomId;
@@ -105,11 +118,11 @@ class LinkScreen extends React.Component {
               style={styles.captureButton}
               onPress={() => {
                 this.screenShot();
-                this.props.navigation.navigate('VoteScreen');
               }}
             >
               <Text style={styles.captureButtonText}>capture!</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.tinyButton}
               onPress={this.increaseSize}
@@ -130,7 +143,7 @@ class LinkScreen extends React.Component {
       .ref('players')
       .child(playerId)
       .child('draw')
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         newImage = snapshot.val();
       });
     return newImage;
@@ -220,10 +233,18 @@ const mapStateToProps = state => {
   return {
     roomId: state.rooms.room.id,
     player: state.players.player,
-
   };
 };
 
-export default connect(mapStateToProps)(LinkScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    addAPhoto: (photo, playerId) => dispatch(addPhoto(photo, playerId)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LinkScreen);
 
 const styles = stylesDefault;

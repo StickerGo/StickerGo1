@@ -1,0 +1,9 @@
+{
+    "bucketName": "stickerbucket",
+    "authPolicyName": "s3_amplify_e32a9aac",
+    "unauthPolicyName": "s3_amplify_e32a9aac",
+    "authRoleName": "tickero1-20181008144133-authRole",
+    "unauthRoleName": "tickero1-20181008144133-unauthRole",
+    "authPermissions": "rw",
+    "unauthPermissions": "rw"
+}

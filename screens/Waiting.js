@@ -8,32 +8,30 @@ import { getPlayersinRoom, getOneRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import db from '../reducer/firebase';
-let counter = 2;
 
 class Waiting extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
-      count: 1,
       players: '',
       allplayers: [],
     };
   }
 
   async componentDidMount() {
-    await this.props.getRoom(this.props.navigation.getParam('roomId'))
+    await this.props.getRoom(this.props.navigation.getParam('roomId'));
   }
 
   render() {
     let play = this.props.room.players;
-    let playersArray = []
+    let playersArray = [];
     let playcount;
     if (typeof play === 'object') {
       playcount = Object.getOwnPropertyNames(play).length;
-      let playerKeys = Object.keys(play)
+      let playerKeys = Object.keys(play);
       for (let i = 0; i < playerKeys.length; i++) {
-        playersArray.push(play[playerKeys[i]])
+        playersArray.push(play[playerKeys[i]]);
       }
     }
     let checknum;
@@ -48,7 +46,11 @@ class Waiting extends Component {
           <View style={styles.list}>
             <View style={{ flex: 1 }}>
               {playersArray.map(player => {
-                return <Text key={player.name} style={styles.nameText}>{player.name}</Text>
+                return (
+                  <Text key={player.name} style={styles.nameText}>
+                    {player.name}
+                  </Text>
+                );
               })}
             </View>
             <View>
@@ -60,44 +62,40 @@ class Waiting extends Component {
                   <Text style={styles.buttonTextHome}>Start Game</Text>
                 </TouchableOpacity>
               ) : (
-                  <View>
-                    <Image
-                      style={styles.loadingImage}
-                      source={{
-                        uri:
-                          'https://media.giphy.com/media/9JgeNOiRwsvbg9RVsq/giphy.gif',
-                      }}
-                    />
-                    <Text style={styles.waitingText}>Waiting For More Players...</Text>
-                  </View>
-                )}
+                <View>
+                  <Image
+                    style={styles.loadingImage}
+                    source={{
+                      uri:
+                        'https://media.giphy.com/media/9JgeNOiRwsvbg9RVsq/giphy.gif',
+                    }}
+                  />
+                  <Text style={styles.waitingText}>
+                    Waiting For More Players...
+                  </Text>
+                </View>
+              )}
             </View>
-            {counter--}
-
           </View>
         ) : (
-            <View style={styles.buttonGroup}>
-              <Text style={styles.text}>
-                Something Went Wrong
-              </Text>
-              {checknum ? (
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    this.props.navigation.navigate('VoteScreen', {
-                      roomId: this.props.navigation.getParam('roomId'),
-                    })
-                  }
-                >
-                  <Text style={styles.buttonText}>Go To Vote</Text>
-                </TouchableOpacity>
-              ) : (
-                  <Text style={styles.buttonText}>Waiting</Text>
-                )}
-              {console.log('VALUE', counter)}
-              {counter++}
-            </View>
-          )}
+          <View style={styles.buttonGroup}>
+            <Text style={styles.text}>Something Went Wrong</Text>
+            {checknum ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('VoteScreen', {
+                    roomId: this.props.navigation.getParam('roomId'),
+                  })
+                }
+              >
+                <Text style={styles.buttonText}>Go To Vote</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.buttonText}>Waiting</Text>
+            )}
+          </View>
+        )}
       </View>
     );
   }
