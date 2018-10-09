@@ -10,6 +10,7 @@ import RoomCode from '../screens/RoomCode';
 import Waiting from '../screens/Waiting';
 import Vote from '../screens/Vote';
 import Winner from '../screens/Winner';
+
 import WinnerWaiting from '../screens/WinnerWaiting'
 
 export default createStackNavigator(
@@ -25,6 +26,13 @@ export default createStackNavigator(
     Winner: Winner,
     Settings: Settings,
     WinnerWaiting: WinnerWaiting
+  },
+  {
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
+
+
   },
   {
     initialRouteName: 'Home',

@@ -7,6 +7,7 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FBAddPlayer } from '../reducer/playerReducer';
@@ -21,7 +22,7 @@ const DismissKeyboard = ({ children }) => (
 );
 
 class Join extends React.Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor(props) {
     super(props);
     this.state = {
@@ -81,58 +82,69 @@ class Join extends React.Component {
     return (
       <DismissKeyboard>
         <View style={styles.joinOrCreateRoomContainer}>
-          <View style={styles.nonButtonContainerCreate}>
-            <View style={styles.container}>
-              <Text style={styles.textCreateName}>Enter your name</Text>
-              <TextInput
-                style={styles.textEnter}
-                placeholder="Your Name Here"
-                onChangeText={text => {
-                  this.setState({
-                    name: text,
-                  });
-                }}
-              />
-              {checkName &&
-                !checkChar && (
-                  <Text style={styles.buttonText}>Letters Only</Text>
-                )}
+          <KeyboardAvoidingView
+            styels={styles.container}
+            behavior="padding"
+            enabled
+          >
+            <View style={styles.nonButtonContainerCreate}>
+              <View style={styles.container}>
+                <Text style={styles.textCreateName}>Enter your name</Text>
+                <TextInput
+                  style={styles.textEnter}
+                  placeholder="Your Name Here"
+                  onChangeText={text => {
+                    this.setState({
+                      name: text,
+                    });
+                  }}
+                />
+                {checkName &&
+                  !checkChar && (
+                    <Text style={styles.buttonText}>Letters Only</Text>
+                  )}
 
-              <Text style={styles.textCreateName}>Enter room code</Text>
-              <TextInput
-                style={styles.textEnter}
-                placeholder="Your Code Here"
-                onChangeText={text => {
-                  this.setState({
-                    code: text,
-                  });
-                }}
-              />
-              {this.state.roomExists === false && (
-                <Text style={styles.buttonText}>Invalid Room Number</Text>
-              )}
+                <Text style={styles.textCreateName}>Enter room code</Text>
+                <TextInput
+                  style={styles.textEnter}
+                  placeholder="Your Code Here"
+                  onChangeText={text => {
+                    this.setState({
+                      code: text,
+                    });
+                  }}
+                />
+                {this.state.roomExists === false && (
+                  <Text style={styles.buttonText}>Invalid Room Number</Text>
+                )}
+              </View>
             </View>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.startButton}
-              onPress={() => {
-                if (!checkName) {
-                  return Alert.alert(
-                    'Who are you?',
-                    'Name Required',
-                    [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-                    { cancelable: false }
-                  );
-                }
-                if (checkName && checkChar) {
-                  this.addPlayer(this.state.name);
-                }
-              }}
-            >
-              <Text style={styles.startButtonText}>Join</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.startButton}
+                onPress={() => {
+                  if (!checkName) {
+                    return Alert.alert(
+                      'Who are you?',
+                      'Name Required',
+                      [
+                        {
+                          text: 'OK',
+                          onPress: () => console.log('OK Pressed'),
+                        },
+                      ],
+                      { cancelable: false }
+                    );
+                  }
+                  if (checkName && checkChar) {
+                    this.addPlayer(this.state.name);
+                  }
+                }}
+              >
+                <Text style={styles.startButtonText}>Join</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </View>
       </DismissKeyboard>
     );
@@ -145,16 +157,17 @@ const mapStateToProps = state => {
   return {
     players: state.players,
     roomId: state.rooms.room.id,
-    room: state.rooms.room
+    room: state.rooms.room,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     addAPlayer: player => dispatch(FBAddPlayer(player)),
-    // checkRoom: roomId => dispatch(getOneRoom(roomId)),
-    addPlayerToRoom: (playerId, playerName, roomId) => dispatch(addToRoom(playerId, playerName, roomId)),
-    getRoom: roomId => dispatch(getOneRoom(roomId))
+
+    addPlayerToRoom: (playerId, playerName, roomId) =>
+      dispatch(addToRoom(playerId, playerName, roomId)),
+    getRoom: roomId => dispatch(getOneRoom(roomId)),
   };
 };
 
