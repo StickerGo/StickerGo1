@@ -21,17 +21,17 @@ import {
 } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
       photos: [],
       image: '',
-      vote: ''
+      vote: '',
     };
-    this.selectImage = this.selectImage.bind(this)
-    this.vote = this.vote.bind(this)
-    this.voteAgain = this.voteAgain.bind(this)
+    this.selectImage = this.selectImage.bind(this);
+    this.vote = this.vote.bind(this);
+    this.voteAgain = this.voteAgain.bind(this);
   }
 
   async componentDidMount() {
@@ -50,13 +50,13 @@ class Contest extends Component {
   }
 
   selectImage(id) {
-    console.log('inside select image')
-    this.setState({ vote: id })
+    console.log('inside select image');
+    this.setState({ vote: id });
   }
 
   async voteAgain(id) {
-    console.log('in vote again')
-    await this.vote(id)
+    console.log('in vote again');
+    await this.vote(id);
     // const numVotes = vote.val()
   }
 
@@ -80,21 +80,22 @@ class Contest extends Component {
   // }
 
   async vote(playerId) {
-    console.log('in the vote function')
-    const ref = await db.database()
+    console.log('in the vote function');
+    const ref = await db
+      .database()
       .ref('rooms')
       .child(this.props.roomId)
       .child('players')
       .child(playerId)
       .child('votes')
-      .transaction(function (votes) {
-        return (votes || 0) + 1
-      })
+      .transaction(function(votes) {
+        return (votes || 0) + 1;
+      });
   }
 
   render() {
     const imagesArray = this.props.images;
-    const vote = this.state.vote
+    const vote = this.state.vote;
 
     if (imagesArray.length > 0) {
       return (
@@ -106,12 +107,15 @@ class Contest extends Component {
             <View style={styles.scrollContainer}>
               <ScrollView contentContainerStyle={styles.scrollView}>
                 {imagesArray.map(image => {
-                  let imageStyling = styles.unselectedImageStyle
+                  let imageStyling = styles.unselectedImageStyle;
                   if (vote === image.id) {
-                    imageStyling = styles.selectedImageStyle
+                    imageStyling = styles.selectedImageStyle;
                   }
                   return (
-                    <TouchableOpacity key={image.id} onPress={() => this.selectImage(image.id)}>
+                    <TouchableOpacity
+                      key={image.id}
+                      onPress={() => this.selectImage(image.id)}
+                    >
                       <Image
                         key={image.id}
                         source={{ isStatic: true, uri: image.url }}
@@ -126,10 +130,9 @@ class Contest extends Component {
               <TouchableOpacity
                 style={styles.voteButton}
                 onPress={() => {
-                  this.voteAgain(this.state.vote)
-                  // this.props.navigation.navigate('Winner')
-                }
-                }
+                  this.voteAgain(this.state.vote);
+                  this.props.navigation.navigate('Winner');
+                }}
               >
                 <Text style={styles.startButtonText}>Submit vote</Text>
               </TouchableOpacity>
