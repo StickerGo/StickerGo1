@@ -165,6 +165,20 @@ export const getNumPlayers = (id) => {
   }
 }
 
+export const addVote = (roomId, playerId) => {
+  return dispatch => {
+    const votes = db.database()
+      .ref('rooms')
+      .child(roomId)
+      .child('players')
+      .child(playerId)
+      .child('votes')
+    const numVotes = votes.val()
+    votes.set(numVotes + 1)
+    dispatch(addedVote())
+  }
+}
+
 
 //reducer
 
