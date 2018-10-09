@@ -63,13 +63,14 @@ export const getAllPlayers = () => {
 };
 
 export const getWinner = playerId => {
-  return dispatch => {
+  return async dispatch => {
     try {
-      db.database()
+      await db.database()
         .ref('/players')
         .child(playerId)
         .on('value', snapshot => {
           const winner = snapshot.val() || [];
+          console.log('in the winner thunk...', winner)
           dispatch(getOne(winner));
         });
     } catch (err) {
@@ -146,7 +147,7 @@ export const addPhoto = (photo, playerId) => {
 const initialStatePlayer = {
   players: [],
   player: {},
-  winner: {},
+  winner: [],
   playersInRoom: [],
 };
 
@@ -171,7 +172,7 @@ const playerReducer = (state = initialStatePlayer, action) => {
     case GET_WINNER:
       return {
         ...state,
-        winner: action.winner,
+        winner: [...state.winner, action.winner],
       };
     case PLAYER_EXIT_GAME:
       return initialStatePlayer;
