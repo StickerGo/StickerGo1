@@ -16,17 +16,23 @@ import { exitGame, resetRoom, getWinnerId } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
       name: 'name',
+      winners: []
     };
   }
   async componentDidMount() {
     await this.props.getWinnerId(this.props.roomId);
-
-    await this.props.getTheWinner(this.props.room.winnerId);
+    const winnersArray = []
+    for (let i = 0; i < this.props.winners.length; i++) {
+      const winner = await this.props.getTheWinner(this.props.winners[i]);
+      this.setState({
+        winners: [...this.props.winner]
+      })
+    }
     this.props.getAllPrompts();
   }
   replay() {
@@ -44,20 +50,22 @@ class Winner extends Component {
     this.props.navigation.navigate('Waiting');
   }
   render() {
+    console.log('in render props winners', this.props.winner)
     return (
       <View style={{ flex: 1, margin: 30 }}>
-        {/* <LinearGradient
-          colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={styles.linearGradientstyle}
-        > */}
         <Text style={{ color: 'black' }}>Winner is: </Text>
         {this.props.winner && (
           <View style={{ flex: 1, backgroundColor: 'pink' }}>
-            <Text style={{ color: 'yellow' }}>{this.props.winner.name}</Text>
-            <Image
-              style={styles.image}
-              source={{ uri: this.props.winner.photo }}
-            />
+            {
+              this.props.winner.map(winner => {
+                return (
+                  <View style={{ flex: 2 }} key={winner.id}>
+                    <Text key={winner.id} style={{ color: 'yellow' }}>{winner.name}</Text>
+                    <Image style={{ flex: 1, borderColor: 'red' }} source={{ isStatic: true, uri: winner.photo }} />
+                  </View>
+                )
+              })
+            }
           </View>
         )}
 
@@ -69,7 +77,7 @@ class Winner extends Component {
             <Text style={{ color: 'black' }}>Play Again</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1, color: 'blue' }}
+            style={{ flex: 1 }}
             onPress={() => {
               this.props.exit();
               this.props.navigation.navigate('Home');
@@ -91,6 +99,7 @@ const mapStateToProps = state => {
     room: state.rooms.room,
     winner: state.players.winner,
     roomId: state.rooms.room.id,
+    winners: state.rooms.room.winnerId
   };
 };
 

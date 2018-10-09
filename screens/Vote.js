@@ -5,8 +5,6 @@ import {
   Text,
   Image,
   ScrollView,
-  CheckBox,
-  InlineImage,
 } from 'react-native';
 
 //import { stylesContest } from '../styles/componentStyles';
@@ -106,7 +104,7 @@ class Contest extends Component {
                 style={styles.voteButton}
                 onPress={() => {
                   this.voteAgain(this.state.vote);
-                  this.props.navigation.navigate('Winner');
+                  this.props.navigation.navigate('WinnerWaiting');
                 }}
               >
                 <Text style={styles.startButtonText}>Submit vote</Text>
