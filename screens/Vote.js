@@ -55,7 +55,7 @@ class Contest extends Component {
     const imagesArray = this.props.images;
     console.log('imagesArray', imagesArray);
     // console.log('FIND NUM OF PLAYERS', imagesArray.legth);
-    if (imagesArray.length === this.props.numOfPlayers) {
+    if (this.props.roomId) {
       return (
         <View style={styles.container}>
           {imagesArray.map(image => {

@@ -9,7 +9,7 @@ import Timer from './Timer';
 import { connect } from 'react-redux';
 import { View as GraphicsView } from 'expo-graphics';
 console.disableYellowBox = true;
-
+import { addPhoto } from '../reducer/playerReducer';
 import Amplify, { Storage } from 'aws-amplify';
 // // import RNFetchBlob from 'react-native-fetch-blob';
 // import { withAuthenticator } from 'aws-amplify-react-native';
@@ -62,14 +62,10 @@ class LinkScreen extends React.Component {
     this.decreaseSize = this.decreaseSize.bind(this);
     this.saveImage = this.saveImage.bind(this);
   }
-  saveImage() {
-    const photo = this.state.photo;
-
-    db.database()
-      .ref('players')
-      .child(`/${this.props.player.id}/photo`)
-      .set(photo.photo);
+  saveImage(photo) {
+    this.props.addAPhoto(photo, this.props.player.id);
   }
+
   increaseSize() {
     this.setState({
       sizeChanger: this.state.sizeChanger - 1,
@@ -89,19 +85,42 @@ class LinkScreen extends React.Component {
     /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
     const photo = await Expo.takeSnapshotAsync(this._container, options);
 
-    this.setState({
-      photo: { photo },
-      // strokeWidth: Math.random() * 30 + 10,
-      // strokeColor: Math.random() * 0xffffff,
-    });
-    this.saveImage();
+    // this.setState({
+    //   photo: { photo },
+    //   // strokeWidth: Math.random() * 30 + 10,
+    //   // strokeColor: Math.random() * 0xffffff,
+    // });
+    // this.saveImage();
+    // const response = await fetch(photo);
+    // const blob = await response.blob();
+    // Storage.put('photo.jpg', blob, {
+    //   contentType: 'image.jpg',
+    // })
+    //   .then(result => {
+    //     console.log(result);
+    //     // this.setState({
+    //     //   photo: `https://s3.us-east-1.amazonaws.com/tickero1-20181008144133-deployment/public/${
+    //     //     this.props.player.id
+    //     //   }photo.jpg`,
+    //     // });
+    //     this.saveImage(photo,);
+    //   })
+    //   .then(this.props.navigation.navigate('VoteScreen'))
+    //   .catch(e => console.log(e));
+
     const response = await fetch(photo);
     const blob = await response.blob();
-    Storage.put('photo.jpg', blob, {
+    Storage.put(`${this.props.player.id}photo.jpg`, blob, {
       contentType: 'image.jpg',
     })
-      .then(result => {
-        console.log(result);
+      .then(async result => {
+        await this.saveImage(
+          `https://s3.us-east-1.amazonaws.com/tickero1-20181008144133-deployment/public/${
+            this.props.player.id
+          }photo.jpg`
+        );
+
+        this.props.navigation.navigate('VoteScreen');
       })
       .catch(e => console.log(e));
 
@@ -172,11 +191,11 @@ class LinkScreen extends React.Component {
               style={styles.button}
               onPress={() => {
                 this.screenShot();
-                this.props.navigation.navigate('VoteScreen');
               }}
             >
               <Text style={styles.buttonText}>capture!</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.tinyButton}
               onPress={this.increaseSize}
@@ -290,6 +309,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(LinkScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    addAPhoto: (photo, playerId) => dispatch(addPhoto(photo, playerId)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LinkScreen);
 
 const styles = stylesDefault;
