@@ -9,6 +9,43 @@ import Timer from './Timer';
 import { connect } from 'react-redux';
 import { View as GraphicsView } from 'expo-graphics';
 console.disableYellowBox = true;
+import { addPhoto } from '../reducer/playerReducer';
+import Amplify, { Storage } from 'aws-amplify';
+// // import RNFetchBlob from 'react-native-fetch-blob';
+// import { withAuthenticator } from 'aws-amplify-react-native';
+// import aws_exports from '../amplify/aws-exports';
+// Amplify.configure(aws_exports);
+Amplify.configure({
+  Auth: {
+    identityPoolId: 'us-east-1:9b67e108-2aa7-4fa4-8e9f-fc41fd11c694', //REQUIRED - Amazon Cognito Identity Pool ID
+    region: 'us-east-1', // REQUIRED - Amazon Cognito Region
+    //   // userPoolId: 'XX-XXXX-X_abcd1234', //OPTIONAL - Amazon Cognito User Pool ID
+    //   // userPoolWebClientId: 'XX-XXXX-X_abcd1234', //OPTIONAL - Amazon Cognito Web Client ID
+  },
+  Storage: {
+    bucket: 'tickero1-20181008144133-deployment', //REQUIRED -  Amazon S3 bucket
+    region: 'us-east-1', //OPTIONAL -  Amazon service region
+  },
+});
+Storage.configure({ level: 'public' });
+
+// var AWS = require('aws-sdk');
+// var s3 = new AWS.S3({
+//   AWS_ACCESS_ID_KEY: 'XXXXXXXXXXXX',
+//   AWS_SECRET_ACCESS_KEY: 'YYYYYYYYYYYY',
+//   region: 'US East (N. Virginia)',
+// });
+
+// var params = {
+//   Bucket: 'testforsticker',
+//   Key: 'CameraPhotos/myimage.jpg',
+//   ContentType: 'image/jpeg',
+// };
+
+// s3.getSignedUrl('putObject', params, function(url) {
+//   console.log('Your generated pre-signed URL is', url);
+//   return url;
+// });
 
 class LinkScreen extends React.Component {
   constructor(props) {
@@ -25,14 +62,10 @@ class LinkScreen extends React.Component {
     this.decreaseSize = this.decreaseSize.bind(this);
     this.saveImage = this.saveImage.bind(this);
   }
-  saveImage() {
-    const photo = this.state.photo;
-
-    db.database()
-      .ref('players')
-      .child(`/${this.props.player.id}/photo`)
-      .set(photo.photo);
+  saveImage(photo) {
+    this.props.addAPhoto(photo, this.props.player.id);
   }
+
   increaseSize() {
     this.setState({
       sizeChanger: this.state.sizeChanger - 1,
@@ -52,12 +85,66 @@ class LinkScreen extends React.Component {
     /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
     const photo = await Expo.takeSnapshotAsync(this._container, options);
 
-    this.setState({
-      photo: { photo },
-      // strokeWidth: Math.random() * 30 + 10,
-      // strokeColor: Math.random() * 0xffffff,
-    });
-    this.saveImage();
+    // this.setState({
+    //   photo: { photo },
+    //   // strokeWidth: Math.random() * 30 + 10,
+    //   // strokeColor: Math.random() * 0xffffff,
+    // });
+    // this.saveImage();
+    // const response = await fetch(photo);
+    // const blob = await response.blob();
+    // Storage.put('photo.jpg', blob, {
+    //   contentType: 'image.jpg',
+    // })
+    //   .then(result => {
+    //     console.log(result);
+    //     // this.setState({
+    //     //   photo: `https://s3.us-east-1.amazonaws.com/tickero1-20181008144133-deployment/public/${
+    //     //     this.props.player.id
+    //     //   }photo.jpg`,
+    //     // });
+    //     this.saveImage(photo,);
+    //   })
+    //   .then(this.props.navigation.navigate('VoteScreen'))
+    //   .catch(e => console.log(e));
+
+    const response = await fetch(photo);
+    const blob = await response.blob();
+    Storage.put(`${this.props.player.id}photo.jpg`, blob, {
+      contentType: 'image.jpg',
+    })
+      .then(async result => {
+        await this.saveImage(
+          `https://s3.us-east-1.amazonaws.com/tickero1-20181008144133-deployment/public/${
+            this.props.player.id
+          }photo.jpg`
+        );
+
+        this.props.navigation.navigate('VoteScreen');
+      })
+      .catch(e => console.log(e));
+
+    // let arr = photo.split('/');
+    // const dirs = RNFetchBlob.fs.dirs;
+    // RNFetchBlob.config({
+    //   fileCache: true,
+    // });
+    // let filePath = `${dirs.DocumentDir}/${arr[arr.length - 1]}`;
+
+    // const readFile = filePath => {
+    //   return RNFetchBlob.fs
+    //     .readFile(filePath, 'base64')
+    //     .then(data => new Buffer(data, 'base64'))
+    //     .catch(e => {
+    //       console.log(e);
+    //     });
+    // };
+
+    // readFile(filePath).then(buffer => {
+    //   Storage.put(key, buffer, {
+    //     contentType: 'image.jpg',
+    //   });
+    // });
   };
   render() {
     const roomId = this.props.roomId;
@@ -105,11 +192,11 @@ class LinkScreen extends React.Component {
               style={styles.captureButton}
               onPress={() => {
                 this.screenShot();
-                this.props.navigation.navigate('VoteScreen');
               }}
             >
               <Text style={styles.captureButtonText}>capture!</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.tinyButton}
               onPress={this.increaseSize}
@@ -130,7 +217,7 @@ class LinkScreen extends React.Component {
       .ref('players')
       .child(playerId)
       .child('draw')
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         newImage = snapshot.val();
       });
     return newImage;
@@ -220,10 +307,18 @@ const mapStateToProps = state => {
   return {
     roomId: state.rooms.room.id,
     player: state.players.player,
-
   };
 };
 
-export default connect(mapStateToProps)(LinkScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    addAPhoto: (photo, playerId) => dispatch(addPhoto(photo, playerId)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LinkScreen);
 
 const styles = stylesDefault;

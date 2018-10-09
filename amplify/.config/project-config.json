@@ -1,0 +1,11 @@
+{
+    "projectName": "StickerGo1",
+    "projectPath": "/Users/esa/Documents/StickerGo1",
+    "defaultEditor": "code",
+    "frontendHandler": {
+        "ios": "/Users/esa/.npm-global/lib/node_modules/@aws-amplify/cli/node_modules/amplify-frontend-ios"
+    },
+    "providers": {
+        "awscloudformation": "/Users/esa/.npm-global/lib/node_modules/@aws-amplify/cli/node_modules/amplify-provider-awscloudformation"
+    }
+}

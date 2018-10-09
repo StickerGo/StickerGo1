@@ -7,8 +7,9 @@ const GET_WINNER = 'GET_WINNER';
 const ADD_PLAYER = 'ADD_PLAYER';
 const ADD_DRAW = 'ADD_DRAW';
 const ADD_PHOTO = 'ADD_PHOTO';
+const UPDATE_PLAYER = 'UPDATE_PLAYER';
 const GET_ALL_DRAW = 'GET_ALL_DRAW';
-const GET_ALL_PHOTO = 'GET_ALL_PHOTO';
+const GET_PHOTO = 'GET_PHOTO';
 const PLAYER_RESET_GAME = 'PLAYER_RESET_GAME';
 const PLAYER_EXIT_GAME = 'PLAYER_EXIT_GAME';
 
@@ -34,10 +35,10 @@ const addDraw = drawing => {
   };
 };
 
-const addPhoto = photo => {
+const updatedPlayer = player => {
   return {
-    type: ADD_PHOTO,
-    photo,
+    type: UPDATE_PLAYER,
+    player,
   };
 };
 
@@ -109,6 +110,38 @@ export const addDrawing = (drawing, playerId) => {
   };
 };
 
+const updatePlayer = playerId => {
+  return async dispatch => {
+    try {
+      db.database()
+        .ref('/players')
+        .child(playerId)
+        .on('value', snapshot => {
+          const player = snapshot.val() || [];
+          dispatch(updatedPlayer(player));
+        });
+    } catch (err) {
+      console.error('THUNK WRONG', err);
+    }
+  };
+};
+
+export const addPhoto = (photo, playerId) => {
+  return async dispatch => {
+    try {
+      db.database()
+        .ref('players')
+        .child(`/${playerId}/photo`)
+        .set(photo)
+        .then(() => {
+          dispatch(updatePlayer(playerId));
+        });
+    } catch (err) {
+      console.error('THUNK WRONG', err);
+    }
+  };
+};
+
 //reducer
 const initialStatePlayer = {
   players: [],
@@ -128,6 +161,11 @@ const playerReducer = (state = initialStatePlayer, action) => {
       return {
         ...state,
         players: [...state.players, action.player],
+        player: action.player,
+      };
+    case UPDATE_PLAYER:
+      return {
+        ...state,
         player: action.player,
       };
     case GET_WINNER:
