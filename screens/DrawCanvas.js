@@ -14,7 +14,7 @@ console.disableYellowBox = true;
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -80,15 +80,6 @@ class Home extends Component {
     AppState.removeEventListener('change', this.handleAppStateChangeAsync);
   }
 
-  // onChangeAsync = async () => {
-  //   const { uri } = await this.sketch.takeSnapshotAsync();
-
-  //   this.setState({
-  //     image: { uri },
-  //     strokeWidth: Math.random() * 30 + 10,
-  //     strokeColor: Math.random() * 0xffffff,
-  //   });
-  // };
   onChangeAsync = async ({ width, height }) => {
     const options = {
       format: 'png', /// PNG because the view has a clear background
@@ -116,21 +107,12 @@ class Home extends Component {
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={styles.linearGradientstyle}
+          style={styles.linearGradientstyleDraw}
         >
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.undoButton}
-              onPress={() => {
-                this.sketch.undo();
-              }}
-            >
-              <Text style={styles.buttonText}>undo</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nonButtonContainer}>
-            <Text style={styles.text}>Challenge: {this.props.prompt}</Text>
 
+          <View style={styles.nonButtonContainer}>
+            <Text style={styles.challengeText}>Your Challenge:</Text>
+            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.challenge}>{this.props.prompt}</Text>
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
@@ -145,12 +127,20 @@ class Home extends Component {
           </View>
 
           <Timer
-            style={{ flex: 1 }}
+            style={styles.timer}
             navigation={this.props.navigation}
             navigateTo="CameraView"
             screenshot={this.saveImage}
           />
           <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.undoButton}
+              onPress={() => {
+                this.sketch.undo();
+              }}
+            >
+              <Text style={styles.buttonText}>undo</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
@@ -167,7 +157,7 @@ class Home extends Component {
     );
   }
 }
-// const styles = stylesHome;
+
 const styles = stylesDefault;
 
 const mapStateToProps = state => {

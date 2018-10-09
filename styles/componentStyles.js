@@ -6,14 +6,44 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  waitingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#40E0D0',
+  },
+  linearGradientstyleHome: {
+    padding: 20,
+    paddingHorizontal: '40%',
+    alignItems: 'stretch',
+  },
   linearGradientstyle: {
     padding: 20,
     alignItems: 'stretch',
   },
+  linearGradientstyleDraw: {
+    padding: 20,
+    alignItems: 'stretch',
+    paddingHorizontal: '40%',
+  },
+  linearGradientstyleRoomCode: {
+    padding: 20,
+    alignItems: 'stretch',
+    paddingHorizontal: '10%',
+  },
   nonButtonContainer: {
-    flex: 5,
+    flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    //for testing
+    // backgroundColor: 'yellow',
+  },
+
+  nonButtonContainerCreate: {
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10%',
     //for testing
     // backgroundColor: 'yellow',
   },
@@ -22,9 +52,12 @@ export const stylesDefault = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    marginTop: 25,
+
     //for testing
     // backgroundColor: 'black',
   },
+
   heading: {
     flex: 1,
     alignItems: 'center',
@@ -33,6 +66,8 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'MarkerFelt-Wide',
     fontSize: 70,
     color: 'white',
+    marginTop: 20,
+
     //for testing
     // backgroundColor: 'blue',
   },
@@ -41,8 +76,15 @@ export const stylesDefault = StyleSheet.create({
     height: 300,
     width: 300,
     alignItems: 'stretch',
+
     //for testing
     // backgroundColor: 'red',
+  },
+  loadingImage: {
+    height: 300,
+    width: 300,
+    alignItems: 'stretch',
+    alignSelf: 'center',
   },
   button: {
     height: '80%',
@@ -52,11 +94,42 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'space-evenly',
     overflow: 'hidden',
   },
-  buttonText: {
+  beginButton: {
+    height: '40%',
+    width: '40%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
+  captureButton: {
+    height: '80%',
+    width: '40%',
+    backgroundColor: '#40E0D0',
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
+  captureButtonText: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'white',
+    fontSize: 18,
+  },
+  buttonTextHome: {
     alignSelf: 'center',
     fontWeight: 'bold',
     fontFamily: 'MarkerFelt-Wide',
     color: 'lightpink',
+    fontSize: 30,
+  },
+  buttonText: {
+    flex: 2,
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'white',
     fontSize: 18,
   },
   joinOrCreateRoomContainer: {
@@ -65,27 +138,50 @@ export const stylesDefault = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'lightpink',
   },
-  text: {
-    flex: 1,
+  textCreateName: {
     textAlign: 'center',
     alignSelf: 'center',
     fontWeight: 'bold',
     fontFamily: 'Avenir',
     fontSize: 40,
     color: 'white',
-    //for testing
-    // backgroundColor: 'green',
+  },
+  text: {
+    flex: 1,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 35,
+    color: 'white',
+  },
+  nameText: {
+    paddingTop: 20,
+    // flex: 1,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 35,
+    color: 'white',
+  },
+  waitingText: {
+    // flex: 2,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 25,
+    color: 'white',
   },
   textEnter: {
-    flex: 1,
-    height: '100%',
-    width: '80%',
-    margin: 15,
-    padding: 20,
+    marginVertical: '5%',
+    padding: 10,
     borderColor: '#40E0D0',
     borderWidth: 1,
     backgroundColor: 'white',
-    fontSize: 25,
+    fontSize: 40,
+    textAlign: 'center',
   },
   startButtonText: {
     flex: 1,
@@ -105,24 +201,36 @@ export const stylesDefault = StyleSheet.create({
     margin: 30,
     borderWidth: 1,
     borderColor: 'cadetblue',
+    marginBottom: '30%',
+  },
+  voteButton: {
+    backgroundColor: 'white',
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '20%',
   },
   pickerContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    margin: '10%',
   },
   twoPickers: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    borderColor: '#40E0D0',
     borderWidth: 1,
+    borderColor: '#40E0D0',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: '5%',
   },
   twoPickerItems: {
     height: '90%',
-    width: '90%',
+    width: '100%',
     fontWeight: 'bold',
     color: 'cadetblue',
     backgroundColor: 'white',
@@ -136,8 +244,8 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'Avenir',
     fontSize: 40,
     color: 'cadetblue',
-    //for testing
-    // backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textBkg: {
     flex: 3,
@@ -180,7 +288,7 @@ export const stylesDefault = StyleSheet.create({
   tinyButton: {
     height: '80%',
     width: '20%',
-    backgroundColor: 'red',
+    backgroundColor: '#CD5C5C',
     borderRadius: 10,
     justifyContent: 'space-evenly',
     overflow: 'hidden',
@@ -195,5 +303,57 @@ export const stylesDefault = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
+  },
+  scrollContainer: {
+    flex: 6,
+    marginTop: '20%',
+  },
+  scrollView: {
+    flexGrow: 5,
+  },
+  buttonContainerVote: {
+    position: 'absolute',
+    flexDirection: 'row',
+    height: '10%',
+  },
+  challengeText: {
+    flex: 0.5,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 20,
+    color: 'white',
+    // flexWrap: 'wrap',
+  },
+  challenge: {
+    flex: 0.5,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 40,
+    color: 'white',
+    // flexWrap: 'wrap',
+    paddingBottom: '5%',
+  },
+  timerRed: {
+    flex: 1,
+    color: '#CD5C5C',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+  },
+  timer: {
+    flex: 1,
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+  },
+  list: {
+    flex: 4,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
 });
