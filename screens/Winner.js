@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 // import { stylesWinner } from '../styles/componentStyles';
 import { connect } from 'react-redux';
-import { getAllPrompts } from '../reducer/promptReducer';
+import { getAllPrompts, getOnePrompt } from '../reducer/promptReducer';
 import { getWinner, playerExitGame } from '../reducer/playerReducer';
 import { exitGame, resetRoom, getWinnerId } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
@@ -25,6 +25,7 @@ class Winner extends Component {
     };
   }
   async componentDidMount() {
+    this.props.getAllPrompts();
     await this.props.getWinnerId(this.props.roomId);
     const winnersArray = []
     for (let i = 0; i < this.props.winners.length; i++) {
@@ -45,12 +46,10 @@ class Winner extends Component {
       ];
     }
     const roomInfo = this.props.room;
-    roomInfo.newPrompt = newPrompt;
-    this.props.reset(roomInfo);
+    this.props.reset(roomInfo, newPrompt);
     this.props.navigation.navigate('Waiting');
   }
   render() {
-    console.log('in render props winners', this.props.winner)
     return (
       <View style={{ flex: 1, margin: 30 }}>
         <Text style={{ color: 'black' }}>Winner is: </Text>
@@ -72,7 +71,11 @@ class Winner extends Component {
         <View style={{ flex: 1, backgroundColor: 'white' }}>
           <TouchableOpacity
             style={{ flex: 1, backgroundColor: 'purple' }}
-            onPress={() => this.props.navigation.navigate('Waiting')}
+            onPress={() => {
+              // this.props.reset(this.props.room, this.props.prompts);
+              this.replay();
+              // this.props.navigation.navigate('Waiting');
+            }}
           >
             <Text style={{ color: 'black' }}>Play Again</Text>
           </TouchableOpacity>
@@ -99,7 +102,11 @@ const mapStateToProps = state => {
     room: state.rooms.room,
     winner: state.players.winner,
     roomId: state.rooms.room.id,
+<<<<<<< HEAD
     winners: state.rooms.room.winnerId
+=======
+    prompts: state.prompts.prompts,
+>>>>>>> master
   };
 };
 
@@ -111,8 +118,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(playerExitGame());
       dispatch(exitGame());
     },
-    reset: roomInfo => {
-      dispatch(resetRoom(roomInfo));
+    reset: (roomInfo, newPrompt) => {
+      dispatch(resetRoom(roomInfo, newPrompt));
     },
     getWinnerId: roomId => dispatch(getWinnerId(roomId)),
   };
