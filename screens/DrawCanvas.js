@@ -1,7 +1,14 @@
 import Expo, { LinearGradient } from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import { TouchableOpacity, Platform, AppState, Text, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Platform,
+  AppState,
+  Text,
+  View,
+  Alert,
+} from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
@@ -14,7 +21,7 @@ console.disableYellowBox = true;
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -102,17 +109,22 @@ class Home extends Component {
   };
 
   render() {
-    return (
 
+    return (
       <View style={styles.container}>
         <LinearGradient
           colors={['#192f6a', 'cadetblue', 'lightpink']}
           style={styles.linearGradientstyleDraw}
         >
-
           <View style={styles.nonButtonContainer}>
             <Text style={styles.challengeText}>Your Challenge:</Text>
-            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.challenge}>{this.props.prompt}</Text>
+            <Text
+              adjustsFontSizeToFit
+              numberOfLines={1}
+              style={styles.challenge}
+            >
+              {this.props.prompt}
+            </Text>
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
@@ -144,6 +156,14 @@ class Home extends Component {
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
+                if (this.state.image === null) {
+                  return Alert.alert(
+                    `No ${this.props.prompt}?`,
+                    'Need your beyootiful drawing ;)',
+                    [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                    { cancelable: false }
+                  );
+                }
                 this.saveImage();
                 const id = this.props.player.id;
                 this.props.navigation.navigate('CameraView');
