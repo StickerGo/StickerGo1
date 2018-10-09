@@ -21,13 +21,14 @@ import {
 } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
       photos: [],
       image: '',
       vote: '',
+      error: false,
     };
     this.selectImage = this.selectImage.bind(this);
     this.vote = this.vote.bind(this);
@@ -63,7 +64,7 @@ class Contest extends Component {
       .child('players')
       .child(playerId)
       .child('votes')
-      .transaction(function (votes) {
+      .transaction(function(votes) {
         return (votes || 0) + 1;
       });
   }
@@ -81,6 +82,9 @@ class Contest extends Component {
           >
             <View style={styles.scrollContainer}>
               <ScrollView contentContainerStyle={styles.scrollView}>
+                {this.state.error && (
+                  <Text style={styles.buttonText}>Please select image</Text>
+                )}
                 {imagesArray.map(image => {
                   let imageStyling = styles.unselectedImageStyle;
                   if (vote === image.id) {
@@ -105,8 +109,14 @@ class Contest extends Component {
               <TouchableOpacity
                 style={styles.voteButton}
                 onPress={() => {
-                  this.voteAgain(this.state.vote);
-                  this.props.navigation.navigate('Winner');
+                  if (this.state.vote) {
+                    this.voteAgain(this.state.vote);
+                    this.props.navigation.navigate('Winner');
+                  } else {
+                    this.setState({
+                      error: true,
+                    });
+                  }
                 }}
               >
                 <Text style={styles.startButtonText}>Submit vote</Text>
