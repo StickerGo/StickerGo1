@@ -37,7 +37,7 @@ class Waiting extends Component {
       }
     }
     let checknum;
-    if (Number(this.props.roomSize) === playcount) {
+    if (Number(this.props.roomSize) <= playcount) {
       checknum = true;
     } else {
       checknum = false;

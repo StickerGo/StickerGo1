@@ -27,7 +27,9 @@ class Contest extends Component {
     this.state = {
       photos: [],
       image: '',
+      vote: ''
     };
+    this.selectImage = this.selectImage.bind(this)
   }
 
   async componentDidMount() {
@@ -35,20 +37,25 @@ class Contest extends Component {
     try {
       await this.props.getPlayersinRoom(roomId);
       await this.props.getNumPlayers(roomId);
-      console.log('do we have the players?', this.props.playersInRoom);
+      // console.log('do we have the players?', this.props.playersInRoom);
       for (let i = 0; i < this.props.playersInRoom.length; i++) {
         await this.props.getImages(this.props.playersInRoom[i]);
       }
-      console.log('did we get the images???', this.props.images);
+      // console.log('did we get the images???', this.props.images);
     } catch (error) {
       console.log('there was an error!!!', error);
     }
   }
 
+  selectImage(id) {
+    console.log('inside select image')
+    this.setState({ vote: id })
+  }
+
   render() {
     const imagesArray = this.props.images;
-    console.log('hello?');
-    console.log('imagesArray', imagesArray);
+    const vote = this.state.vote
+
     if (imagesArray.length > 0) {
       return (
         <View style={styles.container}>
@@ -59,19 +66,18 @@ class Contest extends Component {
             <View style={styles.scrollContainer}>
               <ScrollView contentContainerStyle={styles.scrollView}>
                 {imagesArray.map(image => {
+                  let imageStyling = styles.unselectedImageStyle
+                  if (vote === image.id) {
+                    imageStyling = styles.selectedImageStyle
+                  }
                   return (
-                    <Image
-                      key={image}
-                      source={{ isStatic: true, uri: image }}
-                      style={{
-                        width: 300,
-                        height: 300,
-                        margin: 10,
-                        padding: 30,
-
-                        alignSelf: 'center',
-                      }}
-                    />
+                    <TouchableOpacity key={image.id} onPress={() => this.selectImage(image.id)}>
+                      <Image
+                        key={image.id}
+                        source={{ isStatic: true, uri: image.url }}
+                        style={imageStyling}
+                      />
+                    </TouchableOpacity>
                   );
                 })}
               </ScrollView>
