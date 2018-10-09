@@ -39,8 +39,8 @@ export const exitGame = () => {
   return { type: EXIT_GAME };
 };
 
-const gotImages = image => {
-  return { type: GOT_IMAGES, image }
+const gotImages = (image, id) => {
+  return { type: GOT_IMAGES, image, id }
 }
 
 const gotNumPlayers = num => {
@@ -146,7 +146,7 @@ export const getImages = (id) => {
       .on('value', function (snapshot) {
         const image = snapshot.val()
         if (image !== '') {
-          dispatch(gotImages(image))
+          dispatch(gotImages(image, id))
         }
       })
   }
@@ -162,6 +162,20 @@ export const getNumPlayers = (id) => {
         const num = snapshot.val()
         dispatch(gotNumPlayers(num))
       })
+  }
+}
+
+export const addVote = (roomId, playerId) => {
+  return dispatch => {
+    const votes = db.database()
+      .ref('rooms')
+      .child(roomId)
+      .child('players')
+      .child(playerId)
+      .child('votes')
+    const numVotes = votes.val()
+    votes.set(numVotes + 1)
+    dispatch(addedVote())
   }
 }
 
@@ -209,7 +223,7 @@ const roomReducer = (state = initialStateRoom, action) => {
     case GOT_IMAGES:
       return {
         ...state,
-        images: [...state.images, action.image]
+        images: [...state.images, { url: action.image, id: action.id }]
       }
     case GOT_NUM_PLAYERS:
       return {
