@@ -94,6 +94,16 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'space-evenly',
     overflow: 'hidden',
   },
+  seeWinnerButton: {
+    height: '30%',
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderColor: 'lightpink',
+    borderWidth: 3,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
   beginButton: {
     height: '40%',
     width: '40%',
