@@ -11,12 +11,14 @@ const GET_ALL_IN_ROOM = 'GET_ALL_IN_ROOM';
 const RESET_GAME = 'RESET_GAME';
 const EXIT_GAME = 'EXIT_GAME';
 
-const GOT_IMAGES = 'GOT_IMAGES'
-const GOT_NUM_PLAYERS = 'GOT_NUM_PLAYERS'
-
+const GOT_IMAGES = 'GOT_IMAGES';
+const GOT_NUM_PLAYERS = 'GOT_NUM_PLAYERS';
+const GOT_WINNER_ID = 'GOT_WINNER_ID';
 
 //action creators
-
+const gotWinnerId = winnerId => {
+  return { type: GOT_WINNER_ID, winnerId };
+};
 const getAllInRoom = playersInRoom => {
   return { type: GET_ALL_IN_ROOM, playersInRoom };
 };
@@ -39,28 +41,67 @@ export const exitGame = () => {
   return { type: EXIT_GAME };
 };
 
-const gotImages = image => {
-  return { type: GOT_IMAGES, image }
-}
+const gotImages = (image, id) => {
+  return { type: GOT_IMAGES, image, id };
+};
 
 const gotNumPlayers = num => {
-  return { type: GOT_NUM_PLAYERS, num }
-}
+  return { type: GOT_NUM_PLAYERS, num };
+};
 
 // thunk creators
+
+export const getWinnerId = roomId => {
+  return async dispatch => {
+    try {
+      let temp = [];
+      const dbplayers = await db
+        .database()
+        .ref('rooms')
+        .child(roomId)
+        .child('players')
+        .once('value');
+      temp = dbplayers.val();
+
+      let keysArr = Object.keys(temp);
+      let valuesArr = keysArr.map(e => {
+        return temp[e];
+      });
+
+      let vote = 0;
+      let arr = [];
+      for (let i = 0; i < valuesArr.length; i++) {
+        let index = valuesArr[i];
+
+        if (index.votes > vote) {
+          if (arr.length !== 0) {
+            arr.shift();
+          }
+          arr.push(keysArr[i]);
+          vote = index.votes;
+        }
+      }
+
+      const winnerIdis = arr[0];
+
+      dispatch(gotWinnerId(winnerIdis));
+    } catch (err) {
+      console.error('THERE IS ERROR WITH GETWINNERID IN ROOM', err);
+    }
+  };
+};
 
 export const getOneRoom = roomId => {
   return dispatch => {
     db.database()
       .ref('rooms')
       .child(roomId)
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         const room = snapshot.val() || [];
         dispatch(gotOneRoom(room));
       });
   };
 };
-
 
 export const getPlayersinRoom = roomId => {
   return async dispatch => {
@@ -109,7 +150,6 @@ export const addToRoom = (playerId, playerName, roomId) => {
   };
 };
 
-
 export const resetRoom = roomInfo => {
   //1. reset prompt
   //2. reset winnerId
@@ -137,34 +177,33 @@ export const resetRoom = roomInfo => {
   };
 };
 
-export const getImages = (id) => {
+export const getImages = id => {
   return dispatch => {
     db.database()
       .ref('players')
       .child(id)
       .child('photo')
-      .on('value', function (snapshot) {
-        const image = snapshot.val()
+      .on('value', function(snapshot) {
+        const image = snapshot.val();
         if (image !== '') {
-          dispatch(gotImages(image))
+          dispatch(gotImages(image, id));
         }
-      })
-  }
-}
+      });
+  };
+};
 
-export const getNumPlayers = (id) => {
+export const getNumPlayers = id => {
   return dispatch => {
     db.database()
       .ref('rooms')
       .child(id)
       .child('numPlayers')
-      .on('value', function (snapshot) {
-        const num = snapshot.val()
-        dispatch(gotNumPlayers(num))
-      })
-  }
-}
-
+      .on('value', function(snapshot) {
+        const num = snapshot.val();
+        dispatch(gotNumPlayers(num));
+      });
+  };
+};
 
 //reducer
 
@@ -173,7 +212,7 @@ const initialStateRoom = {
   room: {},
   playersInRoom: [],
   images: [],
-  num: ''
+  num: '',
 };
 
 const roomReducer = (state = initialStateRoom, action) => {
@@ -209,13 +248,18 @@ const roomReducer = (state = initialStateRoom, action) => {
     case GOT_IMAGES:
       return {
         ...state,
-        images: [...state.images, action.image]
-      }
+        images: [...state.images, { url: action.image, id: action.id }],
+      };
     case GOT_NUM_PLAYERS:
       return {
         ...state,
-        num: action.num
-      }
+        num: action.num,
+      };
+    case GOT_WINNER_ID:
+      return {
+        ...state,
+        room: { ...state.room, winnerId: action.winnerId },
+      };
     default:
       return state;
   }
