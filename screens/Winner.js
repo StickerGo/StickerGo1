@@ -65,7 +65,7 @@ class Winner extends Component {
                   this.props.winner.map(winner => {
                     return (
                       <View style={{ flex: 2 }} key={winner.id}>
-                        <Text key={winner.id} style={styles.text}>{winner.name}</Text>
+                        <Text key={winner.id} style={styles.winnerText}>{winner.name}</Text>
                         <Image style={styles.unselectedImageStyle} source={{ isStatic: true, uri: winner.photo }} />
                       </View>
                     )

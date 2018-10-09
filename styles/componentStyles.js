@@ -165,6 +165,15 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 35,
     color: 'white',
   },
+  winnerText: {
+    flex: 1,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    fontSize: 20,
+    color: 'white',
+  },
   nameText: {
     paddingTop: 20,
     // flex: 1,
@@ -319,6 +328,9 @@ export const stylesDefault = StyleSheet.create({
     marginTop: '20%',
   },
   scrollView: {
+    flexGrow: 5,
+  },
+  nonScrollView: {
     flexGrow: 5,
   },
   buttonContainerVote: {
