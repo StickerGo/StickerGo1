@@ -76,7 +76,6 @@ class Waiting extends Component {
                 </View>
               )}
             </View>
-            {counter--}
           </View>
         ) : (
           <View style={styles.buttonGroup}>
@@ -95,8 +94,6 @@ class Waiting extends Component {
             ) : (
               <Text style={styles.buttonText}>Waiting</Text>
             )}
-            {console.log('VALUE', counter)}
-            {counter++}
           </View>
         )}
       </View>
