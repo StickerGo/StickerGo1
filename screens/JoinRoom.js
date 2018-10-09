@@ -14,16 +14,6 @@ import { stylesDefault } from '../styles/componentStyles';
 import { addToRoom, getOneRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
 
-// function checkRoomCodeCallback(code, exists) {
-//   if (exists) {
-//     console.log('THE ROOM EXISTS!');
-//     return true;
-//   } else {
-//     console.log('THE ROOM DOES NOT EXIST :(');
-//     return false;
-//   }
-// }
-
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -69,8 +59,6 @@ class Join extends React.Component {
         //status: 'drawing', capturing
       });
       this.props.addPlayerToRoom(playerId, name, this.state.code);
-      // this.props.getRoom(this.state.code)
-      console.log('was the room saved to props?', this.props.room)
       this.props.navigation.navigate('Waiting', { roomId: this.state.code });
     } else {
       this.setState({ roomExists: false });

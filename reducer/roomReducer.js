@@ -96,7 +96,7 @@ export const getOneRoom = roomId => {
     db.database()
       .ref('rooms')
       .child(roomId)
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         const room = snapshot.val() || [];
         dispatch(gotOneRoom(room));
       });
@@ -183,7 +183,7 @@ export const getImages = id => {
       .ref('players')
       .child(id)
       .child('photo')
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         const image = snapshot.val();
         if (image !== '') {
           dispatch(gotImages(image, id));
@@ -198,7 +198,7 @@ export const getNumPlayers = id => {
       .ref('rooms')
       .child(id)
       .child('numPlayers')
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         const num = snapshot.val();
         dispatch(gotNumPlayers(num));
       });

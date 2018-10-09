@@ -21,7 +21,7 @@ import {
 } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -39,48 +39,23 @@ class Contest extends Component {
     try {
       await this.props.getPlayersinRoom(roomId);
       await this.props.getNumPlayers(roomId);
-      // console.log('do we have the players?', this.props.playersInRoom);
       for (let i = 0; i < this.props.playersInRoom.length; i++) {
         await this.props.getImages(this.props.playersInRoom[i]);
       }
-      // console.log('did we get the images???', this.props.images);
     } catch (error) {
       console.log('there was an error!!!', error);
     }
   }
 
   selectImage(id) {
-    console.log('inside select image');
     this.setState({ vote: id });
   }
 
   async voteAgain(id) {
-    console.log('in vote again');
     await this.vote(id);
-    // const numVotes = vote.val()
   }
 
-  // async vote(playerId) {
-  //   console.log('room id in vote', this.props.roomId)
-  //   console.log('vote id in vote', playerId)
-  //   let numVotes
-  //   const votes = await db.database()
-  //     .ref('rooms')
-  //     .child(this.props.roomId)
-  //     .child('players')
-  //     .child(playerId)
-  //     .child('votes')
-  //     .on('value', function (snapshot) {
-  //       numVotes = snapshot.val()
-  //       console.log('whate are numVotes?', typeof numVotes)
-  //       // snapshot.set(numVotes + 1)
-  //     })
-  //   console.log('what is the votes thing?', votes)
-  //   votes.set((Number(numVotes) + 1).toString())
-  // }
-
   async vote(playerId) {
-    console.log('in the vote function');
     const ref = await db
       .database()
       .ref('rooms')
@@ -88,7 +63,7 @@ class Contest extends Component {
       .child('players')
       .child(playerId)
       .child('votes')
-      .transaction(function(votes) {
+      .transaction(function (votes) {
         return (votes || 0) + 1;
       });
   }

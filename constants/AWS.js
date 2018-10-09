@@ -1,4 +1,3 @@
-console.log('check AWS', process.env.IDENTITY);
 import { IDENTITY, REGION, BUCKET } from '../secrets';
 export default {
   Amplifyconfigure: {

@@ -22,9 +22,7 @@ export default class SettingsScreen extends React.Component {
       .child('photo')
       .on('value', function (snapshot) {
         newImage = snapshot.val();
-        // console.log('retrieved from firebase', newImage.image.uri);
       });
-    console.log('GOT THE IMAGE', newImage)
     return (
       <Image
         style={{ flex: 1, width: '100%', resizeMode: 'contain' }}

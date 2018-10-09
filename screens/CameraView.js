@@ -13,7 +13,7 @@ import { addPhoto } from '../reducer/playerReducer';
 import Amplify, { Storage } from 'aws-amplify';
 
 import Amplifyconfigure from '../constants/AWS';
-console.log('PROCES', process);
+
 Amplify.configure(Amplifyconfigure.Amplifyconfigure);
 
 Storage.configure({ level: 'public' });
@@ -64,7 +64,7 @@ class LinkScreen extends React.Component {
       .then(async result => {
         await this.saveImage(
           `https://s3.us-east-1.amazonaws.com/tickero1-20181008144133-deployment/public/${
-            this.props.player.id
+          this.props.player.id
           }photo.jpg`
         );
 
@@ -143,7 +143,7 @@ class LinkScreen extends React.Component {
       .ref('players')
       .child(playerId)
       .child('draw')
-      .on('value', function(snapshot) {
+      .on('value', function (snapshot) {
         newImage = snapshot.val();
       });
     return newImage;
@@ -163,8 +163,6 @@ class LinkScreen extends React.Component {
   };
 
   commonSetup = async ({ gl, scale: pixelRatio, width, height }) => {
-    console.log('width is', width);
-    console.log('height is', height);
     this.renderer = new ExpoTHREE.Renderer({
       gl,
       pixelRatio,
