@@ -356,4 +356,20 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  selectedImageStyle: {
+    width: 300,
+    height: 300,
+    margin: 10,
+    padding: 30,
+    alignSelf: 'center',
+    borderColor: '#40E0D0',
+    borderWidth: 10,
+  },
+  unselectedImageStyle: {
+    width: 300,
+    height: 300,
+    margin: 10,
+    padding: 30,
+    alignSelf: 'center',
+  },
 });
