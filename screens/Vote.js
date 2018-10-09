@@ -26,6 +26,7 @@ class Contest extends Component {
       photos: [],
       image: '',
       vote: '',
+      error: false,
     };
     this.selectImage = this.selectImage.bind(this);
     this.vote = this.vote.bind(this);
@@ -79,6 +80,9 @@ class Contest extends Component {
           >
             <View style={styles.scrollContainer}>
               <ScrollView contentContainerStyle={styles.scrollView}>
+                {this.state.error && (
+                  <Text style={styles.buttonText}>Please select image</Text>
+                )}
                 {imagesArray.map(image => {
                   let imageStyling = styles.unselectedImageStyle;
                   if (vote === image.id) {
@@ -103,8 +107,14 @@ class Contest extends Component {
               <TouchableOpacity
                 style={styles.voteButton}
                 onPress={() => {
-                  this.voteAgain(this.state.vote);
-                  this.props.navigation.navigate('WinnerWaiting');
+                  if (this.state.vote) {
+                    this.voteAgain(this.state.vote);
+                    this.props.navigation.navigate('WinnerWaiting');
+                  } else {
+                    this.setState({
+                      error: true,
+                    });
+                  }
                 }}
               >
                 <Text style={styles.startButtonText}>Submit vote</Text>
