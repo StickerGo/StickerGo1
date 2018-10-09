@@ -11,25 +11,27 @@ import Waiting from '../screens/Waiting';
 import Vote from '../screens/Vote';
 import Winner from '../screens/Winner';
 
+import WinnerWaiting from '../screens/WinnerWaiting'
 
 export default createStackNavigator(
   {
-    Home: Home, 
+    Home: Home,
     CreateRoom: CreateRoom,
     RoomCode: RoomCode,
     JoinRoom: JoinRoom,
     DrawCanvas: DrawCanvas,
     CameraView: CameraView,
-    VoteScreen: Vote, 
+    VoteScreen: Vote,
     Waiting: Waiting,
     Winner: Winner,
     Settings: Settings,
-    WinnerWaiting: WinnerWaiting,
+    WinnerWaiting: WinnerWaiting
   },
   {
     navigationOptions: {
       gesturesEnabled: false,
     },
+
 
   },
   {

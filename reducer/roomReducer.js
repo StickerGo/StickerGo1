@@ -75,16 +75,18 @@ export const getWinnerId = roomId => {
 
         if (index.votes > vote) {
           if (arr.length !== 0) {
-            arr.shift();
+            // arr.shift();
+            arr = []
           }
           arr.push(keysArr[i]);
           vote = index.votes;
+        } else if (index.votes === vote && vote !== 0) {
+          arr.push(keysArr[i])
         }
       }
 
-      const winnerIdis = arr[0];
-
-      dispatch(gotWinnerId(winnerIdis));
+      // const winnerIdis = arr[0];
+      dispatch(gotWinnerId(arr));
     } catch (err) {
       console.error('THERE IS ERROR WITH GETWINNERID IN ROOM', err);
     }

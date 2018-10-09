@@ -5,8 +5,6 @@ import {
   Text,
   Image,
   ScrollView,
-  CheckBox,
-  InlineImage,
 } from 'react-native';
 
 //import { stylesContest } from '../styles/componentStyles';
@@ -21,7 +19,7 @@ import {
 } from '../reducer/roomReducer';
 
 class Contest extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
@@ -64,7 +62,7 @@ class Contest extends Component {
       .child('players')
       .child(playerId)
       .child('votes')
-      .transaction(function(votes) {
+      .transaction(function (votes) {
         return (votes || 0) + 1;
       });
   }
@@ -111,7 +109,7 @@ class Contest extends Component {
                 onPress={() => {
                   if (this.state.vote) {
                     this.voteAgain(this.state.vote);
-                    this.props.navigation.navigate('Winner');
+                    this.props.navigation.navigate('WinnerWaiting');
                   } else {
                     this.setState({
                       error: true,
