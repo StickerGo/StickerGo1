@@ -15,6 +15,7 @@ import { getAllPrompts } from '../reducer/promptReducer';
 import { createRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
 import { stylesDefault } from '../styles/componentStyles';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -60,13 +61,11 @@ class Room extends React.Component {
     let checkName = this.state.typedText.trim() !== '';
     let checkChar = /^[a-zA-Z]*$/g.test(this.state.typedText);
     return (
-      <DismissKeyboard>
-        <View style={styles.joinOrCreateRoomContainer}>
-          <KeyboardAvoidingView
-            styels={styles.container}
-            behavior="padding"
-            enabled
-          >
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.joinOrCreateRoomContainer}
+      >
+        <DismissKeyboard>
+          <View style={styles.joinOrCreateRoomContainer}>
             <View style={styles.nonButtonContainerCreate}>
               <View style={styles.container}>
                 <Text style={styles.textCreateName}>Enter your name</Text>
@@ -132,9 +131,9 @@ class Room extends React.Component {
                 <Text style={styles.startButtonText}>get code</Text>
               </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
-        </View>
-      </DismissKeyboard>
+          </View>
+        </DismissKeyboard>
+      </KeyboardAwareScrollView>
     );
   }
 }

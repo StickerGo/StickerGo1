@@ -35,7 +35,7 @@ export const stylesDefault = StyleSheet.create({
   linearGradientstyleRoomCode: {
     padding: 20,
     alignItems: 'stretch',
-    paddingHorizontal: '10%',
+    paddingHorizontal: '40%',
   },
   nonButtonContainer: {
     flex: 4,
@@ -271,6 +271,28 @@ export const stylesDefault = StyleSheet.create({
     borderColor: 'cadetblue',
     marginBottom: '30%',
   },
+  joinButtonText: {
+    flex: 1,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'lightpink',
+    fontSize: 50,
+    //for testing
+    // backgroundColor: 'blue',
+  },
+  joinButton: {
+    backgroundColor: 'white',
+    height: '60%',
+    width: '80%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '30%',
+  },
   voteButton: {
     backgroundColor: 'lightpink',
     height: '100%',
@@ -449,5 +471,34 @@ export const stylesDefault = StyleSheet.create({
     margin: 10,
     padding: 30,
     alignSelf: 'center',
+  },
+  nonButtonContainerCode: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10%',
+    //for testing
+    // backgroundColor: 'yellow',
+  },
+  buttonContainerCode: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginTop: '10%',
+    //for testing
+    // backgroundColor: 'black',
+  },
+  startButtonCode: {
+    backgroundColor: 'white',
+    height: '40%',
+    width: '80%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '20%',
   },
 });
