@@ -7,6 +7,7 @@ import {
   View,
   Text,
   Image,
+  ScrollView
 } from 'react-native';
 // import { stylesWinner } from '../styles/componentStyles';
 import { connect } from 'react-redux';
@@ -51,50 +52,52 @@ class Winner extends Component {
   }
   render() {
     return (
-      <View style={{ flex: 1, margin: 30 }}>
-        <Text style={{ color: 'black' }}>Winner is: </Text>
-        {this.props.winner && (
-          <View style={{ flex: 1, backgroundColor: 'pink' }}>
-            {this.props.winner.map(winner => {
-              return (
-                <View style={{ flex: 2 }} key={winner.id}>
-                  <Text key={winner.id} style={{ color: 'yellow' }}>
-                    {winner.name}
-                  </Text>
-                  <Image
-                    style={{ flex: 1, borderColor: 'red' }}
-                    source={{ isStatic: true, uri: winner.photo }}
-                  />
-                </View>
-              );
-            })}
-          </View>
-        )}
 
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-          {/* <TouchableOpacity
-            style={{ flex: 1, backgroundColor: 'purple' }}
-            onPress={() => {
-              // this.props.reset(this.props.room, this.props.prompts);
-              // this.props.exit();
-              // this.props.navigation.navigate('Home');
-              this.replay();
-              // this.props.navigation.navigate('Waiting');
-            }}
-          >
-            <Text style={{ color: 'black' }}>Play Again</Text>
-          </TouchableOpacity> */}
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => {
-              this.props.exit();
-              this.props.navigation.navigate('Home');
-            }}
-          >
-            <Text style={{ color: 'red' }}>Play Again</Text>
-          </TouchableOpacity>
-        </View>
-        {/* </LinearGradient> */}
+      <View style={styles.container}>
+        <LinearGradient
+          colors={['cadetblue', 'lightpink']}
+          style={{ flex: 8, padding: 40 }}
+        >
+          <Text style={styles.text}>Winner is: </Text>
+          {this.props.winner && (
+            <View style={styles.scrollContainer}>
+              <ScrollView contentContainerStyle={styles.scrollView}>
+                {
+                  this.props.winner.map(winner => {
+                    return (
+                      <View style={{ flex: 2 }} key={winner.id}>
+                        <Text key={winner.id} style={styles.winnerText}>{winner.name}</Text>
+                        <Image style={styles.unselectedImageStyle} source={{ isStatic: true, uri: winner.photo }} />
+                      </View>
+                    )
+                  })
+                }
+              </ScrollView>
+            </View>
+          )}
+
+          <View style={styles.buttonContainer}>
+//             <TouchableOpacity
+//               style={styles.saveButton}
+//               onPress={() => {
+//                 // this.props.reset(this.props.room, this.props.prompts);
+//                 this.replay();
+//                 // this.props.navigation.navigate('Waiting');
+//               }}
+//             >
+//               <Text style={styles.buttonText}>Play Again</Text>
+//             </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.undoButton}
+              onPress={() => {
+                this.props.exit();
+                this.props.navigation.navigate('Home');
+              }}
+            >
+              <Text style={styles.buttonText}>Exit</Text>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
       </View>
     );
   }

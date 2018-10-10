@@ -70,7 +70,6 @@ export const getWinner = playerId => {
         .child(playerId)
         .on('value', snapshot => {
           const winner = snapshot.val() || [];
-          console.log('in the winner thunk...', winner)
           dispatch(getOne(winner));
         });
     } catch (err) {

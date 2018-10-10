@@ -43,10 +43,10 @@ class WinnerWaiting extends Component {
       <View style={styles.waitingContainer}>
         {this.props ? (
           <View style={styles.list}>
-            <View>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               {checkvotes ? (
                 <TouchableOpacity
-                  style={styles.beginButton}
+                  style={styles.seeWinnerButton}
                   onPress={() => this.props.navigation.navigate('Winner')}
                 >
                   <Text style={styles.buttonTextHome}>See the Winner!</Text>
