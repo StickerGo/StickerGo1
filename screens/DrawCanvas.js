@@ -36,8 +36,8 @@ class Home extends Component {
     image: null,
     // strokeColor: Math.random() * 0xffffff,
     // strokeWidth: Math.random() * 30 + 10,
-    strokeColor: 0x00bfff,
-    strokeWidth: 20,
+    strokeColor: 'black',
+    strokeWidth: 15,
     lines: [
       {
         points: [
@@ -132,13 +132,10 @@ class Home extends Component {
           colors={['#192f6a', 'cadetblue', 'lightpink']}
           style={styles.linearGradientstyleDraw}
         >
-          <View style={styles.nonButtonContainer}>
-            <View style={styles.container}>
-              <Text adjustsFontSizeToFit style={styles.challengeText}>
-                Your Challenge:
-              </Text>
-              <Text numberOfLines={1} style={styles.challengeText}>
-                {this.props.prompt}
+          <View style={styles.nonButtonContainerDraw}>
+            <View style={styles.textContainer}>
+              <Text numberOfLines={2} style={styles.challengeText}>
+                Your Challenge: {this.props.prompt}
               </Text>
             </View>
             <View style={styles.sketchContainer}>

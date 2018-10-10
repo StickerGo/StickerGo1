@@ -6,6 +6,12 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 10,
+  },
   waitingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -39,6 +45,14 @@ export const stylesDefault = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
 
+  nonButtonContainerDraw: {
+    flex: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //for testing
+    // backgroundColor: 'yellow',
+  },
+
   nonButtonContainerCreate: {
     flex: 4,
     justifyContent: 'center',
@@ -58,14 +72,12 @@ export const stylesDefault = StyleSheet.create({
     // backgroundColor: 'black',
   },
   canvasButtonContainer: {
-    flex: 0.5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
     // margin: 10,
 
     //for testing
-    // backgroundColor: 'black',
   },
 
   heading: {
@@ -152,6 +164,14 @@ export const stylesDefault = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
+  voteButtonText: {
+    flex: 2,
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'lightpink',
+    fontSize: 18,
+  },
   joinOrCreateRoomContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -231,6 +251,15 @@ export const stylesDefault = StyleSheet.create({
     color: 'lightpink',
     fontSize: 50,
   },
+  voteButtonText: {
+    flex: 1,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'white',
+    fontSize: 50,
+  },
   startButton: {
     backgroundColor: 'white',
     height: '60%',
@@ -243,7 +272,7 @@ export const stylesDefault = StyleSheet.create({
     marginBottom: '30%',
   },
   voteButton: {
-    backgroundColor: 'white',
+    backgroundColor: 'lightpink',
     height: '100%',
     width: '100%',
     borderRadius: 10,
@@ -302,9 +331,10 @@ export const stylesDefault = StyleSheet.create({
   },
   sketchContainer: {
     flex: 5,
-    borderColor: 'lightpink',
-    borderWidth: 3,
+    borderColor: 'cadetblue',
+    borderWidth: 2,
     backgroundColor: 'white',
+    margin: 10,
   },
   undoButton: {
     justifyContent: 'center',
@@ -348,7 +378,7 @@ export const stylesDefault = StyleSheet.create({
     marginTop: '20%',
   },
   scrollContainerVote: {
-    flex: 1,
+    flex: 3,
     justifyContent: 'flex-start',
   },
   scrollView: {
@@ -370,7 +400,7 @@ export const stylesDefault = StyleSheet.create({
     fontFamily: 'Avenir',
     fontSize: 20,
     color: 'white',
-    // flexWrap: 'wrap',
+    flexWrap: 'wrap',
   },
   challenge: {
     flex: 0.5,
@@ -410,7 +440,7 @@ export const stylesDefault = StyleSheet.create({
     margin: 10,
     padding: 30,
     alignSelf: 'center',
-    borderColor: '#40E0D0',
+    borderColor: 'lightpink',
     borderWidth: 10,
   },
   unselectedImageStyle: {
