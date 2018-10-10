@@ -9,7 +9,7 @@ import Timer from './Timer';
 // import { stylesHome } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { ColorWheel } from 'react-native-color-wheel';
-var hsl = require('hsl-to-hex');
+var colorsys = require('colorsys');
 
 console.disableYellowBox = true;
 
@@ -92,11 +92,12 @@ export default class ColorPicker extends Component {
   };
 
   findColor(color) {
-    return hsl(
+    const hex = colorsys.hsvToHex(
       Math.round(color.h),
       Math.round(color.s),
-      Math.round(color.v / 2)
+      Math.round(color.v)
     );
+    return hex;
   }
 
   render() {
@@ -125,21 +126,26 @@ export default class ColorPicker extends Component {
               />
             </View>
           </View>
-          <View style={styles.container}>
+          <View
+            style={{
+              flex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'yellow',
+            }}
+          >
             <ColorWheel
               initialColor="#000000"
               onColorChange={color => {
                 const colorFound = this.findColor(color).split('#')[1];
-                console.log('colorFound is', colorFound);
                 const strokeColor = '0x' + colorFound;
-                console.log('strokecolor is', strokeColor);
                 this.setState({ strokeColor });
               }}
               style={{
-                width: 150,
-                height: 150,
+                height: Dimensions.get('window').height,
+                width: Dimensions.get('window').width,
               }}
-              thumbStyle={{ height: 30, width: 30, borderRadius: 30 }}
+              thumbStyle={{ height: 10, width: 10, borderRadius: 30 }}
             />
           </View>
         </LinearGradient>

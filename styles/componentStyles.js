@@ -276,12 +276,12 @@ export const stylesDefault = StyleSheet.create({
     borderWidth: 2,
   },
   sketch: {
-    flex: 4,
+    flex: 1,
     width: 300,
     height: 300,
   },
   sketchContainer: {
-    flex: 4,
+    flex: 5,
     borderColor: 'lightpink',
     borderWidth: 10,
     backgroundColor: 'white',
@@ -360,16 +360,14 @@ export const stylesDefault = StyleSheet.create({
     paddingBottom: '5%',
   },
   timerRed: {
-    flex: 1,
     color: '#CD5C5C',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Avenir',
   },
   timer: {
-    flex: 1,
     color: 'white',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Avenir',
   },
