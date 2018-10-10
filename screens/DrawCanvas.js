@@ -8,6 +8,7 @@ import {
   Text,
   View,
   Alert,
+  Dimensions,
 } from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
@@ -16,14 +17,14 @@ import Timer from './Timer';
 // import { stylesHome } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { ColorWheel } from 'react-native-color-wheel';
-var hsl = require('hsl-to-hex');
+var colorsys = require('colorsys');
 
 console.disableYellowBox = true;
 
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -111,11 +112,13 @@ class Home extends Component {
   };
 
   findColor(color) {
-    return hsl(
+    const hex = colorsys.hsvToHex(
       Math.round(color.h),
       Math.round(color.s),
-      Math.round(color.v / 2)
+      Math.round(color.v)
     );
+    console.log('hex', hex);
+    return hex;
   }
 
   render() {
@@ -146,14 +149,20 @@ class Home extends Component {
               />
             </View>
           </View>
-
           <Timer
             style={styles.timer}
             navigation={this.props.navigation}
             navigateTo="CameraView"
             screenshot={this.saveImage}
           />
-          <View style={styles.container}>
+          <View
+            style={{
+              flex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'yellow',
+            }}
+          >
             <ColorWheel
               initialColor="#000000"
               onColorChange={color => {
@@ -162,10 +171,10 @@ class Home extends Component {
                 this.setState({ strokeColor });
               }}
               style={{
-                width: 150,
-                height: 150,
+                height: Dimensions.get('window').height,
+                width: Dimensions.get('window').width,
               }}
-              thumbStyle={{ height: 30, width: 30, borderRadius: 30 }}
+              thumbStyle={{ height: 10, width: 10, borderRadius: 30 }}
             />
           </View>
           <View style={styles.buttonContainer}>

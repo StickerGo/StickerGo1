@@ -19,6 +19,13 @@ export default {
       'cloud.png': require(`./assets/images/lava/cloud.png`),
       'lavatile.jpg': require(`./assets/images/lava/lavatile.jpg`),
     },
+    loadingbears: {
+      'loading_bears.gif': require(`./assets/images/loading_bears.gif`),
+
+    },
+    drawingbear: {
+      'drawing_bear.gif': require(`./assets/images/drawing_bear.gif`)
+    }
   },
   models: {
     // '3mf': {
