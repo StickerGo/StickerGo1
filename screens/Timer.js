@@ -53,7 +53,7 @@ class Timer extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         {this.state.displayedSeconds <= 10 &&
         this.state.displayedMinutes !== '01' ? (
           <Text style={styles.timerRed}>

@@ -133,14 +133,14 @@ class Home extends Component {
           style={styles.linearGradientstyleDraw}
         >
           <View style={styles.nonButtonContainer}>
-            <Text style={styles.challengeText}>Your Challenge:</Text>
-            <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
-              style={styles.challengeText}
-            >
-              {this.props.prompt}
-            </Text>
+            <View style={styles.container}>
+              <Text adjustsFontSizeToFit style={styles.challengeText}>
+                Your Challenge:
+              </Text>
+              <Text numberOfLines={1} style={styles.challengeText}>
+                {this.props.prompt}
+              </Text>
+            </View>
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
