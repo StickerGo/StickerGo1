@@ -52,6 +52,7 @@ class Winner extends Component {
   }
   render() {
     return (
+<<<<<<< HEAD
       <View style={styles.container}>
         <LinearGradient
           colors={['cadetblue', 'lightpink']}
@@ -64,6 +65,14 @@ class Winner extends Component {
           <Text style={styles.text}>Winner is: </Text>
           {this.props.winner && (
             <View style={styles.scrollContainer}>
+=======
+
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <LinearGradient colors={['cadetblue', 'lightpink']} style={{ flex: 1 }}>
+          <Text style={styles.textWinner}>Winner is: </Text>
+          {this.props.winner && (
+            <View style={styles.scrollContainerVote}>
+>>>>>>> b221a61eff4b8b3fc196da9391cbe8a7e4320da7
               {this.props.winner.length > 1 ? (
                 <ScrollView contentContainerStyle={styles.scrollView}>
                   {this.props.winner.map(winner => {
@@ -81,6 +90,7 @@ class Winner extends Component {
                   })}
                 </ScrollView>
               ) : (
+<<<<<<< HEAD
                 <View
                   style={{
                     flexGrow: 5,
@@ -130,11 +140,54 @@ class Winner extends Component {
                     );
                   })}
                 </View>
+=======
+
+                // <View
+                //   style={{
+                //     flex: 1,
+                //     flexDirection: 'column',
+                //     justifyContent: 'center',
+                //     alignItems: 'center',
+                //   }}
+                // >
+                this.props.winner.map(winner => {
+                  return (
+                    <View key={winner.id}>
+                      <Text
+                        key={winner.id}
+                        style={{
+                          textAlign: 'center',
+                          marginBottom: 10,
+                          fontWeight: 'bold',
+                          fontFamily: 'MarkerFelt-Wide',
+                          fontSize: 30,
+                          color: 'white',
+                        }}
+                      >
+                        {winner.name}
+                      </Text>
+                      <Image
+                        style={{
+                          alignSelf: 'center',
+                          width: 300,
+                          height: 300,
+                          borderWidth: 3,
+                          borderColor: 'white',
+                        }}
+                        source={{ isStatic: true, uri: winner.photo }}
+                      />
+                    </View>
+                  );
+                })
+                // </View>
+
+>>>>>>> b221a61eff4b8b3fc196da9391cbe8a7e4320da7
               )}
             </View>
           )}
 
           <View style={styles.buttonContainer}>
+<<<<<<< HEAD
             {/* <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
@@ -145,6 +198,22 @@ class Winner extends Component {
             >
               <Text style={styles.buttonText}>Play Again</Text>
             </TouchableOpacity> */}
+=======
+
+            {/*<TouchableOpacity
+
+              style={styles.saveButton}
+              onPress={() => {
+                // this.props.reset(this.props.room, this.props.prompts);
+                this.replay();
+                // this.props.navigation.navigate('Waiting');
+              }}
+            >
+              <Text style={styles.buttonText}>Play Again</Text>
+
+            </TouchableOpacity>*/}
+
+>>>>>>> b221a61eff4b8b3fc196da9391cbe8a7e4320da7
             <TouchableOpacity
               style={styles.undoButton}
               onPress={() => {

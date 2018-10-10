@@ -1,7 +1,14 @@
 import Expo, { LinearGradient } from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import { TouchableOpacity, Platform, AppState, Text, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Platform,
+  AppState,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
@@ -9,7 +16,7 @@ import Timer from './Timer';
 // import { stylesHome } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { ColorWheel } from 'react-native-color-wheel';
-var hsl = require('hsl-to-hex');
+var colorsys = require('colorsys');
 
 console.disableYellowBox = true;
 
@@ -92,11 +99,12 @@ export default class ColorPicker extends Component {
   };
 
   findColor(color) {
-    return hsl(
+    const hex = colorsys.hsvToHex(
       Math.round(color.h),
       Math.round(color.s),
-      Math.round(color.v / 2)
+      Math.round(color.v)
     );
+    return hex;
   }
 
   render() {
@@ -107,12 +115,14 @@ export default class ColorPicker extends Component {
           style={styles.linearGradientstyleDraw}
         >
           <View style={styles.nonButtonContainer}>
-            <Text style={styles.challengeText}>Your Challenge:</Text>
-            <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
-              style={styles.challenge}
-            />
+            <View style={styles.container}>
+              <Text adjustsFontSizeToFit style={styles.challengeText}>
+                Your Challenge:
+              </Text>
+              <Text numberOfLines={1} style={styles.challengeText}>
+                hole in the ground
+              </Text>
+            </View>
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
@@ -125,22 +135,59 @@ export default class ColorPicker extends Component {
               />
             </View>
           </View>
-          <View style={styles.container}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: 5,
+            }}
+          >
             <ColorWheel
               initialColor="#000000"
               onColorChange={color => {
                 const colorFound = this.findColor(color).split('#')[1];
-                console.log('colorFound is', colorFound);
                 const strokeColor = '0x' + colorFound;
-                console.log('strokecolor is', strokeColor);
                 this.setState({ strokeColor });
               }}
               style={{
-                width: 150,
-                height: 150,
+                height: Dimensions.get('window').height,
+                width: Dimensions.get('window').width,
               }}
-              thumbStyle={{ height: 30, width: 30, borderRadius: 30 }}
+              thumbStyle={{ height: 5, width: 5, borderRadius: 30 }}
             />
+          </View>
+          <Timer
+            navigation={this.props.navigation}
+            navigateTo="CameraView"
+            screenshot={this.saveImage}
+          />
+          <View style={styles.canvasButtonContainer}>
+            <TouchableOpacity
+              style={styles.undoButton}
+              onPress={() => {
+                this.sketch.undo();
+              }}
+            >
+              <Text style={styles.buttonText}>undo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => {
+                if (this.state.image === null) {
+                  return Alert.alert(
+                    `No drawing?`,
+                    'Need your beyootiful drawing ;)',
+                    [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                    { cancelable: false }
+                  );
+                }
+                this.saveImage();
+                this.props.navigation.navigate('CameraView');
+              }}
+            >
+              <Text style={styles.buttonText}>DONE</Text>
+            </TouchableOpacity>
           </View>
         </LinearGradient>
       </View>

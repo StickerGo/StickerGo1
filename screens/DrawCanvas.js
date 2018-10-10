@@ -8,6 +8,7 @@ import {
   Text,
   View,
   Alert,
+  Dimensions,
 } from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
@@ -16,7 +17,7 @@ import Timer from './Timer';
 // import { stylesHome } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { ColorWheel } from 'react-native-color-wheel';
-var hsl = require('hsl-to-hex');
+var colorsys = require('colorsys');
 
 console.disableYellowBox = true;
 
@@ -79,9 +80,14 @@ class Home extends Component {
     this.setState({ appState: nextAppState });
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.getOnePrompt(this.props.player.roomId);
-
+    const uri = await Expo.takeSnapshotAsync(this.sketch, options);
+    this.setState({
+      image: { uri },
+      // strokeWidth: Math.random() * 30 + 10,
+      // strokeColor: Math.random() * 0xffffff,
+    });
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
 
@@ -111,11 +117,12 @@ class Home extends Component {
   };
 
   findColor(color) {
-    return hsl(
+    const hex = colorsys.hsvToHex(
       Math.round(color.h),
       Math.round(color.s),
-      Math.round(color.v / 2)
+      Math.round(color.v)
     );
+    return hex;
   }
 
   render() {
@@ -126,14 +133,14 @@ class Home extends Component {
           style={styles.linearGradientstyleDraw}
         >
           <View style={styles.nonButtonContainer}>
-            <Text style={styles.challengeText}>Your Challenge:</Text>
-            <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
-              style={styles.challenge}
-            >
-              {this.props.prompt}
-            </Text>
+            <View style={styles.container}>
+              <Text adjustsFontSizeToFit style={styles.challengeText}>
+                Your Challenge:
+              </Text>
+              <Text numberOfLines={1} style={styles.challengeText}>
+                {this.props.prompt}
+              </Text>
+            </View>
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
@@ -146,14 +153,14 @@ class Home extends Component {
               />
             </View>
           </View>
-
-          <Timer
-            style={styles.timer}
-            navigation={this.props.navigation}
-            navigateTo="CameraView"
-            screenshot={this.saveImage}
-          />
-          <View style={styles.container}>
+          <View
+            style={{
+              flex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: 5,
+            }}
+          >
             <ColorWheel
               initialColor="#000000"
               onColorChange={color => {
@@ -162,13 +169,18 @@ class Home extends Component {
                 this.setState({ strokeColor });
               }}
               style={{
-                width: 150,
-                height: 150,
+                height: Dimensions.get('window').height,
+                width: Dimensions.get('window').width,
               }}
-              thumbStyle={{ height: 30, width: 30, borderRadius: 30 }}
+              thumbStyle={{ height: 5, width: 5, borderRadius: 30 }}
             />
           </View>
-          <View style={styles.buttonContainer}>
+          <Timer
+            navigation={this.props.navigation}
+            navigateTo="CameraView"
+            screenshot={this.saveImage}
+          />
+          <View style={styles.canvasButtonContainer}>
             <TouchableOpacity
               style={styles.undoButton}
               onPress={() => {
