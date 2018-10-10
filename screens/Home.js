@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableHighlight } from 'react-native';
 import { stylesDefault } from '../styles/componentStyles';
-import { LinearGradient } from 'expo';
+import { LinearGradient, Asset } from 'expo';
+
+
+// Image.prefetch('https://media.giphy.com/media/4Zqfoq9gQl0gHuowmc/giphy.gif')
+// Image.prefetch('https://media.giphy.com/media/9JgeNOiRwsvbg9RVsq/giphy.gif')
 
 export default class Start extends React.Component {
   constructor(props) {
     super(props);
     this._onPressButton = this._onPressButton.bind(this);
+  }
+
+  async componentDidMount() {
+    const drawingBear = Asset.fromModule(require('../assets/images/drawing_bear.gif')).downloadAsync()
+    const loadingBear = Asset.fromModule(require('../assets/images/loading_bears.gif'))
+    await Promise.all([drawingBear, loadingBear])
   }
 
   _onPressButton() {
@@ -25,12 +35,8 @@ export default class Start extends React.Component {
 
             <Image
               style={styles.image}
-              source={{
-                uri:
-                  'https://media.giphy.com/media/4Zqfoq9gQl0gHuowmc/giphy.gif',
-              }}
+              source={require('../assets/images/drawing_bear.gif')}
             />
-            {/* 'https://media.giphy.com/media/4Zqfoq9gQl0gHuowmc/giphy.gif' */}
           </View>
 
           <View style={styles.buttonContainer}>
@@ -60,5 +66,5 @@ export default class Start extends React.Component {
 // const styles = stylesCreate;
 const styles = stylesDefault;
 
-// skip this line if using Create React Native App
-// AppRegistry.registerComponent('AwesomeProject', () => ButtonBasics);
+    // skip this line if using Create React Native App
+    // AppRegistry.registerComponent('AwesomeProject', () => ButtonBasics);

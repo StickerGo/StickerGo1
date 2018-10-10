@@ -63,10 +63,8 @@ class Waiting extends Component {
                   <View>
                     <Image
                       style={styles.loadingImage}
-                      source={{
-                        uri:
-                          'https://media.giphy.com/media/9JgeNOiRwsvbg9RVsq/giphy.gif',
-                      }}
+                      source={require('../assets/images/loading_bears.gif')}
+                    // source={require('../assets/images/loading_bears.gif')}
                     />
                     <Text style={styles.waitingText}>
                       Waiting For More Players...
