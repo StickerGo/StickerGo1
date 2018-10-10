@@ -136,9 +136,10 @@ export default class ColorPicker extends Component {
                 this.setState({ strokeColor });
               }}
               style={{
-                width: 100,
-                height: 100,
+                width: 150,
+                height: 150,
               }}
+              thumbStyle={{ height: 30, width: 30, borderRadius: 30 }}
             />
           </View>
         </LinearGradient>
