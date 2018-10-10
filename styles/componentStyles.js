@@ -29,7 +29,7 @@ export const stylesDefault = StyleSheet.create({
   linearGradientstyleRoomCode: {
     padding: 20,
     alignItems: 'stretch',
-    paddingHorizontal: '40%',
+    paddingHorizontal: '10%',
   },
   nonButtonContainer: {
     flex: 4,
