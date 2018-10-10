@@ -165,13 +165,23 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 35,
     color: 'white',
   },
+  textWinner: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 35,
+    color: 'white',
+    marginTop: 45,
+    marginBottom: 20,
+  },
   winnerText: {
     flex: 1,
     textAlign: 'center',
     alignSelf: 'center',
     fontWeight: 'bold',
     fontFamily: 'MarkerFelt-Wide',
-    fontSize: 20,
+    fontSize: 30,
     color: 'white',
   },
   nameText: {
@@ -326,6 +336,10 @@ export const stylesDefault = StyleSheet.create({
   scrollContainer: {
     flex: 6,
     marginTop: '20%',
+  },
+  scrollContainerVote: {
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   scrollView: {
     flexGrow: 5,
