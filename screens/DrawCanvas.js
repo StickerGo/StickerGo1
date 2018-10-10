@@ -80,14 +80,8 @@ class Home extends Component {
     this.setState({ appState: nextAppState });
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     this.props.getOnePrompt(this.props.player.roomId);
-    const uri = await Expo.takeSnapshotAsync(this.sketch, options);
-    this.setState({
-      image: { uri },
-      // strokeWidth: Math.random() * 30 + 10,
-      // strokeColor: Math.random() * 0xffffff,
-    });
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
 
@@ -112,8 +106,21 @@ class Home extends Component {
     });
   };
 
-  onReady = () => {
-    console.log('ready!');
+  onReady = async ({ width, height }) => {
+    const options = {
+      format: 'png', /// PNG because the view has a clear background
+      quality: 0.1, /// Low quality works because it's just a line
+      result: 'file',
+      height,
+      width,
+    };
+    /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
+    const uri = await Expo.takeSnapshotAsync(this.sketch, options);
+    this.setState({
+      image: { uri },
+      // strokeWidth: Math.random() * 30 + 10,
+      // strokeColor: Math.random() * 0xffffff,
+    });
   };
 
   findColor(color) {
