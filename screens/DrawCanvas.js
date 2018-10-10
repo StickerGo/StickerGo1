@@ -82,7 +82,6 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.getOnePrompt(this.props.player.roomId);
-
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
 
@@ -107,8 +106,21 @@ class Home extends Component {
     });
   };
 
-  onReady = () => {
-    console.log('ready!');
+  onReady = async ({ width, height }) => {
+    const options = {
+      format: 'png', /// PNG because the view has a clear background
+      quality: 0.1, /// Low quality works because it's just a line
+      result: 'file',
+      height,
+      width,
+    };
+    /// Using 'Expo.takeSnapShotAsync', and our view 'this.sketch' we can get a uri of the image
+    const uri = await Expo.takeSnapshotAsync(this.sketch, options);
+    this.setState({
+      image: { uri },
+      // strokeWidth: Math.random() * 30 + 10,
+      // strokeColor: Math.random() * 0xffffff,
+    });
   };
 
   findColor(color) {
@@ -117,7 +129,6 @@ class Home extends Component {
       Math.round(color.s),
       Math.round(color.v)
     );
-    console.log('hex', hex);
     return hex;
   }
 
@@ -129,14 +140,14 @@ class Home extends Component {
           style={styles.linearGradientstyleDraw}
         >
           <View style={styles.nonButtonContainer}>
-            <Text style={styles.challengeText}>Your Challenge:</Text>
-            <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
-              style={styles.challenge}
-            >
-              {this.props.prompt}
-            </Text>
+            <View style={styles.container}>
+              <Text adjustsFontSizeToFit style={styles.challengeText}>
+                Your Challenge:
+              </Text>
+              <Text numberOfLines={1} style={styles.challengeText}>
+                {this.props.prompt}
+              </Text>
+            </View>
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
@@ -149,18 +160,12 @@ class Home extends Component {
               />
             </View>
           </View>
-          <Timer
-            style={styles.timer}
-            navigation={this.props.navigation}
-            navigateTo="CameraView"
-            screenshot={this.saveImage}
-          />
           <View
             style={{
               flex: 2,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'yellow',
+              margin: 5,
             }}
           >
             <ColorWheel
@@ -174,10 +179,15 @@ class Home extends Component {
                 height: Dimensions.get('window').height,
                 width: Dimensions.get('window').width,
               }}
-              thumbStyle={{ height: 10, width: 10, borderRadius: 30 }}
+              thumbStyle={{ height: 5, width: 5, borderRadius: 30 }}
             />
           </View>
-          <View style={styles.buttonContainer}>
+          <Timer
+            navigation={this.props.navigation}
+            navigateTo="CameraView"
+            screenshot={this.saveImage}
+          />
+          <View style={styles.canvasButtonContainer}>
             <TouchableOpacity
               style={styles.undoButton}
               onPress={() => {

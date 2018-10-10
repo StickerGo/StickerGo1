@@ -29,7 +29,7 @@ export const stylesDefault = StyleSheet.create({
   linearGradientstyleRoomCode: {
     padding: 20,
     alignItems: 'stretch',
-    paddingHorizontal: '10%',
+    paddingHorizontal: '40%',
   },
   nonButtonContainer: {
     flex: 4,
@@ -53,6 +53,16 @@ export const stylesDefault = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     marginTop: 25,
+
+    //for testing
+    // backgroundColor: 'black',
+  },
+  canvasButtonContainer: {
+    flex: 0.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    // margin: 10,
 
     //for testing
     // backgroundColor: 'black',
@@ -165,13 +175,23 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 35,
     color: 'white',
   },
+  textWinner: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+    fontSize: 35,
+    color: 'white',
+    marginTop: 45,
+    marginBottom: 20,
+  },
   winnerText: {
     flex: 1,
     textAlign: 'center',
     alignSelf: 'center',
     fontWeight: 'bold',
     fontFamily: 'MarkerFelt-Wide',
-    fontSize: 20,
+    fontSize: 30,
     color: 'white',
   },
   nameText: {
@@ -276,14 +296,14 @@ export const stylesDefault = StyleSheet.create({
     borderWidth: 2,
   },
   sketch: {
-    flex: 4,
+    flex: 1,
     width: 300,
     height: 300,
   },
   sketchContainer: {
-    flex: 4,
+    flex: 5,
     borderColor: 'lightpink',
-    borderWidth: 10,
+    borderWidth: 3,
     backgroundColor: 'white',
   },
   undoButton: {
@@ -327,6 +347,10 @@ export const stylesDefault = StyleSheet.create({
     flex: 6,
     marginTop: '20%',
   },
+  scrollContainerVote: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
   scrollView: {
     flexGrow: 5,
   },
@@ -360,18 +384,20 @@ export const stylesDefault = StyleSheet.create({
     paddingBottom: '5%',
   },
   timerRed: {
-    flex: 1,
     color: '#CD5C5C',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Avenir',
+    //for testing
+    // backgroundColor: 'yellow',
   },
   timer: {
-    flex: 1,
     color: 'white',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Avenir',
+    //for testing
+    // backgroundColor: 'yellow',
   },
   list: {
     flex: 4,
@@ -393,5 +419,34 @@ export const stylesDefault = StyleSheet.create({
     margin: 10,
     padding: 30,
     alignSelf: 'center',
+  },
+  nonButtonContainerCode: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10%',
+    //for testing
+    // backgroundColor: 'yellow',
+  },
+  buttonContainerCode: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginTop: '10%',
+    //for testing
+    // backgroundColor: 'black',
+  },
+  startButtonCode: {
+    backgroundColor: 'white',
+    height: '40%',
+    width: '80%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '20%',
   },
 });
