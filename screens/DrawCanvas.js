@@ -153,16 +153,12 @@ class Home extends Component {
               />
             </View>
           </View>
-          <Timer
-            navigation={this.props.navigation}
-            navigateTo="CameraView"
-            screenshot={this.saveImage}
-          />
           <View
             style={{
               flex: 2,
               justifyContent: 'center',
               alignItems: 'center',
+              margin: 5,
             }}
           >
             <ColorWheel
@@ -176,10 +172,15 @@ class Home extends Component {
                 height: Dimensions.get('window').height,
                 width: Dimensions.get('window').width,
               }}
-              thumbStyle={{ height: 10, width: 10, borderRadius: 30 }}
+              thumbStyle={{ height: 5, width: 5, borderRadius: 30 }}
             />
           </View>
-          <View style={styles.buttonContainer}>
+          <Timer
+            navigation={this.props.navigation}
+            navigateTo="CameraView"
+            screenshot={this.saveImage}
+          />
+          <View style={styles.canvasButtonContainer}>
             <TouchableOpacity
               style={styles.undoButton}
               onPress={() => {
