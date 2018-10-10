@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  Image,
-  ScrollView,
-} from 'react-native';
+import { TouchableOpacity, View, Text, Image, ScrollView } from 'react-native';
 
 //import { stylesContest } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
@@ -17,9 +11,10 @@ import {
   getImages,
   getNumPlayers,
 } from '../reducer/roomReducer';
+import { Alert } from 'react-native';
 
 class Contest extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -62,7 +57,7 @@ class Contest extends Component {
       .child('players')
       .child(playerId)
       .child('votes')
-      .transaction(function (votes) {
+      .transaction(function(votes) {
         return (votes || 0) + 1;
       });
   }
@@ -74,15 +69,29 @@ class Contest extends Component {
     if (imagesArray.length > 0) {
       return (
         <View style={styles.container}>
-          <LinearGradient
-            colors={['cadetblue', 'lightpink']}
-            style={{ flex: 8, padding: 40 }}
+          <View
+            // colors={['cadetblue', 'lightpink']}
+            style={{ flex: 8, padding: 40, backgroundColor: 'white' }}
           >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 35,
+                fontWeight: 'bold',
+                fontFamily: 'MarkerFelt-Wide',
+                textDecorationLine: 'underline',
+                textDecorationStyle: 'dotted',
+                textDecorationColor: 'lightpink',
+                color: 'lightpink',
+              }}
+            >
+              Scroll + Choose
+            </Text>
             <View style={styles.scrollContainer}>
-              <ScrollView contentContainerStyle={styles.scrollView}>
-                {this.state.error && (
-                  <Text style={styles.buttonText}>Please select image</Text>
-                )}
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollView}
+              >
                 {imagesArray.map(image => {
                   let imageStyling = styles.unselectedImageStyle;
                   if (vote === image.id) {
@@ -111,16 +120,24 @@ class Contest extends Component {
                     this.voteAgain(this.state.vote);
                     this.props.navigation.navigate('WinnerWaiting');
                   } else {
-                    this.setState({
-                      error: true,
-                    });
+                    return Alert.alert(
+                      'You forgot to vote!',
+                      'Vote required',
+                      [
+                        {
+                          text: 'OK',
+                          onPress: () => console.log('OK Pressed'),
+                        },
+                      ],
+                      { cancelable: false }
+                    );
                   }
                 }}
               >
-                <Text style={styles.startButtonText}>Submit vote</Text>
+                <Text style={styles.voteButtonText}>Submit vote</Text>
               </TouchableOpacity>
             </View>
-          </LinearGradient>
+          </View>
         </View>
       );
     } else {

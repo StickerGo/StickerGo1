@@ -54,11 +54,16 @@ class Winner extends Component {
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <LinearGradient colors={['cadetblue', 'lightpink']} style={{ flex: 1 }}>
-          <Text style={styles.textWinner}>Winner is: </Text>
           {this.props.winner && (
             <View style={styles.scrollContainerVote}>
               {this.props.winner.length > 1 ? (
-                <ScrollView contentContainerStyle={styles.scrollView}>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.scrollView}
+                >
+                  <Text style={styles.textWinner}>
+                    There is a tie! (Scroll down)
+                  </Text>
                   {this.props.winner.map(winner => {
                     return (
                       <View style={{ flex: 2 }} key={winner.id}>
@@ -74,29 +79,12 @@ class Winner extends Component {
                   })}
                 </ScrollView>
               ) : (
-                // <View
-                //   style={{
-                //     flex: 1,
-                //     flexDirection: 'column',
-                //     justifyContent: 'center',
-                //     alignItems: 'center',
-                //   }}
-                // >
+
                 this.props.winner.map(winner => {
                   return (
                     <View key={winner.id}>
-                      <Text
-                        key={winner.id}
-                        style={{
-                          textAlign: 'center',
-                          marginBottom: 10,
-                          fontWeight: 'bold',
-                          fontFamily: 'MarkerFelt-Wide',
-                          fontSize: 30,
-                          color: 'white',
-                        }}
-                      >
-                        {winner.name}
+                      <Text style={styles.textWinner}>
+                        Winner is {winner.name}!
                       </Text>
                       <Image
                         style={{
