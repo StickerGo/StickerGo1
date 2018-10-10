@@ -30,6 +30,7 @@ export default class Start extends React.Component {
                   'https://media.giphy.com/media/4Zqfoq9gQl0gHuowmc/giphy.gif',
               }}
             />
+            {/* 'https://media.giphy.com/media/4Zqfoq9gQl0gHuowmc/giphy.gif' */}
           </View>
 
           <View style={styles.buttonContainer}>

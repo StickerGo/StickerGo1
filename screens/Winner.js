@@ -16,23 +16,23 @@ import { exitGame, resetRoom, getWinnerId } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
       name: 'name',
-      winners: []
+      winners: [],
     };
   }
   async componentDidMount() {
     this.props.getAllPrompts();
     await this.props.getWinnerId(this.props.roomId);
-    const winnersArray = []
+    const winnersArray = [];
     for (let i = 0; i < this.props.winners.length; i++) {
       const winner = await this.props.getTheWinner(this.props.winners[i]);
       this.setState({
-        winners: [...this.props.winner]
-      })
+        winners: [...this.props.winner],
+      });
     }
     this.props.getAllPrompts();
   }
@@ -55,30 +55,35 @@ class Winner extends Component {
         <Text style={{ color: 'black' }}>Winner is: </Text>
         {this.props.winner && (
           <View style={{ flex: 1, backgroundColor: 'pink' }}>
-            {
-              this.props.winner.map(winner => {
-                return (
-                  <View style={{ flex: 2 }} key={winner.id}>
-                    <Text key={winner.id} style={{ color: 'yellow' }}>{winner.name}</Text>
-                    <Image style={{ flex: 1, borderColor: 'red' }} source={{ isStatic: true, uri: winner.photo }} />
-                  </View>
-                )
-              })
-            }
+            {this.props.winner.map(winner => {
+              return (
+                <View style={{ flex: 2 }} key={winner.id}>
+                  <Text key={winner.id} style={{ color: 'yellow' }}>
+                    {winner.name}
+                  </Text>
+                  <Image
+                    style={{ flex: 1, borderColor: 'red' }}
+                    source={{ isStatic: true, uri: winner.photo }}
+                  />
+                </View>
+              );
+            })}
           </View>
         )}
 
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ flex: 1, backgroundColor: 'purple' }}
             onPress={() => {
               // this.props.reset(this.props.room, this.props.prompts);
+              // this.props.exit();
+              // this.props.navigation.navigate('Home');
               this.replay();
               // this.props.navigation.navigate('Waiting');
             }}
           >
             <Text style={{ color: 'black' }}>Play Again</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={{ flex: 1 }}
             onPress={() => {
@@ -86,7 +91,7 @@ class Winner extends Component {
               this.props.navigation.navigate('Home');
             }}
           >
-            <Text style={{ color: 'red' }}>Exit</Text>
+            <Text style={{ color: 'red' }}>Play Again</Text>
           </TouchableOpacity>
         </View>
         {/* </LinearGradient> */}
