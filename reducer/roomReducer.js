@@ -34,8 +34,8 @@ const makeOne = room => {
 // const addPlayerToRoom = room => {
 //   return { type: ADD_TO_ROOM, room };
 // };
-const resetGame = roomReset => {
-  return { type: RESET_GAME, roomReset };
+const resetGame = () => {
+  return { type: RESET_GAME };
 };
 export const exitGame = () => {
   return { type: EXIT_GAME };
@@ -76,12 +76,12 @@ export const getWinnerId = roomId => {
         if (index.votes > vote) {
           if (arr.length !== 0) {
             // arr.shift();
-            arr = []
+            arr = [];
           }
           arr.push(keysArr[i]);
           vote = index.votes;
         } else if (index.votes === vote && vote !== 0) {
-          arr.push(keysArr[i])
+          arr.push(keysArr[i]);
         }
       }
 
@@ -176,8 +176,16 @@ export const resetRoom = (roomInfo, newPrompt) => {
         .child(`/${roomInfo.id}/players/${playerId}/votes`)
         .set(0);
     });
+    const resetPlayerPhoto = playersInRoom.map(playerId => {
+      return db
+        .database()
+        .ref('players')
+        .child(`${playerId}/photo`)
+        .set('');
+    });
 
-    dispatch(getOneRoom(roomInfo.id));
+    // dispatch(getOneRoom(roomInfo.id));
+    dispatch(resetGame());
   };
 };
 
@@ -263,6 +271,11 @@ const roomReducer = (state = initialStateRoom, action) => {
       return {
         ...state,
         room: { ...state.room, winnerId: action.winnerId },
+      };
+    case RESET_GAME:
+      return {
+        ...state,
+        room: { ...state.room, images: [] },
       };
     default:
       return state;
