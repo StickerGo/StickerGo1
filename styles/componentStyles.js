@@ -57,6 +57,16 @@ export const stylesDefault = StyleSheet.create({
     //for testing
     // backgroundColor: 'black',
   },
+  canvasButtonContainer: {
+    flex: 0.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    // margin: 10,
+
+    //for testing
+    // backgroundColor: 'black',
+  },
 
   heading: {
     flex: 1,
@@ -293,7 +303,7 @@ export const stylesDefault = StyleSheet.create({
   sketchContainer: {
     flex: 5,
     borderColor: 'lightpink',
-    borderWidth: 10,
+    borderWidth: 3,
     backgroundColor: 'white',
   },
   undoButton: {
@@ -378,12 +388,16 @@ export const stylesDefault = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Avenir',
+    //for testing
+    // backgroundColor: 'yellow',
   },
   timer: {
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Avenir',
+    //for testing
+    // backgroundColor: 'yellow',
   },
   list: {
     flex: 4,
