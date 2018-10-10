@@ -29,7 +29,7 @@ export const stylesDefault = StyleSheet.create({
   linearGradientstyleRoomCode: {
     padding: 20,
     alignItems: 'stretch',
-    paddingHorizontal: '10%',
+    paddingHorizontal: '40%',
   },
   nonButtonContainer: {
     flex: 4,
@@ -419,5 +419,34 @@ export const stylesDefault = StyleSheet.create({
     margin: 10,
     padding: 30,
     alignSelf: 'center',
+  },
+  nonButtonContainerCode: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10%',
+    //for testing
+    // backgroundColor: 'yellow',
+  },
+  buttonContainerCode: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginTop: '10%',
+    //for testing
+    // backgroundColor: 'black',
+  },
+  startButtonCode: {
+    backgroundColor: 'white',
+    height: '40%',
+    width: '80%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '20%',
   },
 });

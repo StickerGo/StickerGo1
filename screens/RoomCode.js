@@ -7,7 +7,7 @@ import { addToRoom } from '../reducer/roomReducer';
 import { connect } from 'react-redux';
 
 class RoomCode extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -39,15 +39,15 @@ class RoomCode extends Component {
           colors={['#192f6a', 'cadetblue', 'lightpink']}
           style={styles.linearGradientstyleRoomCode}
         >
-          <View style={styles.nonButtonContainer}>
+          <View style={styles.nonButtonContainerCode}>
             <Text style={styles.text}>Here is your code:</Text>
             <View style={styles.textBkg}>
               <Text style={styles.codeText}>{this.state.roomId}</Text>
             </View>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={styles.buttonContainerCode}>
             <TouchableOpacity
-              style={styles.startButton}
+              style={styles.startButtonCode}
               onPress={() => this.props.navigation.navigate('Waiting')}
             >
               <Text style={styles.startButtonText}>start</Text>
