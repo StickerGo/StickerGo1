@@ -55,23 +55,51 @@ class Winner extends Component {
       <View style={styles.container}>
         <LinearGradient
           colors={['cadetblue', 'lightpink']}
-          style={{ flex: 8, padding: 40 }}
+          style={{ padding: 20, paddingHorizontal: '10%', alignItems: 'stretch' }}
         >
           <Text style={styles.text}>Winner is: </Text>
           {this.props.winner && (
             <View style={styles.scrollContainer}>
-              <ScrollView contentContainerStyle={styles.scrollView}>
-                {
-                  this.props.winner.map(winner => {
-                    return (
-                      <View style={{ flex: 2 }} key={winner.id}>
-                        <Text key={winner.id} style={styles.winnerText}>{winner.name}</Text>
-                        <Image style={styles.unselectedImageStyle} source={{ isStatic: true, uri: winner.photo }} />
-                      </View>
-                    )
-                  })
-                }
-              </ScrollView>
+              {
+                this.props.winner.length > 1 ?
+                  <ScrollView contentContainerStyle={styles.scrollView}>
+                    {
+                      this.props.winner.map(winner => {
+                        return (
+                          <View style={{ flex: 2 }} key={winner.id}>
+                            <Text key={winner.id} style={styles.winnerText}>{winner.name}</Text>
+                            <Image style={styles.unselectedImageStyle} source={{ isStatic: true, uri: winner.photo }} />
+                          </View>
+                        )
+                      })
+                    }
+                  </ScrollView>
+                  : <View style={{ flexGrow: 5, flex: 3, justifyContent: 'center', alignItems: 'center', width: '100%', padding: 0 }}>
+                    {
+                      this.props.winner.map(winner => {
+                        return (
+                          <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', padding: 0 }} key={winner.id}>
+                            <Text key={winner.id} style={{
+                              flex: 1,
+                              textAlign: 'center',
+                              alignSelf: 'center',
+                              fontWeight: 'bold',
+                              fontFamily: 'MarkerFelt-Wide',
+                              fontSize: 20,
+                              color: 'white',
+                            }}>{winner.name}</Text>
+                            <Image style={{
+                              flex: 3,
+                              width: '100%',
+                              height: '100%',
+                              alignSelf: 'center',
+                            }} source={{ isStatic: true, uri: winner.photo }} />
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
+              }
             </View>
           )}
 
