@@ -14,6 +14,7 @@ import { FBAddPlayer } from '../reducer/playerReducer';
 import { stylesDefault } from '../styles/componentStyles';
 import { addToRoom, getOneRoom } from '../reducer/roomReducer';
 import db from '../reducer/firebase';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -80,13 +81,11 @@ class Join extends React.Component {
     let checkName = this.state.name.trim() !== '';
     let checkChar = /^[a-zA-Z]*$/g.test(this.state.name);
     return (
-      <DismissKeyboard>
-        <View style={styles.joinOrCreateRoomContainer}>
-          <KeyboardAvoidingView
-            styels={styles.container}
-            behavior="padding"
-            enabled
-          >
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.joinOrCreateRoomContainer}
+      >
+        <DismissKeyboard>
+          <View style={styles.joinOrCreateRoomContainer}>
             <View style={styles.nonButtonContainerCreate}>
               <View style={styles.container}>
                 <Text style={styles.textCreateName}>Enter your name</Text>
@@ -121,7 +120,7 @@ class Join extends React.Component {
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={styles.startButton}
+                style={styles.joinButton}
                 onPress={() => {
                   if (!checkName) {
                     return Alert.alert(
@@ -141,12 +140,12 @@ class Join extends React.Component {
                   }
                 }}
               >
-                <Text style={styles.startButtonText}>Join</Text>
+                <Text style={styles.joinButtonText}>Join</Text>
               </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
-        </View>
-      </DismissKeyboard>
+          </View>
+        </DismissKeyboard>
+      </KeyboardAwareScrollView>
     );
   }
 }

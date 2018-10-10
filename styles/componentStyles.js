@@ -242,6 +242,28 @@ export const stylesDefault = StyleSheet.create({
     borderColor: 'cadetblue',
     marginBottom: '30%',
   },
+  joinButtonText: {
+    flex: 1,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    color: 'lightpink',
+    fontSize: 50,
+    //for testing
+    // backgroundColor: 'blue',
+  },
+  joinButton: {
+    backgroundColor: 'white',
+    height: '60%',
+    width: '80%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    margin: 30,
+    borderWidth: 1,
+    borderColor: 'cadetblue',
+    marginBottom: '30%',
+  },
   voteButton: {
     backgroundColor: 'white',
     height: '100%',
