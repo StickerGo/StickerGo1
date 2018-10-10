@@ -52,7 +52,6 @@ class Winner extends Component {
   }
   render() {
     return (
-
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <LinearGradient colors={['cadetblue', 'lightpink']} style={{ flex: 1 }}>
           <Text style={styles.textWinner}>Winner is: </Text>
@@ -75,7 +74,6 @@ class Winner extends Component {
                   })}
                 </ScrollView>
               ) : (
-
                 // <View
                 //   style={{
                 //     flex: 1,
@@ -114,13 +112,11 @@ class Winner extends Component {
                   );
                 })
                 // </View>
-
               )}
             </View>
           )}
 
           <View style={styles.buttonContainer}>
-
             {/*<TouchableOpacity
 
               style={styles.saveButton}
@@ -150,7 +146,7 @@ class Winner extends Component {
   }
 }
 
-// <Text style={styles.heading2}>{this.props.winner}</Text>
+//  <Text style={styles.heading2}>{this.props.winner}</Text>
 
 const mapStateToProps = state => {
   return {
