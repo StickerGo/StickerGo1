@@ -94,6 +94,16 @@ export const stylesDefault = StyleSheet.create({
     justifyContent: 'space-evenly',
     overflow: 'hidden',
   },
+  seeWinnerButton: {
+    height: '30%',
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderColor: 'lightpink',
+    borderWidth: 3,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
+  },
   beginButton: {
     height: '40%',
     width: '40%',
@@ -153,6 +163,15 @@ export const stylesDefault = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Avenir',
     fontSize: 35,
+    color: 'white',
+  },
+  winnerText: {
+    flex: 1,
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'MarkerFelt-Wide',
+    fontSize: 20,
     color: 'white',
   },
   nameText: {
@@ -309,6 +328,9 @@ export const stylesDefault = StyleSheet.create({
     marginTop: '20%',
   },
   scrollView: {
+    flexGrow: 5,
+  },
+  nonScrollView: {
     flexGrow: 5,
   },
   buttonContainerVote: {

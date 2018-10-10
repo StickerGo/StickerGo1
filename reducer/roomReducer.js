@@ -75,16 +75,18 @@ export const getWinnerId = roomId => {
 
         if (index.votes > vote) {
           if (arr.length !== 0) {
-            arr.shift();
+            // arr.shift();
+            arr = []
           }
           arr.push(keysArr[i]);
           vote = index.votes;
+        } else if (index.votes === vote && vote !== 0) {
+          arr.push(keysArr[i])
         }
       }
 
-      const winnerIdis = arr[0];
-
-      dispatch(gotWinnerId(winnerIdis));
+      // const winnerIdis = arr[0];
+      dispatch(gotWinnerId(arr));
     } catch (err) {
       console.error('THERE IS ERROR WITH GETWINNERID IN ROOM', err);
     }
@@ -96,7 +98,7 @@ export const getOneRoom = roomId => {
     db.database()
       .ref('rooms')
       .child(roomId)
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         const room = snapshot.val() || [];
         dispatch(gotOneRoom(room));
       });
@@ -150,12 +152,13 @@ export const addToRoom = (playerId, playerName, roomId) => {
   };
 };
 
-export const resetRoom = roomInfo => {
+export const resetRoom = (roomInfo, newPrompt) => {
   //1. reset prompt
   //2. reset winnerId
   //3. reset each player's votes
   return dispatch => {
-    const playersInRoom = roomInfo.players;
+    const playersInRoom = Object.keys(roomInfo.players);
+
     const resetWinner = db
       .database()
       .ref('rooms')
@@ -165,7 +168,7 @@ export const resetRoom = roomInfo => {
       .database()
       .ref('rooms')
       .child(`/${roomInfo.id}/promptForRoom`)
-      .set(roomInfo.newPrompt);
+      .set(newPrompt);
     const resetPlayerVotes = playersInRoom.map(playerId => {
       return db
         .database()
@@ -173,6 +176,7 @@ export const resetRoom = roomInfo => {
         .child(`/${roomInfo.id}/players/${playerId}/votes`)
         .set(0);
     });
+
     dispatch(getOneRoom(roomInfo.id));
   };
 };
@@ -183,7 +187,7 @@ export const getImages = id => {
       .ref('players')
       .child(id)
       .child('photo')
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         const image = snapshot.val();
         if (image !== '') {
           dispatch(gotImages(image, id));
@@ -198,7 +202,7 @@ export const getNumPlayers = id => {
       .ref('rooms')
       .child(id)
       .child('numPlayers')
-      .on('value', function (snapshot) {
+      .on('value', function(snapshot) {
         const num = snapshot.val();
         dispatch(gotNumPlayers(num));
       });

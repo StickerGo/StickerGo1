@@ -7,26 +7,34 @@ import {
   View,
   Text,
   Image,
+  ScrollView
 } from 'react-native';
 // import { stylesWinner } from '../styles/componentStyles';
 import { connect } from 'react-redux';
-import { getAllPrompts } from '../reducer/promptReducer';
+import { getAllPrompts, getOnePrompt } from '../reducer/promptReducer';
 import { getWinner, playerExitGame } from '../reducer/playerReducer';
 import { exitGame, resetRoom, getWinnerId } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
       name: 'name',
+      winners: []
     };
   }
   async componentDidMount() {
+    this.props.getAllPrompts();
     await this.props.getWinnerId(this.props.roomId);
-
-    await this.props.getTheWinner(this.props.room.winnerId);
+    const winnersArray = []
+    for (let i = 0; i < this.props.winners.length; i++) {
+      const winner = await this.props.getTheWinner(this.props.winners[i]);
+      this.setState({
+        winners: [...this.props.winner]
+      })
+    }
     this.props.getAllPrompts();
   }
   replay() {
@@ -39,46 +47,56 @@ class Winner extends Component {
       ];
     }
     const roomInfo = this.props.room;
-    roomInfo.newPrompt = newPrompt;
-    this.props.reset(roomInfo);
+    this.props.reset(roomInfo, newPrompt);
     this.props.navigation.navigate('Waiting');
   }
   render() {
     return (
-      <View style={{ flex: 1, margin: 30 }}>
-        {/* <LinearGradient
-          colors={['#192f6a', 'cadetblue', 'lightpink']}
-          style={styles.linearGradientstyle}
-        > */}
-        <Text style={{ color: 'black' }}>Winner is: </Text>
-        {this.props.winner && (
-          <View style={{ flex: 1, backgroundColor: 'pink' }}>
-            <Text style={{ color: 'yellow' }}>{this.props.winner.name}</Text>
-            <Image
-              style={styles.image}
-              source={{ uri: this.props.winner.photo }}
-            />
-          </View>
-        )}
+      <View style={styles.container}>
+        <LinearGradient
+          colors={['cadetblue', 'lightpink']}
+          style={{ flex: 8, padding: 40 }}
+        >
+          <Text style={styles.text}>Winner is: </Text>
+          {this.props.winner && (
+            <View style={styles.scrollContainer}>
+              <ScrollView contentContainerStyle={styles.scrollView}>
+                {
+                  this.props.winner.map(winner => {
+                    return (
+                      <View style={{ flex: 2 }} key={winner.id}>
+                        <Text key={winner.id} style={styles.winnerText}>{winner.name}</Text>
+                        <Image style={styles.unselectedImageStyle} source={{ isStatic: true, uri: winner.photo }} />
+                      </View>
+                    )
+                  })
+                }
+              </ScrollView>
+            </View>
+          )}
 
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <TouchableOpacity
-            style={{ flex: 1, backgroundColor: 'purple' }}
-            onPress={() => this.props.navigation.navigate('Waiting')}
-          >
-            <Text style={{ color: 'black' }}>Play Again</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flex: 1, color: 'blue' }}
-            onPress={() => {
-              this.props.exit();
-              this.props.navigation.navigate('Home');
-            }}
-          >
-            <Text style={{ color: 'red' }}>Exit</Text>
-          </TouchableOpacity>
-        </View>
-        {/* </LinearGradient> */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => {
+                // this.props.reset(this.props.room, this.props.prompts);
+                this.replay();
+                // this.props.navigation.navigate('Waiting');
+              }}
+            >
+              <Text style={styles.buttonText}>Play Again</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.undoButton}
+              onPress={() => {
+                this.props.exit();
+                this.props.navigation.navigate('Home');
+              }}
+            >
+              <Text style={styles.buttonText}>Exit</Text>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
       </View>
     );
   }
@@ -91,6 +109,8 @@ const mapStateToProps = state => {
     room: state.rooms.room,
     winner: state.players.winner,
     roomId: state.rooms.room.id,
+    winners: state.rooms.room.winnerId,
+    prompts: state.prompts.prompts,
   };
 };
 
@@ -102,8 +122,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(playerExitGame());
       dispatch(exitGame());
     },
-    reset: roomInfo => {
-      dispatch(resetRoom(roomInfo));
+    reset: (roomInfo, newPrompt) => {
+      dispatch(resetRoom(roomInfo, newPrompt));
     },
     getWinnerId: roomId => dispatch(getWinnerId(roomId)),
   };

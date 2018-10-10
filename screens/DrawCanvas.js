@@ -1,7 +1,14 @@
 import Expo, { LinearGradient } from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import { TouchableOpacity, Platform, AppState, Text, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Platform,
+  AppState,
+  Text,
+  View,
+  Alert,
+} from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
@@ -172,6 +179,14 @@ class Home extends Component {
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
+                if (this.state.image === null) {
+                  return Alert.alert(
+                    `No ${this.props.prompt}?`,
+                    'Need your beyootiful drawing ;)',
+                    [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                    { cancelable: false }
+                  );
+                }
                 this.saveImage();
                 const id = this.props.player.id;
                 this.props.navigation.navigate('CameraView');

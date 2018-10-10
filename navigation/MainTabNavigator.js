@@ -10,25 +10,29 @@ import RoomCode from '../screens/RoomCode';
 import Waiting from '../screens/Waiting';
 import Vote from '../screens/Vote';
 import Winner from '../screens/Winner';
+
+import WinnerWaiting from '../screens/WinnerWaiting';
 import ColorPicker from '../screens/ColorPicker';
-// import WinnerWaiting from '../screens/WinnerWaiting'
 
 export default createStackNavigator(
   {
-    Home: Home, //go back to home
+    Home: Home,
     CreateRoom: CreateRoom,
     RoomCode: RoomCode,
     JoinRoom: JoinRoom,
     DrawCanvas: DrawCanvas,
     CameraView: CameraView,
-    VoteScreen: Vote, //go back to Vote
+    VoteScreen: Vote,
     Waiting: Waiting,
     Winner: Winner,
     Settings: Settings,
-    //   WinnerWaiting: WinnerWaiting
+    WinnerWaiting: WinnerWaiting,
     ColorPicker: ColorPicker,
   },
   {
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
     initialRouteName: 'Home',
     headerMode: 'none',
   }
