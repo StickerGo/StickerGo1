@@ -52,6 +52,7 @@ class Winner extends Component {
   }
   render() {
     return (
+
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <LinearGradient colors={['cadetblue', 'lightpink']} style={{ flex: 1 }}>
           <Text style={styles.textWinner}>Winner is: </Text>
@@ -74,6 +75,7 @@ class Winner extends Component {
                   })}
                 </ScrollView>
               ) : (
+
                 // <View
                 //   style={{
                 //     flex: 1,
@@ -112,12 +114,15 @@ class Winner extends Component {
                   );
                 })
                 // </View>
+
               )}
             </View>
           )}
 
           <View style={styles.buttonContainer}>
-            {/* <TouchableOpacity
+
+            {/*<TouchableOpacity
+
               style={styles.saveButton}
               onPress={() => {
                 // this.props.reset(this.props.room, this.props.prompts);
@@ -126,7 +131,9 @@ class Winner extends Component {
               }}
             >
               <Text style={styles.buttonText}>Play Again</Text>
-            </TouchableOpacity> */}
+
+            </TouchableOpacity>*/}
+
             <TouchableOpacity
               style={styles.undoButton}
               onPress={() => {
