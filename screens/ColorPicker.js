@@ -1,14 +1,7 @@
 import Expo, { LinearGradient } from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-  Platform,
-  AppState,
-  Text,
-  View,
-  Alert,
-} from 'react-native';
+import { TouchableOpacity, Platform, AppState, Text, View } from 'react-native';
 import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
 import { connect } from 'react-redux';
@@ -20,17 +13,7 @@ var hsl = require('hsl-to-hex');
 
 console.disableYellowBox = true;
 
-const isAndroid = Platform.OS === 'android';
-function uuidv4() {
-  //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-
-class Home extends Component {
+export default class ColorPicker extends Component {
   state = {
     image: null,
     // strokeColor: Math.random() * 0xffffff,
@@ -58,7 +41,7 @@ class Home extends Component {
 
     db.database()
       .ref('players')
-      .child(`/${this.props.player.id}/draw`)
+      .child(`/true/draw`)
       .set(draw.uri);
   };
 
@@ -80,8 +63,6 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    this.props.getOnePrompt(this.props.player.roomId);
-
     AppState.addEventListener('change', this.handleAppStateChangeAsync);
   }
 
@@ -131,9 +112,7 @@ class Home extends Component {
               adjustsFontSizeToFit
               numberOfLines={1}
               style={styles.challenge}
-            >
-              {this.props.prompt}
-            </Text>
+            />
             <View style={styles.sketchContainer}>
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
@@ -146,19 +125,14 @@ class Home extends Component {
               />
             </View>
           </View>
-
-          <Timer
-            style={styles.timer}
-            navigation={this.props.navigation}
-            navigateTo="CameraView"
-            screenshot={this.saveImage}
-          />
           <View style={styles.container}>
             <ColorWheel
               initialColor="#000000"
               onColorChange={color => {
                 const colorFound = this.findColor(color).split('#')[1];
+                console.log('colorFound is', colorFound);
                 const strokeColor = '0x' + colorFound;
+                console.log('strokecolor is', strokeColor);
                 this.setState({ strokeColor });
               }}
               style={{
@@ -168,34 +142,6 @@ class Home extends Component {
               thumbStyle={{ height: 30, width: 30, borderRadius: 30 }}
             />
           </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.undoButton}
-              onPress={() => {
-                this.sketch.undo();
-              }}
-            >
-              <Text style={styles.buttonText}>undo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={() => {
-                if (this.state.image === null) {
-                  return Alert.alert(
-                    `No ${this.props.prompt}?`,
-                    'Need your beyootiful drawing ;)',
-                    [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-                    { cancelable: false }
-                  );
-                }
-                this.saveImage();
-                const id = this.props.player.id;
-                this.props.navigation.navigate('CameraView');
-              }}
-            >
-              <Text style={styles.buttonText}>DONE</Text>
-            </TouchableOpacity>
-          </View>
         </LinearGradient>
       </View>
     );
@@ -203,22 +149,3 @@ class Home extends Component {
 }
 
 const styles = stylesDefault;
-
-const mapStateToProps = state => {
-  return {
-    player: state.players.player,
-    prompt: state.prompts.prompt,
-    roomId: state.rooms.room.id,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    getOnePrompt: roomId => dispatch(getOnePrompt(roomId)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);

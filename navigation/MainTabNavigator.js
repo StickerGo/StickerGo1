@@ -11,7 +11,8 @@ import Waiting from '../screens/Waiting';
 import Vote from '../screens/Vote';
 import Winner from '../screens/Winner';
 
-import WinnerWaiting from '../screens/WinnerWaiting'
+import WinnerWaiting from '../screens/WinnerWaiting';
+import ColorPicker from '../screens/ColorPicker';
 
 export default createStackNavigator(
   {
@@ -25,16 +26,13 @@ export default createStackNavigator(
     Waiting: Waiting,
     Winner: Winner,
     Settings: Settings,
-    WinnerWaiting: WinnerWaiting
+    WinnerWaiting: WinnerWaiting,
+    ColorPicker: ColorPicker,
   },
   {
     navigationOptions: {
       gesturesEnabled: false,
     },
-
-
-  },
-  {
     initialRouteName: 'Home',
     headerMode: 'none',
   }
