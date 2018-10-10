@@ -17,23 +17,23 @@ import { exitGame, resetRoom, getWinnerId } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
 
 class Winner extends Component {
-  _onPressButton() {}
+  _onPressButton() { }
   constructor() {
     super();
     this.state = {
       name: 'name',
-      winners: [],
+      winners: []
     };
   }
   async componentDidMount() {
     this.props.getAllPrompts();
     await this.props.getWinnerId(this.props.roomId);
-    const winnersArray = [];
+    const winnersArray = []
     for (let i = 0; i < this.props.winners.length; i++) {
       const winner = await this.props.getTheWinner(this.props.winners[i]);
       this.setState({
-        winners: [...this.props.winner],
-      });
+        winners: [...this.props.winner]
+      })
     }
     this.props.getAllPrompts();
   }
@@ -52,7 +52,6 @@ class Winner extends Component {
   }
   render() {
     return (
-
       <View style={styles.container}>
         <LinearGradient
           colors={['cadetblue', 'lightpink']}
@@ -75,7 +74,7 @@ class Winner extends Component {
                       })
                     }
                   </ScrollView>
-                  : <View style={{ flexGrow: 5, flex: 3, justifyContent: 'center', alignItems: 'center', width: '100%', padding: 0 }}>
+                  : <View style={{ flexGrow: 5, flex: 3, justifyContent: 'center', alignItems: 'center', width: '100%', padding: 0, margin: 0 }}>
                     {
                       this.props.winner.map(winner => {
                         return (
@@ -105,16 +104,16 @@ class Winner extends Component {
           )}
 
           <View style={styles.buttonContainer}>
-//             <TouchableOpacity
-//               style={styles.saveButton}
-//               onPress={() => {
-//                 // this.props.reset(this.props.room, this.props.prompts);
-//                 this.replay();
-//                 // this.props.navigation.navigate('Waiting');
-//               }}
-//             >
-//               <Text style={styles.buttonText}>Play Again</Text>
-//             </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => {
+                // this.props.reset(this.props.room, this.props.prompts);
+                this.replay();
+                // this.props.navigation.navigate('Waiting');
+              }}
+            >
+              <Text style={styles.buttonText}>Play Again</Text>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={styles.undoButton}
               onPress={() => {
