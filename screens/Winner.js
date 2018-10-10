@@ -52,18 +52,12 @@ class Winner extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <LinearGradient
-          colors={['cadetblue', 'lightpink']}
-          style={{
-            padding: 20,
-            paddingHorizontal: '10%',
-            alignItems: 'stretch',
-          }}
-        >
-          <Text style={styles.text}>Winner is: </Text>
+
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <LinearGradient colors={['cadetblue', 'lightpink']} style={{ flex: 1 }}>
+          <Text style={styles.textWinner}>Winner is: </Text>
           {this.props.winner && (
-            <View style={styles.scrollContainer}>
+            <View style={styles.scrollContainerVote}>
               {this.props.winner.length > 1 ? (
                 <ScrollView contentContainerStyle={styles.scrollView}>
                   {this.props.winner.map(winner => {
@@ -81,61 +75,54 @@ class Winner extends Component {
                   })}
                 </ScrollView>
               ) : (
-                <View
-                  style={{
-                    flexGrow: 5,
-                    flex: 3,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '100%',
-                    padding: 0,
-                  }}
-                >
-                  {this.props.winner.map(winner => {
-                    return (
-                      <View
-                        style={{
-                          flex: 1,
-                          width: '100%',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          padding: 0,
-                        }}
+
+                // <View
+                //   style={{
+                //     flex: 1,
+                //     flexDirection: 'column',
+                //     justifyContent: 'center',
+                //     alignItems: 'center',
+                //   }}
+                // >
+                this.props.winner.map(winner => {
+                  return (
+                    <View key={winner.id}>
+                      <Text
                         key={winner.id}
+                        style={{
+                          textAlign: 'center',
+                          marginBottom: 10,
+                          fontWeight: 'bold',
+                          fontFamily: 'MarkerFelt-Wide',
+                          fontSize: 30,
+                          color: 'white',
+                        }}
                       >
-                        <Text
-                          key={winner.id}
-                          style={{
-                            flex: 1,
-                            textAlign: 'center',
-                            alignSelf: 'center',
-                            fontWeight: 'bold',
-                            fontFamily: 'MarkerFelt-Wide',
-                            fontSize: 20,
-                            color: 'white',
-                          }}
-                        >
-                          {winner.name}
-                        </Text>
-                        <Image
-                          style={{
-                            flex: 3,
-                            width: '100%',
-                            height: '100%',
-                            alignSelf: 'center',
-                          }}
-                          source={{ isStatic: true, uri: winner.photo }}
-                        />
-                      </View>
-                    );
-                  })}
-                </View>
+                        {winner.name}
+                      </Text>
+                      <Image
+                        style={{
+                          alignSelf: 'center',
+                          width: 300,
+                          height: 300,
+                          borderWidth: 3,
+                          borderColor: 'white',
+                        }}
+                        source={{ isStatic: true, uri: winner.photo }}
+                      />
+                    </View>
+                  );
+                })
+                // </View>
+
               )}
             </View>
           )}
 
           <View style={styles.buttonContainer}>
+
             {/*<TouchableOpacity
+
               style={styles.saveButton}
               onPress={() => {
                 // this.props.reset(this.props.room, this.props.prompts);
@@ -144,7 +131,9 @@ class Winner extends Component {
               }}
             >
               <Text style={styles.buttonText}>Play Again</Text>
+
             </TouchableOpacity>*/}
+
             <TouchableOpacity
               style={styles.undoButton}
               onPress={() => {
