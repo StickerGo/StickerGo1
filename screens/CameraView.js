@@ -2,7 +2,6 @@ import Expo, { AR, LinearGradient } from 'expo';
 import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import db from '../reducer/firebase';
 import { stylesDefault } from '../styles/componentStyles';
 import TouchableView from './TouchableView';
 import Timer from './Timer';
@@ -64,7 +63,7 @@ class LinkScreen extends React.Component {
       .then(async result => {
         await this.saveImage(
           `https://s3.us-east-1.amazonaws.com/tickero1-20181008144133-deployment/public/${
-          this.props.player.id
+            this.props.player.id
           }photo.jpg`
         );
 
@@ -135,26 +134,11 @@ class LinkScreen extends React.Component {
     );
   }
 
-  getImage() {
-    let playerId = this.props.player.id;
-
-    let newImage;
-    db.database()
-      .ref('players')
-      .child(playerId)
-      .child('draw')
-      .on('value', function (snapshot) {
-        newImage = snapshot.val();
-      });
-    return newImage;
-  }
-
   componentDidMount() {
     // Turn off extra warnings
     THREE.suppressExpoWarnings(true);
     ThreeAR.suppressWarnings();
-    const image = this.getImage();
-    this.setState({ image });
+    this.setState({ image: this.props.player.draw });
   }
 
   onContextCreate = props => {

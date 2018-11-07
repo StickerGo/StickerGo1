@@ -10,11 +10,10 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
-import db from '../reducer/firebase';
 import { getOnePrompt } from '../reducer/promptReducer';
+import { addDrawing } from '../reducer/playerReducer';
 import { connect } from 'react-redux';
 import Timer from './Timer';
-// import { stylesHome } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 import { ColorWheel } from 'react-native-color-wheel';
 var colorsys = require('colorsys');
@@ -24,7 +23,7 @@ console.disableYellowBox = true;
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
   //https://stackoverflow.com/a/2117523/4047926
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -34,8 +33,6 @@ function uuidv4() {
 class Home extends Component {
   state = {
     image: null,
-    // strokeColor: Math.random() * 0xffffff,
-    // strokeWidth: Math.random() * 30 + 10,
     strokeColor: 'black',
     strokeWidth: 15,
     lines: [
@@ -54,13 +51,9 @@ class Home extends Component {
     appState: AppState.currentState,
   };
 
-  saveImage = () => {
+  saveImage = async () => {
     const draw = this.state.image;
-
-    db.database()
-      .ref('players')
-      .child(`/${this.props.player.id}/draw`)
-      .set(draw.uri);
+    await this.props.saveDrawing(draw, this.props.player.id);
   };
 
   handleAppStateChangeAsync = nextAppState => {
@@ -205,8 +198,8 @@ class Home extends Component {
                   );
                 }
                 this.saveImage();
-                const id = this.props.player.id;
-                this.props.navigation.navigate('CameraView');
+                //const id = this.props.player.id;
+                //this.props.navigation.navigate('CameraView');
               }}
             >
               <Text style={styles.buttonText}>DONE</Text>
@@ -231,6 +224,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getOnePrompt: roomId => dispatch(getOnePrompt(roomId)),
+    saveDrawing: (drawing, playerId) => dispatch(addDrawing(drawing, playerId)),
   };
 };
 

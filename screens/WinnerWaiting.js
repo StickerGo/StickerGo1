@@ -7,10 +7,9 @@ import { getAllPlayers } from '../reducer/playerReducer';
 import { getPlayersinRoom, getOneRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
-import db from '../reducer/firebase';
 
 class WinnerWaiting extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -25,12 +24,12 @@ class WinnerWaiting extends Component {
   render() {
     let play = this.props.room.players;
     let playersArray = [];
-    let votecount = 0
+    let votecount = 0;
     if (typeof play === 'object') {
       playcount = Object.getOwnPropertyNames(play).length;
       let playerKeys = Object.keys(play);
       for (let i = 0; i < playerKeys.length; i++) {
-        votecount = votecount + Number(play[playerKeys[i]].votes)
+        votecount = votecount + Number(play[playerKeys[i]].votes);
       }
     }
     let checkvotes;
@@ -43,7 +42,13 @@ class WinnerWaiting extends Component {
       <View style={styles.waitingContainer}>
         {this.props ? (
           <View style={styles.list}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               {checkvotes ? (
                 <TouchableOpacity
                   style={styles.seeWinnerButton}
@@ -52,37 +57,37 @@ class WinnerWaiting extends Component {
                   <Text style={styles.buttonTextHome}>See the Winner!</Text>
                 </TouchableOpacity>
               ) : (
-                  <View>
-                    <Image
-                      style={styles.loadingImage}
-                      source={require('../assets/images/loading_bears.gif')}
-                    />
-                    <Text style={styles.waitingText}>
-                      Waiting For All Votes...
+                <View>
+                  <Image
+                    style={styles.loadingImage}
+                    source={require('../assets/images/loading_bears.gif')}
+                  />
+                  <Text style={styles.waitingText}>
+                    Waiting For All Votes...
                   </Text>
-                  </View>
-                )}
+                </View>
+              )}
             </View>
           </View>
         ) : (
-            <View style={styles.buttonGroup}>
-              <Text style={styles.text}>Something Went Wrong</Text>
-              {checkvotes ? (
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    this.props.navigation.navigate('Winner', {
-                      roomId: this.props.navigation.getParam('roomId'),
-                    })
-                  }
-                >
-                  <Text style={styles.buttonText}>Go To Vote</Text>
-                </TouchableOpacity>
-              ) : (
-                  <Text style={styles.buttonText}>Waiting</Text>
-                )}
-            </View>
-          )}
+          <View style={styles.buttonGroup}>
+            <Text style={styles.text}>Something Went Wrong</Text>
+            {checkvotes ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('Winner', {
+                    roomId: this.props.navigation.getParam('roomId'),
+                  })
+                }
+              >
+                <Text style={styles.buttonText}>Go To Vote</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.buttonText}>Waiting</Text>
+            )}
+          </View>
+        )}
       </View>
     );
   }

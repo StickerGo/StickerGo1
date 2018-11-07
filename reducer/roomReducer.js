@@ -2,7 +2,6 @@ import db from './firebase';
 
 //action types
 
-const GET_ALL_ROOMS = 'GET_ALL_ROOMS';
 const GET_ONE_ROOM = 'GET_ONE_ROOM';
 const MAKE_ONE_ROOM = 'MAKE_ONE_ROOM';
 const ADD_TO_ROOM = 'ADD_TO_ROOM';
@@ -22,9 +21,6 @@ const gotWinnerId = winnerId => {
 const getAllInRoom = playersInRoom => {
   return { type: GET_ALL_IN_ROOM, playersInRoom };
 };
-// const getAll = rooms => {
-//   return { type: GET_ALL_ROOMS, rooms };
-// };
 const gotOneRoom = room => {
   return { type: GET_ONE_ROOM, room };
 };
@@ -229,11 +225,6 @@ const initialStateRoom = {
 
 const roomReducer = (state = initialStateRoom, action) => {
   switch (action.type) {
-    case GET_ALL_ROOMS:
-      return {
-        ...state,
-        rooms: action.rooms,
-      };
     case GET_ONE_ROOM:
       return {
         ...state,

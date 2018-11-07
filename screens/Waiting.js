@@ -5,10 +5,9 @@ import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
 import { getPlayersinRoom, getOneRoom } from '../reducer/roomReducer';
 import { stylesDefault } from '../styles/componentStyles';
-import db from '../reducer/firebase';
 
 class Waiting extends Component {
-  _onPressButton() { }
+  _onPressButton() {}
   constructor() {
     super();
     this.state = {
@@ -60,38 +59,38 @@ class Waiting extends Component {
                   <Text style={styles.buttonTextHome}>Start Game</Text>
                 </TouchableOpacity>
               ) : (
-                  <View>
-                    <Image
-                      style={styles.loadingImage}
-                      source={require('../assets/images/loading_bears.gif')}
+                <View>
+                  <Image
+                    style={styles.loadingImage}
+                    source={require('../assets/images/loading_bears.gif')}
                     // source={require('../assets/images/loading_bears.gif')}
-                    />
-                    <Text style={styles.waitingText}>
-                      Waiting For More Players...
+                  />
+                  <Text style={styles.waitingText}>
+                    Waiting For More Players...
                   </Text>
-                  </View>
-                )}
+                </View>
+              )}
             </View>
           </View>
         ) : (
-            <View style={styles.buttonGroup}>
-              <Text style={styles.text}>Something Went Wrong</Text>
-              {checknum ? (
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    this.props.navigation.navigate('VoteScreen', {
-                      roomId: this.props.navigation.getParam('roomId'),
-                    })
-                  }
-                >
-                  <Text style={styles.buttonText}>Go To Vote</Text>
-                </TouchableOpacity>
-              ) : (
-                  <Text style={styles.buttonText}>Waiting</Text>
-                )}
-            </View>
-          )}
+          <View style={styles.buttonGroup}>
+            <Text style={styles.text}>Something Went Wrong</Text>
+            {checknum ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('VoteScreen', {
+                    roomId: this.props.navigation.getParam('roomId'),
+                  })
+                }
+              >
+                <Text style={styles.buttonText}>Go To Vote</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.buttonText}>Waiting</Text>
+            )}
+          </View>
+        )}
       </View>
     );
   }
