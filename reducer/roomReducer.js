@@ -1,4 +1,5 @@
 import db from './firebase';
+import NavigationService from '../navigation/NavigationService';
 
 //action types
 
@@ -145,6 +146,26 @@ export const addToRoom = (playerId, playerName, roomId) => {
       .then(() => {
         dispatch(getOneRoom(roomId));
       });
+  };
+};
+
+export const updateVoting = (vote, playerId, roomId) => {
+  return dispatch => {
+    db.database()
+      .ref('rooms')
+      .child(roomId)
+      .child('players')
+      .child(playerId)
+      .child('votes')
+      .transaction(
+        function(votes) {
+          return (votes || 0) + 1;
+        },
+        function() {
+          dispatch(getOneRoom(roomId));
+          NavigationService.navigate('WinnerWaiting');
+        }
+      );
   };
 };
 
