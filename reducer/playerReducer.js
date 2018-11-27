@@ -1,11 +1,11 @@
 import db from './firebase';
+import NavigationService from '../navigation/NavigationService';
 
 //action types
 
 const GET_ALL = 'GET_ALL';
 const GET_WINNER = 'GET_WINNER';
 const ADD_PLAYER = 'ADD_PLAYER';
-const ADD_DRAW = 'ADD_DRAW';
 const ADD_PHOTO = 'ADD_PHOTO';
 const UPDATE_PLAYER = 'UPDATE_PLAYER';
 const GET_ALL_DRAW = 'GET_ALL_DRAW';
@@ -26,12 +26,6 @@ const addPlayer = player => {
   return {
     type: ADD_PLAYER,
     player,
-  };
-};
-const addDraw = drawing => {
-  return {
-    type: ADD_DRAW,
-    drawing,
   };
 };
 
@@ -65,7 +59,8 @@ export const getAllPlayers = () => {
 export const getWinner = playerId => {
   return async dispatch => {
     try {
-      await db.database()
+      await db
+        .database()
         .ref('/players')
         .child(playerId)
         .on('value', snapshot => {
@@ -102,7 +97,7 @@ export const addDrawing = (drawing, playerId) => {
         .child(`/${playerId}/draw`)
         .set(drawing)
         .then(() => {
-          dispatch(addDraw(drawing));
+          dispatch(updatePlayer(playerId, 'CameraView'));
         });
     } catch (err) {
       console.error('THUNK WRONG', err);
@@ -110,7 +105,7 @@ export const addDrawing = (drawing, playerId) => {
   };
 };
 
-const updatePlayer = playerId => {
+const updatePlayer = (playerId, navigateTo) => {
   return async dispatch => {
     try {
       db.database()
@@ -119,6 +114,7 @@ const updatePlayer = playerId => {
         .on('value', snapshot => {
           const player = snapshot.val() || [];
           dispatch(updatedPlayer(player));
+          NavigationService.navigate(navigateTo);
         });
     } catch (err) {
       console.error('THUNK WRONG', err);
@@ -134,7 +130,7 @@ export const addPhoto = (photo, playerId) => {
         .child(`/${playerId}/photo`)
         .set(photo)
         .then(() => {
-          dispatch(updatePlayer(playerId));
+          dispatch(updatePlayer(playerId, 'VoteScreen'));
         });
     } catch (err) {
       console.error('THUNK WRONG', err);

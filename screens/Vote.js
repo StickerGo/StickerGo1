@@ -10,6 +10,7 @@ import {
   getPlayersinRoom,
   getImages,
   getNumPlayers,
+  updateVoting,
 } from '../reducer/roomReducer';
 import { Alert } from 'react-native';
 
@@ -24,8 +25,8 @@ class Contest extends Component {
       error: false,
     };
     this.selectImage = this.selectImage.bind(this);
-    this.vote = this.vote.bind(this);
-    this.voteAgain = this.voteAgain.bind(this);
+    // this.vote = this.vote.bind(this);
+    // this.voteAgain = this.voteAgain.bind(this);
   }
 
   async componentDidMount() {
@@ -45,22 +46,22 @@ class Contest extends Component {
     this.setState({ vote: id });
   }
 
-  async voteAgain(id) {
-    await this.vote(id);
-  }
-
-  async vote(playerId) {
-    const ref = await db
-      .database()
-      .ref('rooms')
-      .child(this.props.roomId)
-      .child('players')
-      .child(playerId)
-      .child('votes')
-      .transaction(function(votes) {
-        return (votes || 0) + 1;
-      });
-  }
+  // async voteAgain(id) {
+  //   await this.vote(id);
+  // }
+  //
+  // async vote(playerId) {
+  //   const ref = await db
+  //     .database()
+  //     .ref('rooms')
+  //     .child(this.props.roomId)
+  //     .child('players')
+  //     .child(playerId)
+  //     .child('votes')
+  //     .transaction(function(votes) {
+  //       return (votes || 0) + 1;
+  //     });
+  // }
 
   render() {
     const imagesArray = this.props.images;
@@ -117,8 +118,13 @@ class Contest extends Component {
                 style={styles.voteButton}
                 onPress={() => {
                   if (this.state.vote) {
-                    this.voteAgain(this.state.vote);
-                    this.props.navigation.navigate('WinnerWaiting');
+                    this.props.updateVotes(
+                      this.state.vote,
+                      this.props.playerId,
+                      this.props.roomId
+                    );
+                    // this.voteAgain(this.state.vote);
+                    // this.props.navigation.navigate('WinnerWaiting');
                   } else {
                     return Alert.alert(
                       'You forgot to vote!',
@@ -154,6 +160,7 @@ const styles = stylesDefault;
 
 const mapStateToProps = state => {
   return {
+    playerId: state.players.player.id,
     players: state.players.players,
     roomSize: state.rooms.room.numPlayers,
     roomId: state.rooms.room.id,
@@ -168,6 +175,8 @@ const mapDispatchToProps = dispatch => {
     getPlayersinRoom: roomId => dispatch(getPlayersinRoom(roomId)),
     getImages: playerIds => dispatch(getImages(playerIds)),
     getNumPlayers: roomId => dispatch(getNumPlayers(roomId)),
+    updateVotes: (vote, playerId, roomId) =>
+      dispatch(updateVoting(vote, playerId, roomId)),
   };
 };
 

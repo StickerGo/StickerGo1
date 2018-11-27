@@ -7,7 +7,6 @@ import { getOneRoom } from '../reducer/roomReducer';
 import { getPlayersinRoom } from '../reducer/roomReducer';
 // import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
-import db from '../reducer/firebase';
 
 class DisplayWait extends Component {
   _onPressButton() {}
