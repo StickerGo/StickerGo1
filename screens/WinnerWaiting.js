@@ -1,11 +1,8 @@
-import { LinearGradient } from 'expo';
 import React, { Component } from 'react';
 import { TouchableOpacity, View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { getAllPlayers } from '../reducer/playerReducer';
-// import { getOneRoom } from '../reducer/roomReducer';
 import { getPlayersinRoom, getOneRoom } from '../reducer/roomReducer';
-// import { stylesWaiting } from '../styles/componentStyles';
 import { stylesDefault } from '../styles/componentStyles';
 
 class WinnerWaiting extends Component {
