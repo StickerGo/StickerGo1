@@ -18,6 +18,7 @@
     "aws-amplify": "^1.1.6",
     "aws-amplify-react-native": "^2.0.6",
     "aws-sdk": "^2.329.0",
+    "axios": "^0.19.0",
     "colorsys": "^1.0.21",
     "expo": "^30.0.1",
     "expo-graphics": "^1.0.0-alpha.6",
