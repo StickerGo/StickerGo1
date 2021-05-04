@@ -24,7 +24,7 @@
     "expo-pixi": "^0.3.1",
     "expo-three": "^3.0.0-alpha.4",
     "firebase": "^5.5.2",
-    "merge": "^1.2.1",
+    "merge": "^2.1.1",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-color-wheel": "^0.1.5",
